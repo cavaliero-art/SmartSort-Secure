@@ -1,9 +1,11 @@
 **SmartSort Secure**
+
 is a full-stack web application designed to revolutionize waste management in Tunisia by creating a transparent, engaging, and profitable circular economy. This project combines AI-powered waste identification, a gamified citizen rewards platform, and a Hedera-backed backend to ensure every recycling action is verifiable and valuable.
 ---
 It was built as a comprehensive solution to real-world environmental and economic challenges, providing distinct portals for citizens, corporate partners, and municipal administrators.
 ---
 **🌟 Project Overview**
+
 At its core, SmartSort Secure tackles the problem of inefficient and untrustworthy recycling systems. By integrating cutting-edge technology, we've created an ecosystem where:
 
 👥 Citizens are empowered and incentivized to recycle correctly.
@@ -58,6 +60,7 @@ node server.js
 The server will start, and you can access the citizen portal at index.html and the admin portal via login.html.
 ---
 **🙏 Acknowledgements**
+
 A special thank you to the following for making this project possible:
 
 Hedera Hashgraph for providing the secure, enterprise-grade DLT for our backend.
