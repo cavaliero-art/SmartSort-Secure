@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SmartSort Secure</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♻️</text></svg>">
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    
+    <style>
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; /* Slate 100 */}
+        .sidebar-link {
+            transition: all 0.2s ease-in-out;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link:hover {
+            background-color: #334155; /* Slate 700 */
+            border-left-color: #10b981; /* Emerald 500 */
+            transform: translateX(5px);
+        }
+        .sidebar-link.active {
+            background-color: #475569; /* Slate 600 */
+            border-left-color: #3b82f6; /* Blue 500 */
+            font-weight: 600;
+        }
+        .stat-card { 
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.2s ease;
+            border-left-width: 4px;
+        }
+        .stat-card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.07); 
+        }
+
+        .animated-item {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+        .animated-item.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden">
+
+    <aside class="w-64 bg-slate-800 text-slate-200 flex flex-col p-4 flex-shrink-0">
+        <div class="text-2xl font-bold mb-10 text-white">
+            ♻️ SmartSort<span class="text-green-400">Secure</span>
+            <span class="block text-xs font-normal text-slate-400" data-lang-en="Admin Portal" data-lang-ar="بوابة المسؤول">Admin Portal</span>
+        </div>
+        <nav class="flex-grow">
+            <ul>
+                <li class="mb-2"><a href="admin-dashboard.html" class="sidebar-link active flex items-center p-3 rounded-lg"><svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg><span data-lang-en="Dashboard" data-lang-ar="لوحة التحكم">Dashboard</span></a></li>
+                <li class="mb-2"><a href="admin-map.html" class="sidebar-link flex items-center p-3 rounded-lg"><svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg><span data-lang-en="Live Map" data-lang-ar="الخريطة الحية">Live Map</span></a></li>
+                <li class="mb-2"><a href="admin-report.html" class="sidebar-link flex items-center p-3 rounded-lg"><svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H9a2 2 0 01-2-2V5z"></path></svg><span data-lang-en="Reports" data-lang-ar="التقارير">Reports</span></a></li>
+                <li class="mb-2"><a href="admin-insights.html" class="sidebar-link flex items-center p-3 rounded-lg"><svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg><span data-lang-en="Market Insights" data-lang-ar="تحليلات السوق">Market Insights</span></a></li>
+                <li class="mb-2"><a href="admin-settings.html" class="sidebar-link flex items-center p-3 rounded-lg"><svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.096 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg><span data-lang-en="Settings" data-lang-ar="الإعدادات">Settings</span></a></li>
+            </ul>
+        </nav>
+        <div class="mt-auto">
+            <a href="login.html" class="sidebar-link flex items-center p-3 rounded-lg"><svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg><span data-lang-en="Logout" data-lang-ar="تسجيل الخروج">Logout</span></a>
+        </div>
+    </aside>
+
+    <main class="flex-1 p-8 overflow-y-auto">
+        <div class="flex justify-between items-center mb-4 animated-item is-visible">
+            <div>
+                <h1 class="text-3xl font-bold text-slate-800" data-lang-en="Live Dashboard 📊" data-lang-ar="لوحة التحكم المباشرة 📊">Live Dashboard 📊</h1>
+                <p class="text-slate-500" data-lang-en="Welcome back, admin. Here's the live status of waste management in Tunis." data-lang-ar="مرحبًا بعودتك، مشرف. إليك الحالة الفعلية لإدارة النفايات في تونس.">Welcome back, admin. Here's the live status of waste management in Tunis.</p>
+            </div>
+            <button id="lang-toggle" class="font-semibold text-slate-700 bg-white hover:bg-slate-50 py-2 px-4 rounded-full border border-slate-300 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a6 6 0 00-6 6v3.586l-1.707 1.707A1 1 0 003 15v4a1 1 0 001 1h12a1 1 0 001-1v-4a1 1 0 00-.293-.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" /></svg>
+                <span>EN / AR</span>
+            </button>
+        </div>
+
+        <!-- Connection Status Indicator -->
+        <div id="connection-status" class="flex items-center gap-2 text-sm font-medium mb-8 px-4 py-2 rounded-lg animated-item is-visible" style="transition-delay: 50ms;">
+            <div id="status-dot" class="w-3 h-3 rounded-full"></div>
+            <span id="status-text"></span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="stat-card bg-white p-6 rounded-lg shadow-sm flex items-center border-l-teal-500 animated-item" style="transition-delay: 100ms;">
+                <div class="bg-teal-100 p-4 rounded-full mr-4"><svg class="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg></div>
+                <div>
+                    <p class="text-sm text-slate-500" data-lang-en="Total Items (Today)" data-lang-ar="إجمالي العناصر (اليوم)">Total Items (Today)</p>
+                    <p id="total-items" class="text-3xl font-bold">0</p>
+                </div>
+            </div>
+            <div class="stat-card bg-white p-6 rounded-lg shadow-sm flex items-center border-l-blue-500 animated-item" style="transition-delay: 200ms;">
+                 <div class="bg-blue-100 p-4 rounded-full mr-4"><svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div>
+                <div>
+                    <p class="text-sm text-slate-500" data-lang-en="Plastic Items" data-lang-ar="العناصر البلاستيكية">Plastic Items</p>
+                    <p id="plastic-items" class="text-3xl font-bold">0</p>
+                </div>
+            </div>
+            <div class="stat-card bg-white p-6 rounded-lg shadow-sm flex items-center border-l-rose-500 animated-item" style="transition-delay: 300ms;">
+                 <div class="bg-rose-100 p-4 rounded-full mr-4"><svg class="w-8 h-8 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></div>
+                <div>
+                    <p class="text-sm text-slate-500" data-lang-en="Paper Items" data-lang-ar="العناصر الورقية">Paper Items</p>
+                    <p id="paper-items" class="text-3xl font-bold">0</p>
+                </div>
+            </div>
+            <div class="stat-card bg-white p-6 rounded-lg shadow-sm flex items-center border-l-amber-500 animated-item" style="transition-delay: 400ms;">
+                 <div class="bg-amber-100 p-4 rounded-full mr-4"><svg class="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10l2 2h8a1 1 0 001-1zM3 18a1 1 0 001 1h12a1 1 0 001-1v-1a1 1 0 00-1-1H4a1 1 0 00-1 1v1z"></path></svg></div>
+                <div>
+                    <p class="text-sm text-slate-500" data-lang-en="Glass Items" data-lang-ar="العناصر الزجاجية">Glass Items</p>
+                    <p id="glass-items" class="text-3xl font-bold">0</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 bg-white p-6 rounded-lg shadow-sm animated-item" style="transition-delay: 500ms;">
+                <h2 class="text-xl font-bold mb-4" data-lang-en="Live Bin Status Map 🗺️" data-lang-ar="خريطة حالة الحاويات الحية 🗺️">Live Bin Status Map 🗺️</h2>
+                <div id="map" class="h-[500px] rounded-lg"></div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-sm animated-item" style="transition-delay: 600ms;">
+                <h2 class="text-xl font-bold mb-4" data-lang-en="Live Recycling Trends 📈" data-lang-ar="اتجاهات إعادة التدوير الحية 📈">Live Recycling Trends 📈</h2>
+                <canvas id="recyclingChart"></canvas>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Language Logic ---
+            const langToggle = document.getElementById('lang-toggle');
+            const translatableElements = document.querySelectorAll('[data-lang-en]');
+            const translations = {
+                en: { 
+                    recyclingLabel: 'Items Recycled',
+                    connecting: 'Connecting to live server...',
+                    connected: 'Live connection established!',
+                    reconnecting: 'Connection lost. Retrying in 5 seconds...'
+                },
+                ar: { 
+                    recyclingLabel: 'العناصر المعاد تدويرها',
+                    connecting: 'جاري الاتصال بالخادم المباشر...',
+                    connected: 'تم إنشاء الاتصال المباشر!',
+                    reconnecting: 'انقطع الاتصال. جاري إعادة المحاولة خلال 5 ثوانٍ...'
+                }
+            };
+            const setLanguage = (lang) => {
+                translatableElements.forEach(el => {
+                    const text = el.getAttribute(`data-lang-${lang}`);
+                    if (text) { el.innerHTML = text; }
+                });
+                document.documentElement.lang = lang;
+                document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+                localStorage.setItem('language', lang);
+                if (window.recyclingChart) {
+                    window.recyclingChart.data.datasets[0].label = translations[lang].recyclingLabel;
+                    window.recyclingChart.update();
+                }
+            };
+            langToggle.addEventListener('click', () => {
+                const currentLang = localStorage.getItem('language') || 'ar';
+                const newLang = currentLang === 'ar' ? 'en' : 'ar';
+                setLanguage(newLang);
+            });
+            const savedLang = localStorage.getItem('language') || 'ar';
+            
+            // --- ANIMATION LOGIC ---
+            const animatedItems = document.querySelectorAll('.animated-item');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            animatedItems.forEach(item => observer.observe(item));
+
+            // --- Map Logic ---
+            const map = L.map('map').setView([36.8065, 10.1815], 13);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap' }).addTo(map);
+            const greenIcon = L.icon({ iconUrl: 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2322c55e"><path d="M10 2L8 4H4C3.4 4 3 4.4 3 5V6H21V5C21 4.4 20.6 4 20 4H16L14 2H10ZM4 7V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V7H4Z"/></svg>'), iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -34] });
+            const yellowIcon = L.icon({ iconUrl: 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23f59e0b"><path d="M10 2L8 4H4C3.4 4 3 4.4 3 5V6H21V5C21 4.4 20.6 4 20 4H16L14 2H10ZM4 7V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V7H4Z"/></svg>'), iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -34] });
+            const redIcon = L.icon({ iconUrl: 'data:image/svg+xml;base64,' + btoa('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ef4444"><path d="M10 2L8 4H4C3.4 4 3 4.4 3 5V6H21V5C21 4.4 20.6 4 20 4H16L14 2H10ZM4 7V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V7H4Z"/></svg>'), iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -34] });
+            const bins = [
+                { lat: 36.8090, lng: 10.1810, name: 'Avenue Habib Bourguiba', status: '75% Full', icon: yellowIcon },
+                { lat: 36.8008, lng: 10.1716, name: 'Medina of Tunis', status: '95% Full', icon: redIcon },
+                { lat: 36.8188, lng: 10.1659, name: 'Bab El Khadra', status: '20% Full', icon: greenIcon }
+            ];
+            bins.forEach(bin => { L.marker([bin.lat, bin.lng], { icon: bin.icon }).addTo(map).bindPopup(`<b>${bin.name}</b><br>Status: ${bin.status}`); });
+            
+            // --- Chart Logic ---
+            const ctx = document.getElementById('recyclingChart').getContext('2d');
+            window.recyclingChart = new Chart(ctx, {
+                type: 'bar',
+                data: { labels: ['Plastic', 'Paper', 'Glass'], datasets: [{ label: translations[savedLang].recyclingLabel, data: [0, 0, 0], backgroundColor: ['rgba(59, 130, 246, 0.7)', 'rgba(239, 68, 68, 0.7)', 'rgba(245, 158, 11, 0.7)'], borderColor: ['#3b82f6', '#ef4444', '#f59e0b'], borderWidth: 1 }] },
+                options: { indexAxis: 'y', responsive: true, plugins: { legend: { display: false } } }
+            });
+
+            // --- WebSocket Logic (with reconnection) ---
+            const totalItemsEl = document.getElementById('total-items');
+            const plasticItemsEl = document.getElementById('plastic-items');
+            const paperItemsEl = document.getElementById('paper-items');
+            const glassItemsEl = document.getElementById('glass-items');
+            const statusDot = document.getElementById('status-dot');
+            const statusText = document.getElementById('status-text');
+            const statusContainer = document.getElementById('connection-status');
+
+            function connectWebSocket() {
+                let lang = localStorage.getItem('language') || 'ar';
+                statusText.textContent = translations[lang].connecting;
+                statusDot.className = "w-3 h-3 rounded-full bg-yellow-400 animate-pulse";
+                statusContainer.className = "flex items-center gap-2 text-sm font-medium mb-8 px-4 py-2 rounded-lg bg-yellow-100 text-yellow-800 animated-item is-visible";
+
+                const socket = new WebSocket('ws://localhost:3000');
+
+                socket.onopen = () => {
+                    console.log("WebSocket connection established.");
+                    lang = localStorage.getItem('language') || 'ar';
+                    statusText.textContent = translations[lang].connected;
+                    statusDot.className = "w-3 h-3 rounded-full bg-green-500";
+                    statusContainer.className = "flex items-center gap-2 text-sm font-medium mb-8 px-4 py-2 rounded-lg bg-green-100 text-green-800 animated-item is-visible";
+                    statusDot.classList.remove('animate-pulse');
+                };
+
+                socket.onclose = (event) => {
+                    console.log("WebSocket connection closed.", event);
+                    lang = localStorage.getItem('language') || 'ar';
+                    statusText.textContent = translations[lang].reconnecting;
+                    statusDot.className = "w-3 h-3 rounded-full bg-red-500 animate-pulse";
+                    statusContainer.className = "flex items-center gap-2 text-sm font-medium mb-8 px-4 py-2 rounded-lg bg-red-100 text-red-800 animated-item is-visible";
+                    setTimeout(connectWebSocket, 5000); // Attempt to reconnect after 5 seconds
+                };
+
+                socket.onerror = (error) => {
+                    console.error("WebSocket Error:", error);
+                    // onclose will be called automatically after an error, so reconnection logic is handled there.
+                };
+
+                socket.onmessage = (event) => {
+                    const data = JSON.parse(event.data);
+                    if (data.type === 'NEW_RECYCLE_EVENT') {
+                        updateDashboard(data.item);
+                    }
+                };
+            }
+
+            function updateDashboard(item) {
+                const flashEffect = (el) => {
+                    const card = el.closest('.stat-card');
+                    if (card) {
+                        card.style.backgroundColor = '#e0e7ff'; // light indigo
+                        setTimeout(() => { card.style.backgroundColor = 'white'; }, 400);
+                    }
+                };
+
+                totalItemsEl.textContent = parseInt(totalItemsEl.textContent) + 1;
+                flashEffect(totalItemsEl);
+
+                switch(item.toLowerCase()) {
+                    case 'plastic':
+                        plasticItemsEl.textContent = parseInt(plasticItemsEl.textContent) + 1;
+                        flashEffect(plasticItemsEl);
+                        window.recyclingChart.data.datasets[0].data[0]++;
+                        break;
+                    case 'paper':
+                        paperItemsEl.textContent = parseInt(paperItemsEl.textContent) + 1;
+                        flashEffect(paperItemsEl);
+                        window.recyclingChart.data.datasets[0].data[1]++;
+                        break;
+                    case 'glass':
+                        glassItemsEl.textContent = parseInt(glassItemsEl.textContent) + 1;
+                        flashEffect(glassItemsEl);
+                        window.recyclingChart.data.datasets[0].data[2]++;
+                        break;
+                }
+                window.recyclingChart.update('none');
+            }
+            
+            // Initial language set & connection attempt
+            setLanguage(savedLang);
+            connectWebSocket();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Intelligence - SmartSort Secure</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♻️</text></svg>">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f0f4f8; }
+    </style>
+</head>
+<body class="flex h-screen">
+
+    <aside class="w-64 bg-gray-800 text-white flex flex-col p-4 flex-shrink-0">
+        <div class="text-2xl font-bold mb-10">
+            ♻️ SmartSort<span class="text-green-400">Secure</span>
+            <span class="block text-xs font-normal text-gray-400" data-lang-en="Admin Portal" data-lang-ar="بوابة المسؤول">Admin Portal</span>
+        </div>
+        <nav class="flex-grow">
+            <ul>
+                <li class="mb-4"><a href="admin-dashboard.html" class="flex items-center p-3 rounded-lg hover:bg-gray-700"><svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg><span data-lang-en="Dashboard" data-lang-ar="لوحة التحكم">Dashboard</span></a></li>
+                <li class="mb-4"><a href="admin-map.html" class="flex items-center p-3 rounded-lg hover:bg-gray-700"><svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg><span data-lang-en="Live Map" data-lang-ar="الخريطة الحية">Live Map</span></a></li>
+                <li class="mb-4"><a href="admin-report.html" class="flex items-center p-3 rounded-lg hover:bg-gray-700"><svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H9a2 2 0 01-2-2V5z"></path></svg><span data-lang-en="Reports" data-lang-ar="التقارير">Reports</span></a></li>
+                <li class="mb-4"><a href="admin-insights.html" class="flex items-center p-3 rounded-lg bg-gray-700 font-bold"><svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg><span data-lang-en="Market Insights" data-lang-ar="تحليلات السوق">Market Insights</span></a></li>
+                <li class="mb-4"><a href="admin-settings.html" class="flex items-center p-3 rounded-lg hover:bg-gray-700"><svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.096 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg><span data-lang-en="Settings" data-lang-ar="الإعدادات">Settings</span></a></li>
+            </ul>
+        </nav>
+        <div class="mt-auto">
+            <a href="index.html" class="flex items-center p-3 rounded-lg hover:bg-gray-700"><svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg><span data-lang-en="Logout" data-lang-ar="تسجيل الخروج">Logout</span></a>
+        </div>
+    </aside>
+
+    <main class="flex-1 p-8 overflow-y-auto">
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-800" data-lang-en="Market Intelligence" data-lang-ar="تحليلات السوق">Market Intelligence</h1>
+                <p class="text-gray-500" data-lang-en="Aggregated, anonymous consumer insights powered by real-world recycling data." data-lang-ar="رؤى استهلاكية مجمعة ومجهولة المصدر مدعومة ببيانات إعادة التدوير من العالم الحقيقي.">Aggregated, anonymous consumer insights powered by real-world recycling data.</p>
+            </div>
+            <button id="lang-toggle" class="font-semibold text-gray-700 hover:text-blue-600 py-2 px-4 rounded-full border">EN / AR</button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-bold mb-4" data-lang-en="Post-Consumer Market Share: Bottled Water" data-lang-ar="حصة السوق بعد الاستهلاك: المياه المعبأة">Post-Consumer Market Share: Bottled Water</h2>
+                <p class="text-sm text-gray-500 mb-4" data-lang-en='Based on items recycled in the Tunis region this month. Data is verifiable on Hedera.' data-lang-ar="بناءً على المواد المعاد تدويرها في منطقة تونس هذا الشهر. البيانات يمكن التحقق منها على هيديرا.">Based on items recycled in the Tunis region this month. Data is verifiable on Hedera.</p>
+                <canvas id="marketShareChart"></canvas>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-bold mb-4" data-lang-en='Consumption Hotspots: Safia Water' data-lang-ar="النقاط الساخنة للاستهلاك: مياه صافية">Consumption Hotspots: Safia Water</h2>
+                <p class="text-sm text-gray-500 mb-4" data-lang-en='Geographic distribution of "Safia" brand water bottles recycled.' data-lang-ar='التوزيع الجغرافي لعبوات مياه "صافية" المعاد تدويرها.'>Geographic distribution of "Safia" brand water bottles recycled.</p>
+                <div id="hotspotMap" class="h-96 rounded-lg"></div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Language Logic ---
+            const langToggle = document.getElementById('lang-toggle');
+            const translatableElements = document.querySelectorAll('[data-lang-en]');
+            
+            const setLanguage = (lang) => {
+                translatableElements.forEach(el => {
+                    const text = el.getAttribute(`data-lang-${lang}`);
+                    if (text) {
+                       el.textContent = text;
+                    }
+                });
+                document.documentElement.lang = lang;
+                document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+                localStorage.setItem('language', lang);
+            };
+
+            langToggle.addEventListener('click', () => {
+                const currentLang = localStorage.getItem('language') || 'ar';
+                const newLang = currentLang === 'ar' ? 'en' : 'ar';
+                setLanguage(newLang);
+            });
+
+            const savedLang = localStorage.getItem('language') || 'ar';
+            setLanguage(savedLang);
+
+            // --- Chart & Map Logic ---
+            const marketCtx = document.getElementById('marketShareChart').getContext('2d');
+            new Chart(marketCtx, { type: 'doughnut', data: { labels: ['Safia', 'Marwa', 'Denya', 'Sabrine', 'Other'], datasets: [{ label: 'Market Share', data: [45, 25, 15, 10, 5], backgroundColor: ['#3b82f6', '#16a34a', '#ef4444', '#f59e0b', '#6b7280'], hoverOffset: 4 }] }, options: { responsive: true, plugins: { legend: { position: 'top' } } } });
+            const map = L.map('hotspotMap').setView([36.81, 10.18], 12);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; OpenStreetMap &copy; CARTO' }).addTo(map);
+            const heatPoints = [ [36.8520, 10.2030, 0.9], [36.8624, 10.3236, 0.8], [36.8090, 10.1810, 0.5], [36.8444, 10.1991, 0.6], [36.8008, 10.1716, 0.2] ];
+            L.heatLayer(heatPoints, {radius: 25}).addTo(map);
+        });
+    </script>
+</body>
+</html>

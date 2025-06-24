@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - SmartSort Secure</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♻️</text></svg>">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .login-gradient { background: linear-gradient(135deg, #f0f4f8, #d9e2ec); }
+        .btn-gradient { background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%); }
+        .btn-gradient:hover { background: linear-gradient(90deg, #1e40af 0%, #2563eb 100%); }
+    </style>
+</head>
+<body class="login-gradient flex items-center justify-center h-screen">
+
+    <div class="bg-white p-10 rounded-2xl shadow-2xl w-full max-w-md text-center relative">
+        <div class="absolute top-4 right-4">
+            <button id="lang-toggle" class="font-semibold text-sm text-gray-600 hover:text-blue-600 py-1 px-3 rounded-full border">EN / AR</button>
+        </div>
+        
+        <a href="index.html" class="text-3xl font-bold text-teal-600 mb-2 inline-block">
+            ♻️ SmartSort<span class="text-green-600">Secure</span>
+        </a>
+        <h2 class="text-xl font-semibold text-gray-600 mb-8" data-lang-en="Waste Management Portal" data-lang-ar="بوابة إدارة النفايات">Waste Management Portal</h2>
+        
+        <form action="admin-dashboard.html">
+            <div class="mb-6 text-left">
+                <label for="email" class="block text-gray-700 font-medium mb-2" data-lang-en="Email Address" data-lang-ar="البريد الإلكتروني">Email Address</label>
+                <input type="email" id="email" value="admin@tunis.gov" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+            </div>
+            <div class="mb-6 text-left">
+                <label for="password" class="block text-gray-700 font-medium mb-2" data-lang-en="Password" data-lang-ar="كلمة المرور">Password</label>
+                <input type="password" id="password" value="hackathon2025" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+            </div>
+            <div class="mb-6 flex items-center justify-between">
+                <a href="#" class="text-sm text-blue-600 hover:underline" data-lang-en="Forgot Password?" data-lang-ar="هل نسيت كلمة المرور؟">Forgot Password?</a>
+            </div>
+            <button type="submit" class="w-full text-white btn-gradient font-bold py-3 px-6 rounded-lg shadow-lg transform hover:scale-105 transition-transform" data-lang-en="Login" data-lang-ar="تسجيل الدخول">
+                Login
+            </button>
+        </form>
+        
+        <p class="text-xs text-gray-400 mt-8" data-lang-en="This portal provides access to sensitive municipal waste data. Access is restricted to authorized personnel. All activities are logged on the Hedera network for security and auditability." data-lang-ar="توفر هذه البوابة الوصول إلى بيانات النفايات البلدية الحساسة. الوصول مقتصر على الموظفين المصرح لهم. يتم تسجيل جميع الأنشطة على شبكة هيديرا للأمان والمراجعة.">
+            This portal provides access to sensitive municipal waste data. Access is restricted to authorized personnel. All activities are logged on the Hedera network for security and auditability.
+        </p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const langToggle = document.getElementById('lang-toggle');
+            const translatableElements = document.querySelectorAll('[data-lang-en]');
+
+            const setLanguage = (lang) => {
+                translatableElements.forEach(el => {
+                    const text = el.getAttribute(`data-lang-${lang}`);
+                    if (text) {
+                        el.textContent = text;
+                    }
+                });
+                document.documentElement.lang = lang;
+                document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+                localStorage.setItem('language', lang);
+            };
+
+            langToggle.addEventListener('click', () => {
+                const currentLang = localStorage.getItem('language') || 'en';
+                const newLang = currentLang === 'en' ? 'ar' : 'en';
+                setLanguage(newLang);
+            });
+
+            // Set initial language
+            const savedLang = localStorage.getItem('language') || 'en';
+            setLanguage(savedLang);
+        });
+    </script>
+</body>
+</html>

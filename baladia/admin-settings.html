@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - SmartSort Secure</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♻️</text></svg>">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f0f4f8; }
+        .btn-primary { background-color: #2563eb; color: white; }
+        .btn-primary:hover { background-color: #1d4ed8; }
+        .toggle-bg:after { content: ''; position: absolute; top: 2px; left: 2px; background-color: white; width: 1.25rem; height: 1.25rem; border-radius: 9999px; transition: transform 0.2s ease-in-out; }
+        input:checked + .toggle-bg:after { transform: translateX(100%); }
+        input:checked + .toggle-bg { background-color: #2563eb; }
+    </style>
+</head>
+<body class="flex h-screen">
+
+    <aside class="w-64 bg-gray-800 text-white flex flex-col p-4 flex-shrink-0">
+        <div class="text-2xl font-bold mb-10">
+            ♻️ SmartSort<span class="text-green-400">Secure</span>
+            <span class="block text-xs font-normal text-gray-400" data-lang-en="Admin Portal" data-lang-ar="بوابة المسؤول">Admin Portal</span>
+        </div>
+        <nav class="flex-grow">
+            <ul>
+                <li class="mb-4"><a href="admin-dashboard.html" class="flex items-center p-3 rounded-lg hover:bg-gray-700"><svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg><span data-lang-en="Dashboard" data-lang-ar="لوحة التحكم">Dashboard</span></a></li>
+                <li class="mb-4"><a href="admin-map.html" class="flex items-center p-3 rounded-lg hover:bg-gray-700"><svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg><span data-lang-en="Live Map" data-lang-ar="الخريطة الحية">Live Map</span></a></li>
+                <li class="mb-4"><a href="admin-report.html" class="flex items-center p-3 rounded-lg hover:bg-gray-700"><svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H9a2 2 0 01-2-2V5z"></path></svg><span data-lang-en="Reports" data-lang-ar="التقارير">Reports</span></a></li>
+                <li class="mb-4"><a href="admin-settings.html" class="flex items-center p-3 rounded-lg bg-gray-700 font-bold"><svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.096 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg><span data-lang-en="Settings" data-lang-ar="الإعدادات">Settings</span></a></li>
+            </ul>
+        </nav>
+        <div class="mt-auto">
+            <a href="index.html" class="flex items-center p-3 rounded-lg hover:bg-gray-700"><svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg><span data-lang-en="Logout" data-lang-ar="تسجيل الخروج">Logout</span></a>
+        </div>
+    </aside>
+
+    <main class="flex-1 p-8 overflow-y-auto">
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-800" data-lang-en="System Settings" data-lang-ar="إعدادات النظام">System Settings</h1>
+                <p class="text-gray-500" data-lang-en="Manage system configurations and user access." data-lang-ar="إدارة تكوينات النظام والوصول للمستخدمين.">Manage system configurations and user access.</p>
+            </div>
+            <button id="lang-toggle" class="font-semibold text-gray-700 hover:text-blue-600 py-2 px-4 rounded-full border">EN / AR</button>
+        </div>
+
+        <div class="space-y-8 max-w-4xl">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-bold mb-4" data-lang-en="AI Model Configuration" data-lang-ar="تكوين نموذج الذكاء الاصطناعي">AI Model Configuration</h2>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="font-medium" data-lang-en="Current AI Model" data-lang-ar="نموذج الذكاء الاصطناعي الحالي">Current AI Model</p>
+                            <p class="text-sm text-gray-500">WasteClassifier-v2.1</p>
+                        </div>
+                        <button class="text-sm font-semibold text-blue-600 hover:underline" data-lang-en="Update Model" data-lang-ar="تحديث النموذج">Update Model</button>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <p class="font-medium" data-lang-en="Detection Confidence Threshold" data-lang-ar="عتبة ثقة الكشف">Detection Confidence Threshold</p>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-gray-700">95%</span>
+                            <input type="range" min="80" max="99" value="95" class="w-32">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-bold mb-4" data-lang-en="Alerts & Notifications" data-lang-ar="التنبيهات والإشعارات">Alerts & Notifications</h2>
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <p class="font-medium" data-lang-en='"Bin Full" Alert Threshold' data-lang-ar='عتبة تنبيه "الحاوية ممتلئة"'>"Bin Full" Alert Threshold</p>
+                        <select class="border border-gray-300 rounded-md p-1">
+                            <option>80%</option> <option selected>90%</option> <option>95%</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <p class="font-medium" data-lang-en="High Contamination Alert" data-lang-ar="تنبيه التلوث العالي">High Contamination Alert</p>
+                        <div class="flex items-center space-x-2">
+                             <span class="text-gray-700" data-lang-en="Send email to supervisor" data-lang-ar="إرسال بريد إلكتروني للمشرف">Send email to supervisor</span>
+                             <label for="contamination-alert" class="flex items-center cursor-pointer">
+                                <div class="relative">
+                                    <input type="checkbox" id="contamination-alert" class="sr-only" checked>
+                                    <div class="block bg-gray-200 w-10 h-6 rounded-full toggle-bg"></div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-bold mb-4" data-lang-en="User Management" data-lang-ar="إدارة المستخدمين">User Management</h2>
+                <div class="flex justify-between items-center">
+                    <p class="text-gray-600" data-lang-en="You have 4 active admin accounts." data-lang-ar="لديك 4 حسابات مسؤول نشطة.">You have 4 active admin accounts.</p>
+                     <button class="text-sm font-semibold text-blue-600 hover:underline" data-lang-en="Add New User" data-lang-ar="إضافة مستخدم جديد">Add New User</button>
+                </div>
+            </div>
+
+            <div class="flex justify-end pt-4">
+                <button class="btn-primary font-bold py-3 px-8 rounded-lg shadow-md transform hover:scale-105 transition-transform" data-lang-en="Save Changes" data-lang-ar="حفظ التغييرات">Save Changes</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const langToggle = document.getElementById('lang-toggle');
+            const translatableElements = document.querySelectorAll('[data-lang-en]');
+            
+            const setLanguage = (lang) => {
+                translatableElements.forEach(el => {
+                    const text = el.getAttribute(`data-lang-${lang}`);
+                    if (text) {
+                       el.textContent = text;
+                    }
+                });
+                document.documentElement.lang = lang;
+                document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+                localStorage.setItem('language', lang);
+            };
+
+            langToggle.addEventListener('click', () => {
+                const currentLang = localStorage.getItem('language') || 'ar';
+                const newLang = currentLang === 'ar' ? 'en' : 'ar';
+                setLanguage(newLang);
+            });
+
+            const savedLang = localStorage.getItem('language') || 'ar';
+            setLanguage(savedLang);
+        });
+    </script>
+</body>
+</html>

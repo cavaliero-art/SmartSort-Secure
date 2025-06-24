@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Map - SmartSort Secure</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♻️</text></svg>">
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f0f4f8; }
+        #map { height: calc(100vh - 120px); border-radius: 0.75rem; } 
+    </style>
+</head>
+<body class="flex h-screen">
+
+    <aside class="w-64 bg-gray-800 text-white flex flex-col p-4 flex-shrink-0">
+        <div class="text-2xl font-bold mb-10">
+            ♻️ SmartSort<span class="text-green-400">Secure</span>
+            <span class="block text-xs font-normal text-gray-400" data-lang-en="Admin Portal" data-lang-ar="بوابة المسؤول">Admin Portal</span>
+        </div>
+        <nav class="flex-grow">
+            <ul>
+                <li class="mb-4"><a href="admin-dashboard.html" class="flex items-center p-3 rounded-lg hover:bg-gray-700"><svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg><span data-lang-en="Dashboard" data-lang-ar="لوحة التحكم">Dashboard</span></a></li>
+                <li class="mb-4"><a href="admin-map.html" class="flex items-center p-3 rounded-lg bg-gray-700 font-bold"><svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg><span data-lang-en="Live Map" data-lang-ar="الخريطة الحية">Live Map</span></a></li>
+                <li class="mb-4"><a href="admin-report.html" class="flex items-center p-3 rounded-lg hover:bg-gray-700"><svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H9a2 2 0 01-2-2V5z"></path></svg><span data-lang-en="Reports" data-lang-ar="التقارير">Reports</span></a></li>
+                <li class="mb-4"><a href="admin-settings.html" class="flex items-center p-3 rounded-lg hover:bg-gray-700"><svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.096 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg><span data-lang-en="Settings" data-lang-ar="الإعدادات">Settings</span></a></li>
+            </ul>
+        </nav>
+        <div class="mt-auto">
+            <a href="index.html" class="flex items-center p-3 rounded-lg hover:bg-gray-700"><svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg><span data-lang-en="Logout" data-lang-ar="تسجيل الخروج">Logout</span></a>
+        </div>
+    </aside>
+
+    <main class="flex-1 p-8 overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-800" data-lang-en="Live Bin Map" data-lang-ar="خريطة الحاويات المباشرة">Live Bin Map</h1>
+                <p class="text-gray-500" data-lang-en="Real-time operational overview of all smart bins." data-lang-ar="نظرة عامة تشغيلية في الوقت الفعلي لجميع الحاويات الذكية.">Real-time operational overview of all smart bins.</p>
+            </div>
+             <div class="flex gap-4 items-center">
+                <button class="bg-white font-semibold py-2 px-4 rounded-lg shadow-sm border border-gray-300" data-lang-en="Filter by Status ▼" data-lang-ar="تصفية حسب الحالة ▼">Filter by Status ▼</button>
+                <button class="bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-sm hover:bg-blue-700" data-lang-en="Optimize Routes" data-lang-ar="تحسين المسارات">Optimize Routes</button>
+                <button id="lang-toggle" class="font-semibold text-gray-700 hover:text-blue-600 py-2 px-4 rounded-full border">EN / AR</button>
+            </div>
+        </div>
+
+        <div id="map" class="shadow-lg"></div>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Language Logic ---
+            const langToggle = document.getElementById('lang-toggle');
+            const translatableElements = document.querySelectorAll('[data-lang-en]');
+            
+            const setLanguage = (lang) => {
+                translatableElements.forEach(el => {
+                    const text = el.getAttribute(`data-lang-${lang}`);
+                    if (text) {
+                       el.textContent = text;
+                    }
+                });
+                document.documentElement.lang = lang;
+                document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+                localStorage.setItem('language', lang);
+            };
+
+            langToggle.addEventListener('click', () => {
+                const currentLang = localStorage.getItem('language') || 'ar';
+                const newLang = currentLang === 'ar' ? 'en' : 'ar';
+                setLanguage(newLang);
+            });
+
+            const savedLang = localStorage.getItem('language') || 'ar';
+            setLanguage(savedLang);
+
+            // --- Map Logic ---
+            const map = L.map('map').setView([36.81, 10.18], 12);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>' }).addTo(map);
+            function createIcon(color, hasWarning = false) { let warningSign = hasWarning ? `<circle cx="20" cy="5" r="4" fill="orange" stroke="white" stroke-width="1.5"/>` : ''; let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${color}" width="40px" height="40px"><path d="M10 2L8 4H4C3.4 4 3 4.4 3 5V6H21V5C21 4.4 20.6 4 20 4H16L14 2H10ZM4 7V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V7H4Z"/>${warningSign}</svg>`; return L.icon({ iconUrl: 'data:image/svg+xml;base64,' + btoa(svg), iconSize: [40, 40], iconAnchor: [20, 40], popupAnchor: [0, -42] }); }
+            const emptyIcon = createIcon("#22c55e");
+            const gettingFullIcon = createIcon("#f59e0b");
+            const fullIcon = createIcon("#ef4444");
+            const contaminationIcon = createIcon("#9ca3af", true);
+            const bins = [
+                { lat: 36.8090, lng: 10.1810, name: 'Avenue Habib Bourguiba', status: '75% Full', fill: 75, contamination: 4, icon: gettingFullIcon }, { lat: 36.8008, lng: 10.1716, name: 'Medina of Tunis', status: '95% Full', fill: 95, contamination: 8, icon: fullIcon }, { lat: 36.8188, lng: 10.1659, name: 'Bab El Khadra', status: '20% Full', fill: 20, contamination: 2, icon: emptyIcon }, { lat: 36.8520, lng: 10.2030, name: 'Lac 1', status: '35% Full', fill: 35, contamination: 21, icon: contaminationIcon }, { lat: 36.8444, lng: 10.1991, name: 'Les Berges du Lac 2', status: '85% Full', fill: 85, contamination: 11, icon: gettingFullIcon }, { lat: 36.8624, lng: 10.3236, name: 'La Marsa Corniche', status: '98% Full', fill: 98, contamination: 5, icon: fullIcon }, { lat: 36.8792, lng: 10.3340, name: 'Sidi Bou Said', status: '15% Full', fill: 15, contamination: 25, icon: contaminationIcon }
+            ];
+            bins.forEach(bin => { let popupContent = `<b>${bin.name}</b><br>Fill Level: ${bin.fill}%<br>Contamination: ${bin.contamination}%`; L.marker([bin.lat, bin.lng], { icon: bin.icon }).addTo(map).bindPopup(popupContent); });
+        });
+    </script>
+</body>
+</html>
