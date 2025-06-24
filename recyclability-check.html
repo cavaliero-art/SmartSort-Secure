@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Recyclability Check - SmartSort Secure</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♻️</text></svg>">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        html[dir="rtl"] body { font-family: 'Tajawal', sans-serif; }
+        .gradient-text {
+            background: linear-gradient(90deg, #34d399, #60a5fa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .btn-primary { 
+            background: linear-gradient(90deg, #10b981 0%, #22c55e 100%); 
+            transition: all 0.3s ease; 
+        }
+        .btn-primary:hover:not(:disabled) { 
+            box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4); 
+            transform: translateY(-2px); 
+        }
+        .btn-primary:disabled {
+            background: #4b5563;
+            cursor: not-allowed;
+        }
+        .upload-area {
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .upload-area.dragover {
+            background-color: #3b82f620;
+            border-color: #3b82f6;
+        }
+        .result-card {
+            transition: all 0.5s ease-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .result-card.show {
+            max-height: 500px;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-200">
+    <header class="bg-white/80 dark:bg-slate-900/50 backdrop-blur-lg sticky top-0 z-50 shadow-sm border-b border-slate-200 dark:border-slate-800">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-teal-600 dark:text-teal-400">
+                ♻️ SmartSort<span class="text-green-600 dark:text-green-400">Secure</span>
+            </a>
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="font-medium text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center gap-2">
+                    <span class="material-symbols-outlined">arrow_back</span>
+                    <span>Back to Home</span>
+                </a>
+                <button id="theme-toggle" class="p-2 rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+                    <span class="material-symbols-outlined" id="theme-icon">light_mode</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="py-16 md:py-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto">
+                <h1 class="text-4xl md:text-5xl font-black gradient-text">Is It Recyclable?</h1>
+                <p class="mt-4 text-lg text-slate-600 dark:text-slate-300">Upload a photo of any item, and our AI will tell you if it's generally recyclable in Tunisia and why. No more guessing.</p>
+            </div>
+            
+            <div class="mt-12 bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-3xl shadow-2xl p-6 md:p-8 max-w-2xl mx-auto">
+                
+                <div id="image-upload-area" class="upload-area relative block w-full rounded-2xl border-2 border-dashed border-slate-300 dark:border-slate-600 p-8 text-center cursor-pointer hover:border-blue-500 dark:hover:border-blue-400 hover:bg-slate-50 dark:hover:bg-slate-800">
+                    <input type="file" id="image-upload-input" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" accept="image/*">
+                    <div class="flex flex-col items-center justify-center">
+                        <span class="material-symbols-outlined text-6xl text-slate-400 dark:text-slate-500">upload_file</span>
+                        <span class="mt-2 block font-semibold">Click to upload or drag & drop</span>
+                        <span class="mt-1 block text-sm text-slate-500">PNG, JPG, or WEBP</span>
+                    </div>
+                </div>
+
+                <div id="image-preview-container" class="hidden mt-6 text-center">
+                    <p class="font-semibold mb-2">Your Image:</p>
+                    <img id="image-preview" src="" alt="Image preview" class="max-h-80 w-auto mx-auto rounded-lg shadow-md">
+                </div>
+
+                <div id="result-card" class="result-card mt-6 p-6 rounded-2xl">
+                    <p class="text-sm uppercase font-bold tracking-wider" id="result-status-text"></p>
+                    <p class="text-4xl font-extrabold my-2" id="result-main-text"></p>
+                    <p class="text-base" id="result-sub-text"></p>
+                </div>
+
+                <div class="mt-6 flex flex-col items-center">
+                    <button id="analyze-btn" class="w-full sm:w-auto text-white btn-primary font-bold py-3 px-12 rounded-full shadow-lg text-lg" disabled>
+                        Analyze Image
+                    </button>
+                    <div id="loading-spinner" class="hidden mt-4 flex items-center gap-2 text-slate-500">
+                        <svg class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" class="opacity-75" fill="currentColor"></path></svg>
+                        <span>Analyzing... please wait.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- Get all interactive elements ---
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const uploadArea = document.getElementById('image-upload-area');
+        const uploadInput = document.getElementById('image-upload-input');
+        const previewContainer = document.getElementById('image-preview-container');
+        const previewImage = document.getElementById('image-preview');
+        const analyzeBtn = document.getElementById('analyze-btn');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const resultCard = document.getElementById('result-card');
+        const resultStatusText = document.getElementById('result-status-text');
+        const resultMainText = document.getElementById('result-main-text');
+        const resultSubText = document.getElementById('result-sub-text');
+
+        let uploadedImageData = null;
+
+        // --- Dark Mode Logic ---
+        const applyTheme = (isDark) => {
+            document.documentElement.classList.toggle('dark', isDark);
+            themeIcon.textContent = isDark ? 'dark_mode' : 'light_mode';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        };
+
+        themeToggle.addEventListener('click', () => {
+            applyTheme(!document.documentElement.classList.contains('dark'));
+        });
+
+        // --- Image Upload Logic ---
+        uploadArea.addEventListener('click', () => uploadInput.click());
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        uploadArea.addEventListener('dragenter', () => uploadArea.classList.add('dragover'));
+        uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+        uploadArea.addEventListener('drop', (e) => {
+            uploadArea.classList.remove('dragover');
+            handleFiles(e.dataTransfer.files);
+        });
+        uploadInput.addEventListener('change', (e) => handleFiles(e.target.files));
+
+        function handleFiles(files) {
+            const file = files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    uploadedImageData = e.target.result.split(',')[1];
+                    previewImage.src = e.target.result;
+                    previewContainer.classList.remove('hidden');
+                    analyzeBtn.disabled = false;
+                    hideResultCard();
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // --- Analysis & Result Logic ---
+        const setLoading = (isLoading) => {
+            loadingSpinner.classList.toggle('hidden', !isLoading);
+            analyzeBtn.disabled = isLoading;
+            analyzeBtn.textContent = isLoading ? 'Analyzing...' : 'Analyze Image';
+        };
+
+        const showResultCard = (status, mainText, subText, isRecyclable) => {
+            resultCard.classList.remove('bg-green-100', 'dark:bg-green-900/50', 'border-green-300', 'dark:border-green-600', 'text-green-800', 'dark:text-green-200');
+            resultCard.classList.remove('bg-red-100', 'dark:bg-red-900/50', 'border-red-300', 'dark:border-red-600', 'text-red-800', 'dark:text-red-200');
+
+            const resultColorClass = isRecyclable ? 'green' : 'red';
+            resultCard.classList.add(`bg-${resultColorClass}-100`, `dark:bg-${resultColorClass}-900/50`, `border-${resultColorClass}-300`, `dark:border-${resultColorClass}-600`, `text-${resultColorClass}-800`, `dark:text-${resultColorClass}-200`);
+            
+            resultStatusText.textContent = status;
+            resultMainText.textContent = mainText;
+            resultSubText.textContent = subText;
+            resultCard.classList.add('show');
+        };
+
+        const hideResultCard = () => resultCard.classList.remove('show');
+
+        const callGeminiAPI = async (prompt, imageData) => {
+            const payload = { 
+                contents: [{ 
+                    parts: [
+                        { text: prompt }, 
+                        { inlineData: { mimeType: "image/jpeg", data: imageData } }
+                    ] 
+                }] 
+            };
+            // FIX: Inserted your API key here.
+            const apiKey = "AIzaSyAv8LVPGMCLm6wk9ne6AWJI3tF6_C2U54s"; 
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
+            
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("API Error:", errorData);
+                throw new Error(errorData.error?.message || `API error: ${response.status}`);
+            }
+            
+            const result = await response.json();
+            if (result.candidates && result.candidates[0]?.content?.parts[0]?.text) {
+                return result.candidates[0].content.parts[0].text.trim();
+            }
+            throw new Error("Invalid AI response format.");
+        };
+
+        analyzeBtn.addEventListener('click', async () => {
+            if (!uploadedImageData) return;
+            setLoading(true);
+            hideResultCard();
+            try {
+                const prompt = `Is the main item in this image generally recyclable in Tunisia? Respond with only 'Recyclable' or 'Not Recyclable', followed by a colon and a brief explanation. For example: 'Recyclable: Most plastic bottles are widely recycled.' or 'Not Recyclable: Food waste must be composted.'`;
+                const resultText = await callGeminiAPI(prompt, uploadedImageData);
+
+                const [status, ...reasonParts] = resultText.split(':');
+                const reason = reasonParts.join(':').trim();
+                const isRecyclable = status.toLowerCase().includes('recyclable');
+                
+                showResultCard(
+                    "AI Analysis Complete",
+                    isRecyclable ? "RECYCLABLE" : "NOT RECYCLABLE",
+                    reason,
+                    isRecyclable
+                );
+
+            } catch (error) {
+                console.error("AI analysis failed:", error);
+                showResultCard("Analysis Failed", "ERROR", error.message, false);
+            } finally {
+                setLoading(false);
+            }
+        });
+        
+        // --- Initialize Page ---
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        applyTheme(localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : prefersDark);
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find a Smart Bin - SmartSort Secure</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♻️</text></svg>">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        html[dir="rtl"] body { font-family: 'Tajawal', sans-serif; }
+        .btn-gradient { background: linear-gradient(90deg, #26a69a 0%, #4caf50 100%); }
+        .btn-gradient:hover { background: linear-gradient(90deg, #00897b 0%, #43a047 100%); }
+        #map { 
+            height: 600px; 
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .dark #map {
+             border: 1px solid #374151; /* Add a border in dark mode */
+        }
+        .leaflet-popup-content-wrapper { border-radius: 0.75rem; }
+        .dark .leaflet-popup-content-wrapper { background: #1f2937; color: #e5e7eb; }
+        .dark .leaflet-popup-tip { background: #1f2937; }
+        .dark .leaflet-control-attribution { color: #9ca3af !important; }
+
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-200">
+
+    <header class="bg-white/80 backdrop-blur-lg fixed top-0 left-0 right-0 z-50 shadow-sm dark:bg-gray-900/80 dark:border-b dark:border-gray-700">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-teal-600 dark:text-teal-400">
+                ♻️ SmartSort<span class="text-green-600 dark:text-green-400">Secure</span>
+            </a>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="index.html#how-it-works" class="text-gray-600 hover:text-teal-600 dark:text-gray-300 dark:hover:text-teal-400" data-lang-key="how_it_works">How It Works</a>
+                <a href="reward.html" class="text-gray-600 hover:text-teal-600 dark:text-gray-300 dark:hover:text-teal-400" data-lang-key="rewards">Rewards</a>
+                <a href="index.html#impact" class="text-gray-600 hover:text-teal-600 dark:text-gray-300 dark:hover:text-teal-400" data-lang-key="our_impact">Our Impact</a>
+                <a href="find.html" class="text-white btn-gradient font-semibold py-2 px-4 rounded-full shadow-lg transform hover:scale-105 transition-transform" data-lang-key="find_a_bin">Find a Smart Bin</a>
+                <button id="lang-toggle" class="font-semibold text-gray-700 hover:text-blue-600 py-2 px-4 rounded-full border dark:text-gray-300 dark:hover:text-blue-400 dark:border-gray-600">EN / AR</button>
+                <button id="theme-toggle" class="p-2 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-300 dark:border-gray-600">
+                   <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                   <svg id="theme-toggle-light-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zM5 3a1 1 0 000 2h1a1 1 0 100-2H5zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.464 14.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1z"></path></svg>
+                </button>
+            </div>
+            <button class="md:hidden text-gray-700 dark:text-gray-300"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg></button>
+        </nav>
+    </header>
+
+    <main class="pt-24 md:pt-32">
+        <section class="py-10">
+            <div class="container mx-auto px-6">
+                <div class="text-center">
+                    <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800 dark:text-white" data-lang-key="page_title">Find a Smart Bin Near You</h1>
+                    <p class="text-gray-500 dark:text-gray-400 mt-4 text-lg max-w-2xl mx-auto" data-lang-key="page_subtitle">Use our interactive map to locate the closest SmartSort bin. Check its status before you go!</p>
+                </div>
+                <div class="mt-12">
+                    <div class="mb-6 bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <label class="font-semibold" data-lang-key="filter_label">Show bins that are:</label>
+                        <div class="flex gap-4">
+                            <button class="bg-green-100 text-green-800 font-semibold py-2 px-4 rounded-full border-2 border-green-500" data-lang-key="filter_available">Available</button>
+                            <button class="bg-yellow-100 text-yellow-800 font-semibold py-2 px-4 rounded-full border-2 border-transparent hover:border-yellow-500 dark:bg-yellow-900/50 dark:text-yellow-300 dark:hover:border-yellow-400" data-lang-key="filter_getting_full">Getting Full</button>
+                            <button class="bg-red-100 text-red-800 font-semibold py-2 px-4 rounded-full border-2 border-transparent hover:border-red-500 dark:bg-red-900/50 dark:text-red-300 dark:hover:border-red-400" data-lang-key="filter_full">Full</button>
+                        </div>
+                    </div>
+                    <div id="map"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="bg-gray-800 text-white py-10 mt-20">
+        <div class="container mx-auto px-6 text-center">
+            <a href="index.html" class="text-2xl font-bold">♻️ SmartSort<span class="text-green-400">Secure</span></a>
+            <p class="mt-4 text-gray-400" data-lang-key="footer_subtitle">Making sustainability simple and secure. A project for a cleaner Tunisia.</p>
+            <div class="mt-6"><a href="#" class="text-gray-400 hover:text-white mx-3" data-lang-key="contact">Contact</a><a href="#" class="text-gray-400 hover:text-white mx-3" data-lang-key="privacy_policy">Privacy Policy</a></div>
+            <p class="mt-6 text-sm text-gray-500">&copy; 2025 SmartSort Secure. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // --- TEXT CONTENT (ENGLISH & ARABIC) ---
+        const staticText = {
+            how_it_works: { en: 'How It Works', ar: 'كيف تعمل' },
+            rewards: { en: 'Rewards', ar: 'المكافآت' },
+            our_impact: { en: 'Our Impact', ar: 'تأثيرنا' },
+            find_a_bin: { en: 'Find a Smart Bin', ar: 'ابحث عن حاوية' },
+            page_title: { en: 'Find a Smart Bin Near You', ar: 'ابحث عن حاوية ذكية بالقرب منك' },
+            page_subtitle: { en: 'Use our interactive map to locate the closest SmartSort bin. Check its status before you go!', ar: 'استخدم خريطتنا التفاعلية لتحديد موقع أقرب حاوية SmartSort. تحقق من حالتها قبل الذهاب!' },
+            filter_label: { en: 'Show bins that are:', ar: 'إظهار الحاويات:' },
+            filter_available: { en: 'Available', ar: 'متوفرة' },
+            filter_getting_full: { en: 'Getting Full', ar: 'قيد الامتلاء' },
+            filter_full: { en: 'Full', ar: 'ممتلئة' },
+            footer_subtitle: { en: 'Making sustainability simple and secure. A project for a cleaner Tunisia.', ar: 'نجعل الاستدامة بسيطة وآمنة. مشروع لتونس أنظف.' },
+            contact: { en: 'Contact', ar: 'اتصل بنا' },
+            privacy_policy: { en: 'Privacy Policy', ar: 'سياسة الخصوصية' },
+            popup_status: { en: 'Status', ar: 'الحالة' },
+            user_location: { en: 'You are here', ar: 'أنت هنا' }
+        };
+        const binStatusText = {
+            Available: { en: 'Available', ar: 'متوفرة' },
+            'Getting Full': { en: 'Getting Full', ar: 'قيد الامتلاء' },
+            Full: { en: 'Full', ar: 'ممتلئة' }
+        };
+
+        // --- ELEMENTS & STATE ---
+        const elements = {
+            langToggle: document.getElementById('lang-toggle'),
+            themeToggleBtn: document.getElementById('theme-toggle'),
+            darkIcon: document.getElementById('theme-toggle-dark-icon'),
+            lightIcon: document.getElementById('theme-toggle-light-icon'),
+            translatable: document.querySelectorAll('[data-lang-key]')
+        };
+        let currentLang = localStorage.getItem('language') || 'en';
+        let currentTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        let mapTileLayer;
+
+        // --- MAP INITIALIZATION ---
+        const map = L.map('map').setView([36.8065, 10.1815], 13);
+        const lightTiles = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+        const darkTiles = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+
+        // --- ICONS ---
+        const createIcon = (color) => L.icon({
+            iconUrl: 'data:image/svg+xml;base64,' + btoa(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${color}"><path d="M10 2L8 4H4C3.4 4 3 4.4 3 5V6H21V5C21 4.4 20.6 4 20 4H16L14 2H10ZM4 7V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V7H4Z"/></svg>`),
+            iconSize: [38, 38], iconAnchor: [19, 38], popupAnchor: [0, -40]
+        });
+        const icons = { greenIcon: createIcon('#22c55e'), yellowIcon: createIcon('#facc15'), redIcon: createIcon('#ef4444') };
+        
+        // --- BIN DATA & MARKERS ---
+        const bins = [
+            { lat: 36.8090, lng: 10.1810, name: 'Avenue Habib Bourguiba', status: 'Available', icon: icons.greenIcon },
+            { lat: 36.8008, lng: 10.1716, name: 'Medina of Tunis', status: 'Full', icon: icons.redIcon },
+            { lat: 36.8188, lng: 10.1659, name: 'Bab El Khadra', status: 'Getting Full', icon: icons.yellowIcon },
+            { lat: 36.8520, lng: 10.2030, name: 'Lac 1', status: 'Available', icon: icons.greenIcon }
+        ];
+        let markers = [];
+        
+        function drawMarkers() {
+            markers.forEach(marker => map.removeLayer(marker));
+            markers = [];
+            bins.forEach(bin => {
+                const marker = L.marker([bin.lat, bin.lng], { icon: bin.icon })
+                    .addTo(map)
+                    .bindPopup(`<b>${bin.name}</b><br>${staticText.popup_status[currentLang]}: ${binStatusText[bin.status][currentLang]}`);
+                markers.push(marker);
+            });
+        }
+
+        // --- THEME & LANGUAGE FUNCTIONS ---
+        const applyTheme = (theme) => {
+            document.documentElement.classList.toggle('dark', theme === 'dark');
+            elements.darkIcon.classList.toggle('hidden', theme !== 'dark');
+            elements.lightIcon.classList.toggle('hidden', theme === 'dark');
+            
+            if (mapTileLayer) map.removeLayer(mapTileLayer);
+            mapTileLayer = L.tileLayer(theme === 'dark' ? darkTiles : lightTiles, {
+                maxZoom: 19, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+            localStorage.setItem('theme', theme);
+        };
+        
+        const setLanguage = (lang) => {
+            currentLang = lang;
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+            elements.translatable.forEach(el => {
+                const key = el.dataset.langKey;
+                if (staticText[key]) el.textContent = staticText[key][lang];
+            });
+            drawMarkers(); // Redraw markers to update popup text
+            localStorage.setItem('language', lang);
+        };
+
+        // --- EVENT LISTENERS ---
+        elements.langToggle.addEventListener('click', () => setLanguage(currentLang === 'en' ? 'ar' : 'en'));
+        elements.themeToggleBtn.addEventListener('click', () => {
+            currentTheme = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+            applyTheme(currentTheme);
+        });
+
+        // --- INITIAL LOAD ---
+        applyTheme(currentTheme);
+        setLanguage(currentLang);
+    });
+    </script>
+</body>
+</html>

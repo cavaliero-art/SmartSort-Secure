@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ Our Vision - SmartSort Secure ✨</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♻️</text></svg>">
+    <style>
+        html { scroll-behavior: smooth; }
+        body { 
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .hero-vision {
+            background: linear-gradient(110deg, #059669, #1e40af, #059669);
+            background-size: 200% 200%;
+            position: relative;
+            overflow: hidden;
+            animation: gradient-animation 15s ease infinite;
+        }
+        
+        /* New Animated Gradient Keyframes */
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 20s infinite linear;
+        }
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0) rotate(0deg); }
+            50% { transform: translateY(-150px) translateX(40px) rotate(180deg); }
+            100% { transform: translateY(0) translateX(0) rotate(360deg); }
+        }
+        .section-card {
+            background-color: white;
+            border-radius: 1.5rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            /* --- Animation properties --- */
+            transition: transform 0.4s ease, box-shadow 0.4s ease, opacity 0.6s ease, transform 0.6s ease;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        /* --- Animation class to be added by JavaScript --- */
+        .section-card.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .section-card:hover {
+            transform: translateY(-1rem) !important; /* Use !important to override scroll animation */
+            box-shadow: 0 25px 50px -12px rgba(30, 64, 175, 0.25);
+        }
+    </style>
+</head>
+<body class="bg-slate-50">
+
+    <header class="bg-white/80 backdrop-blur-xl sticky top-0 z-50 shadow-sm border-b border-slate-200">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-teal-600">
+                ♻️ SmartSort<span class="text-green-600">Secure</span>
+            </a>
+            <div class="flex items-center space-x-4">
+                 <a href="index.html" class="font-semibold text-blue-600 py-2 px-5 rounded-full border-2 border-blue-600 hover:bg-blue-600 hover:text-white transition-colors flex items-center gap-2 transform active:scale-95" data-lang-en="Try the Demo" data-lang-ar="جرب الديمو">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" /></svg>
+                    <span id="demo-btn-text">Try the Demo</span>
+                </a>
+                <button id="lang-toggle" class="font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 py-2 px-4 rounded-full border border-slate-300 flex items-center gap-2 transform active:scale-95">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a6 6 0 00-6 6v3.586l-1.707 1.707A1 1 0 003 15v4a1 1 0 001 1h12a1 1 0 001-1v-4a1 1 0 00-.293-.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" /></svg>
+                    <span>EN / AR</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero-vision text-white py-28">
+            <div class="particle" style="width: 20px; height: 20px; top: 10%; left: 5%; animation-duration: 15s;"></div>
+            <div class="particle" style="width: 50px; height: 50px; top: 20%; left: 80%; animation-duration: 25s; animation-delay: 3s;"></div>
+            <div class="particle" style="width: 30px; height: 30px; top: 70%; left: 20%; animation-duration: 18s;"></div>
+            <div class="particle" style="width: 40px; height: 40px; top: 80%; left: 90%; animation-duration: 22s; animation-delay: 5s;"></div>
+            
+            <div class="container mx-auto px-6 text-center relative z-10">
+                <h1 class="text-5xl md:text-7xl font-black uppercase tracking-wide" style="text-shadow: 2px 2px 10px rgba(0,0,0,0.3);" data-lang-en="From Waste to Value" data-lang-ar="من النفايات إلى القيمة">From Waste to Value</h1>
+                <p class="mt-4 text-xl text-blue-100" data-lang-en="A new vision for a cleaner, smarter Tunisia." data-lang-ar="رؤية جديدة لتونس أنظف وأذكى.">A new vision for a cleaner, smarter Tunisia.</p>
+            </div>
+        </section>
+
+        <div class="container mx-auto px-6 -mt-20 relative z-10 space-y-20 pb-24">
+
+            <div class="section-card lg:flex items-center overflow-hidden">
+                <div class="lg:w-1/2 p-12 lg:p-20">
+                    <span class="font-bold text-sm uppercase tracking-widest text-red-500" data-lang-en="The Problem 😟" data-lang-ar="المشكلة 😟">The Problem 😟</span>
+                    <h2 class="text-4xl font-extrabold text-slate-800 mt-2" data-lang-en="The Challenge We Face" data-lang-ar="التحدي اللي نعيشو فيه">The Challenge We Face</h2>
+                    <p class="mt-6 text-slate-700 text-lg leading-relaxed" data-lang-en="In many parts of Tunisia, waste management is a critical environmental challenge. Mixed waste, overflowing bins, and street litter are common sights. This not only harms our beautiful landscapes but also represents a missed economic opportunity. We saw this problem and thought: technology can be the solution." data-lang-ar="في برشا بلايص في تونس، التصرف في النفايات ولى مشكل كبير يهدد البيئة. الكل شي يترمى كيف كيف: نفايات مخلطة، و الزبلة تفيض من البوبالات و توسّخ البلاد. هذا ما يضرش برك المناظر الطبيعية الزينة متاعنا، أما زادة يضيع فرص اقتصادية كبيرة. شفنا المشكلة و قلنا: علاش لا، التكنولوجيا تنجم تعاون و تلقى حل.">
+                       In many parts of Tunisia, waste management is a critical environmental challenge...
+                    </p>
+                </div>
+                <div class="lg:w-1/2 h-80 lg:h-[28rem]">
+                    <img src="IMG_20250610_104536_973.jpg" alt="Overflowing trash bins on a street in Tunisia" class="w-full h-full object-cover">
+                </div>
+            </div>
+
+            <div class="section-card lg:flex items-center overflow-hidden">
+                 <div class="lg:w-1/2 p-12 lg:p-20 order-last">
+                    <span class="font-bold text-sm uppercase tracking-widest text-blue-500" data-lang-en="The Solution 💡" data-lang-ar="الحل 💡">The Solution 💡</span>
+                    <h2 class="text-4xl font-extrabold text-slate-800 mt-2" data-lang-en="Our Solution: The SmartSort Bin" data-lang-ar="الحل متاعنا: SmartSort Bin">Our Solution: The SmartSort Bin</h2>
+                    <p class="mt-6 text-slate-700 text-lg leading-relaxed" data-lang-en="We built an end-to-end solution. Our physical prototype, powered by a recycled laptop, uses AI to identify waste in real-time, ensuring correct sorting at the source. Every data point is immutably and transparently logged on the Hedera network for ultimate trust and traceability." data-lang-ar="عملنا حل كامل من الأول للآخر. البروتوتيب الفيزيكي متاعنا، اللي مخّو مصنوع من أوردي نڨينا لاب توب قديم، يستعمل الذكاء الاصطناعي باش يتعرّف على النفايات في الوقت الحقيقي. هكا يضمن فرز صحيح من المصدر. وكل معلومة، مهما كانت صغيرة، تتسجّل بطريقة مؤمّنة و دائمة على شبكة Hedera، باش تكون موثوقة وتنجم تتراجع في أي وقت.">
+                        We built an end-to-end solution...
+                    </p>
+
+                    <a href="design.html"
+                       class="mt-8 inline-block font-semibold text-blue-600 py-3 px-6 rounded-full border-2 border-blue-600 hover:bg-blue-600 hover:text-white transition-colors transform active:scale-95"
+                       data-lang-en="View Technical Design"
+                       data-lang-ar="عرض التصميم التقني">
+                       View Technical Design
+                    </a>
+                    </div>
+                <div class="lg:w-1/2 h-80 lg:h-[28rem]">
+                     <img src="photo_2025-06-13_18-57-11.jpg" alt="A physical prototype of the smart bin, powered by a recycled laptop and a webcam." class="w-full h-full object-cover">
+                </div>
+            </div>
+
+            <div class="section-card lg:flex items-center overflow-hidden">
+                 <div class="lg:w-1/2 p-12 lg:p-20">
+                    <span class="font-bold text-sm uppercase tracking-widest text-green-500" data-lang-en="The Impact 🚀" data-lang-ar="التأثير 🚀">The Impact 🚀</span>
+                    <h2 class="text-4xl font-extrabold text-slate-800 mt-2" data-lang-en="A Game-Changer for Tunisia" data-lang-ar="تبديلة قواعد اللعبة لتونس">A Game-Changer for Tunisia</h2>
+                    <p class="mt-6 text-slate-700 text-lg leading-relaxed" data-lang-en="This isn't just a bin; it's an economic engine. The trusted data we generate creates a new market for verifiable Carbon Credits for Tunisian corporations, provides real-time market intelligence for recyclers, and empowers citizens through a gamified rewards program. We're turning waste from a burden into a resource and paving the way for a true circular economy." data-lang-ar="هاذا موش كان بوبال. هاذا محرّك اقتصادي. الداتا الموثوقة اللي نجمعو فيها تخلق سوق جديدة لـ كربون كريدي (Carbon Credits) الموثوقين، تنجم تستفيد منهم الشركات التونسية. تعطي زادا معلومات سوقية في الوقت الحقيقي للمركات. وتمدّ المواطن بقوة من خلال برنامج نقاط وتشجيعات. إحنا قاعدين نحوّلو النفايات من مشكل لثروة حقيقية، ونعبّدو الطريق لاقتصاد دائري فعلي.">
+                        This isn't just a bin; it's an economic engine...
+                    </p>
+                </div>
+                <div class="lg:w-1/2 h-80 lg:h-[28rem]">
+                    <img src="Whisk_a47568429c.jpg" alt="A futuristic city with advanced AI-powered recycling systems." class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Language Toggle Script
+        document.addEventListener('DOMContentLoaded', function() {
+            const langToggle = document.getElementById('lang-toggle');
+            const translatableElements = document.querySelectorAll('[data-lang-en]');
+            
+            const setLanguage = (lang) => {
+                translatableElements.forEach(el => {
+                    const text = el.getAttribute(`data-lang-${lang}`);
+                    // Check if the element is our new button and handle it specifically if needed,
+                    // but querySelectorAll should handle it just fine.
+                    if (text) {
+                       // For simple elements, textContent is safer than innerHTML
+                       // But since some elements might have children (like the header button), we check.
+                       if(el.children.length === 0) {
+                           el.textContent = text;
+                       } else {
+                           // If it has children, assume the text is the main content and replace it
+                           // This is a simplification; a more robust solution would use a specific span
+                           // for text nodes. The current implementation relies on overwriting.
+                           el.innerHTML = text;
+                       }
+                    }
+                });
+                document.documentElement.lang = lang;
+                document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+                localStorage.setItem('language', lang);
+            };
+
+            langToggle.addEventListener('click', () => {
+                const currentLang = localStorage.getItem('language') || 'ar';
+                const newLang = currentLang === 'ar' ? 'en' : 'ar';
+                setLanguage(newLang);
+            });
+
+            const savedLang = localStorage.getItem('language') || 'ar';
+            setLanguage(savedLang);
+        });
+
+        // Scroll Animation Script
+        document.addEventListener('DOMContentLoaded', function() {
+            const animatedCards = document.querySelectorAll('.section-card');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, {
+                threshold: 0.1 // Trigger when 10% of the element is visible
+            });
+
+            animatedCards.forEach(card => {
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>

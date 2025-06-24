@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-translate-key="page_title">SmartSort Secure - Intelligent Recycling for a Cleaner Tunisia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♻️</text></svg>">
+    <script>
+        tailwind.config = { darkMode: 'class' }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #f8fafc;
+            color: #1e293b;
+            transition-property: background-color, color;
+            transition-duration: 300ms;
+        }
+        /* Use Tajawal font when in Arabic */
+        html[dir="rtl"] body {
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        .hero-gradient { background: linear-gradient(135deg, #f0fdfa 0%, #ffffff 50%, #f0fdf4 100%); }
+        .dark .hero-gradient { background: linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #1e293b 100%); }
+        
+        .btn-gradient { background: linear-gradient(90deg, #0d9488 0%, #4ade80 100%); transition: all 0.3s ease; }
+        .btn-gradient:hover { box-shadow: 0 10px 20px -5px rgba(13, 148, 136, 0.4); transform: translateY(-3px); }
+        .btn-gradient:disabled { background: #9ca3af; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .animated-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .animated-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        #toast-notification {
+            position: fixed;
+            bottom: -100px; 
+            left: 50%;
+            transform: translateX(-50%);
+            transition: bottom 0.5s ease-in-out;
+            z-index: 100;
+        }
+
+        #toast-notification.show {
+            bottom: 20px;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-200">
+
+    <header class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg fixed top-0 left-0 right-0 z-50 shadow-sm border-b border-slate-200 dark:border-slate-700">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-teal-600 dark:text-teal-400">
+                ♻️ SmartSort<span class="text-green-600 dark:text-green-400">Secure</span>
+            </a>
+            <div class="hidden md:flex space-x-4 items-center">
+                <a href="#how-it-works" class="font-medium text-slate-600 hover:text-teal-600 dark:text-slate-300 dark:hover:text-teal-400 transition-colors" data-translate-key="nav_how_it_works">How It Works</a>
+                <a href="presentation.html" class="font-medium text-slate-600 hover:text-teal-600 dark:text-slate-300 dark:hover:text-teal-400 transition-colors" data-translate-key="nav_our_vision">Our Vision</a>
+                <a href="reward.html" class="font-medium text-slate-600 hover:text-teal-600 dark:text-slate-300 dark:hover:text-teal-400 transition-colors" data-translate-key="nav_rewards">Rewards</a>
+                <a href="find.html" class="text-white bg-blue-600 hover:bg-blue-700 font-semibold py-2 px-5 rounded-full shadow-lg transform active:scale-95 transition-transform" data-translate-key="nav_find_bin">Find a Smart Bin</a>
+                
+                <button id="lang-switcher" title="Switch Language" class="flex items-center justify-center space-x-2 py-2 px-3 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 border border-slate-300 dark:border-slate-600 transform active:scale-95 transition-transform">
+                    <svg class="h-5 w-5 text-slate-700 dark:text-slate-200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                    </svg>
+                    <span class="font-semibold text-sm text-slate-700 dark:text-slate-200">EN / AR</span>
+                </button>
+
+                <button id="theme-toggle" class="p-2 rounded-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 border border-slate-300 dark:border-slate-600 transform active:scale-95">
+                   <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5 text-slate-700 dark:text-slate-200" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                   <svg id="theme-toggle-light-icon" class="hidden h-5 w-5 text-slate-700 dark:text-slate-200" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.121-3.536a1 1 0 011.414 0l.707.707a1 1 0 01-1.414 1.414l-.707-.707a1 1 0 010-1.414zM4 10a1 1 0 01-1-1H2a1 1 0 110-2h1a1 1 0 011 1zm2.121 3.536a1 1 0 010 1.414l.707.707a1 1 0 01-1.414 1.414l-.707-.707a1 1 0 011.414-1.414zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-6.464-4.95l.707-.707a1 1 0 00-1.414-1.414l-.707.707a1 1 0 101.414 1.414z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+            <button class="md:hidden text-slate-700 dark:text-slate-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+            </button>
+        </nav>
+    </header>
+
+    <main class="pt-20">
+        <section class="hero-gradient text-center py-20 md:py-32">
+            <div class="container mx-auto px-6">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-slate-800 dark:text-slate-100 leading-tight" data-translate-key="hero_title">
+                    Recycling Made Simple.<br>
+                    <span class="text-teal-600 dark:text-teal-400" data-translate-key="hero_subtitle">Powered by AI. 🤖</span>
+                </h1>
+                <p class="mt-6 text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto" data-translate-key="hero_description">
+                    Never guess where to toss your trash again. Use your camera to identify waste, find the right bin, and help make Tunisia cleaner, one piece at a time.
+                </p>
+                <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="#assistant" class="text-white btn-gradient text-lg font-bold py-4 px-8 rounded-full shadow-xl inline-block w-full sm:w-auto" data-translate-key="hero_button_try">
+                        Try the Recycling Assistant
+                    </a>
+                    <a href="batch.html" class="bg-transparent border-2 border-slate-400 dark:border-slate-300 text-slate-700 dark:text-slate-200 text-lg font-bold py-4 px-8 rounded-full shadow-lg inline-block w-full sm:w-auto hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors transform active:scale-95" data-translate-key="hero_button_batch">
+                        Start a Home Batch
+                    </a>
+                </div>
+                <div class="mt-6 text-center">
+                  <a href="recyclability-check.html" class="text-white bg-blue-600 hover:bg-blue-700 font-semibold py-3 px-6 rounded-full shadow-lg inline-flex items-center gap-2 transform active:scale-95 transition-transform">
+                    <span class="text-xl">🔬</span>
+                    <span data-translate-key="hero_button_ai_check">Is It Recyclable? AI Check</span>
+                  </a>
+                </div>
+                 </div>
+        </section>
+
+        <section id="how-it-works" class="py-20 bg-white dark:bg-slate-800 animated-section">
+             <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl font-bold mb-2" data-translate-key="how_title">As Easy as 1-2-3 👇</h2>
+                <p class="text-slate-500 dark:text-slate-400 mb-12" data-translate-key="how_subtitle">Three simple steps to perfect recycling.</p>
+                <div class="grid md:grid-cols-3 gap-10">
+                    <div class="text-center p-6">
+                        <div class="number-circle border-4 border-white dark:border-slate-800 text-teal-600 rounded-full h-24 w-24 flex items-center justify-center mx-auto text-4xl font-bold shadow-lg">1</div>
+                        <h3 class="text-xl font-bold mt-6 mb-2" data-translate-key="how_step1_title">Scan Your Item</h3>
+                        <p class="text-slate-600 dark:text-slate-300" data-translate-key="how_step1_desc">Use your camera to identify any piece of waste.</p>
+                    </div>
+                    <div class="text-center p-6">
+                        <div class="number-circle border-4 border-white dark:border-slate-800 text-green-600 rounded-full h-24 w-24 flex items-center justify-center mx-auto text-4xl font-bold shadow-lg">2</div>
+                        <h3 class="text-xl font-bold mt-6 mb-2" data-translate-key="how_step2_title">Get Instant Instructions</h3>
+                        <p class="text-slate-600 dark:text-slate-300" data-translate-key="how_step2_desc">Our AI tells you exactly where to toss it, right on your screen.</p>
+                    </div>
+                    <div class="text-center p-6">
+                        <div class="number-circle border-4 border-white dark:border-slate-800 text-blue-600 rounded-full h-24 w-24 flex items-center justify-center mx-auto text-4xl font-bold shadow-lg">3</div>
+                        <h3 class="text-xl font-bold mt-6 mb-2" data-translate-key="how_step3_title">Recycle with Confidence</h3>
+                        <p class="text-slate-600 dark:text-slate-300" data-translate-key="how_step3_desc">Toss your item the right way and help build a more sustainable future.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="assistant" class="py-20 bg-slate-50 dark:bg-slate-900 animated-section">
+            <div class="container mx-auto px-6 bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8 md:p-12 flex flex-col md:flex-row items-center gap-8">
+                <div class="md:w-1/2 text-center md:text-left">
+                    <h2 class="text-3xl font-bold text-slate-800 dark:text-slate-100" data-translate-key="assistant_title">Ready to Sort? 📸</h2>
+                    <p class="mt-4 text-slate-600 dark:text-slate-300 text-lg" data-translate-key="assistant_desc">Press the button to use your camera and let our AI assistant guide you. Each correct item you log earns you 10 points!</p>
+                    <button id="start-scan-btn" class="mt-6 text-white btn-gradient text-lg font-bold py-3 px-6 rounded-full shadow-lg transform active:scale-95 transition-transform"></button>
+                </div>
+                <div class="md:w-1/2 mt-8 md:mt-0 flex flex-col items-center">
+                    <div class="w-full max-w-sm h-64 bg-slate-900 dark:bg-black rounded-lg flex items-center justify-center text-white border-4 border-slate-300 dark:border-slate-600 overflow-hidden relative" id="camera-container">
+                        <div id="camera-placeholder" class="text-center p-4">
+                            <p class="text-2xl mb-2">📷</p>
+                            <p data-translate-key="camera_placeholder_text">Camera view will appear here.</p>
+                            <p class="text-sm text-slate-400 mt-2" data-translate-key="camera_placeholder_subtext">Point at a bottle, paper, etc.</p>
+                        </div>
+                         <div id="loading-overlay" class="absolute inset-0 bg-black/50 flex-col items-center justify-center hidden">
+                            <svg class="animate-spin h-8 w-8 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                            <p class="text-white mt-2 font-semibold" data-translate-key="camera_identifying">Identifying...</p>
+                        </div>
+                    </div>
+                    <div id="label-container" class="mt-4 w-full max-w-sm text-center font-semibold"></div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="vision" class="relative py-24 bg-slate-900 text-white animated-section">
+            <div class="absolute inset-0">
+                <img src="Whisk_df87910063.jpg" alt="A futuristic city with advanced AI-powered recycling systems." class="w-full h-full object-cover opacity-30 dark:opacity-20">
+                <div class="absolute inset-0 bg-black/60"></div>
+            </div>
+            <div class="container mx-auto px-6 text-center relative z-10">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4" data-translate-key="vision_title">Our Vision for the Future ✨</h2>
+                <p class="text-lg text-slate-200 max-w-3xl mx-auto leading-relaxed" data-translate-key="vision_desc">
+                   We envision a Tunisia where technology and sustainability are perfectly intertwined. Where smart cities use AI and secure, distributed data to eliminate waste, creating a healthier environment for all. Your small act of recycling today is a step toward this greener, automated future.
+                </p>
+            </div>
+        </section>
+
+        <section id="impact" class="py-20 bg-white dark:bg-slate-800 animated-section">
+             <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl font-bold mb-2" data-translate-key="impact_title">Join a Growing Movement 🌍</h2>
+                <p class="text-slate-500 dark:text-slate-400 mb-12" data-translate-key="impact_subtitle">Your small actions create a big impact.</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="feature-card bg-slate-50 dark:bg-slate-700 p-8 rounded-xl"><p class="text-4xl font-extrabold text-teal-600 dark:text-teal-400">10,000+</p><p class="mt-2 text-lg font-semibold text-slate-700 dark:text-slate-200" data-translate-key="impact_stat1">Items Scanned</p></div>
+                    <div class="feature-card bg-slate-50 dark:bg-slate-700 p-8 rounded-xl"><p class="text-4xl font-extrabold text-green-600 dark:text-green-400">85%</p><p class="mt-2 text-lg font-semibold text-slate-700 dark:text-slate-200" data-translate-key="impact_stat2">Improved Sorting Accuracy</p></div>
+                    <div class="feature-card bg-slate-50 dark:bg-slate-700 p-8 rounded-xl"><p class="text-4xl font-extrabold text-blue-600 dark:text-blue-400">5 Tons</p><p class="mt-2 text-lg font-semibold text-slate-700 dark:text-slate-200" data-translate-key="impact_stat3">Waste Diverted from Landfill</p></div>
+                </div>
+             </div>
+        </section>
+        
+    </main>
+    
+    <footer class="bg-slate-800 text-white py-10">
+        <div class="container mx-auto px-6 text-center">
+            <a href="index.html" class="text-2xl font-bold">♻️ SmartSort<span class="text-green-400">Secure</span></a>
+            <p class="mt-4 text-slate-400" data-translate-key="footer_subtitle">Making sustainability simple and secure. A project for a cleaner Tunisia.</p>
+            <div class="mt-6">
+                <a href="#" class="text-slate-400 hover:text-white mx-3" data-translate-key="footer_contact">Contact Us</a>
+                <a href="corporate.html" class="text-slate-400 hover:text-white mx-3" data-translate-key="footer_business">For Businesses</a>
+                <a href="#" class="text-slate-400 hover:text-white mx-3" data-translate-key="footer_privacy">Privacy Policy</a>
+            </div>
+            <p class="mt-6 text-sm text-slate-500">&copy; 2025 SmartSort Secure. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="toast-notification" class="bg-green-500 text-white font-bold py-3 px-6 rounded-full shadow-lg">
+        <span id="toast-message"></span>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // --- START: LANGUAGE SWITCHER LOGIC ---
+
+        const translations = {
+            en: {
+                page_title: "SmartSort Secure - Intelligent Recycling for a Cleaner Tunisia",
+                nav_how_it_works: "How It Works",
+                nav_our_vision: "Our Vision",
+                nav_rewards: "Rewards",
+                nav_find_bin: "Find a Smart Bin",
+                hero_title: "Recycling Made Simple.",
+                hero_subtitle: "Powered by AI. 🤖",
+                hero_description: "Never guess where to toss your trash again. Use your camera to identify waste, find the right bin, and help make Tunisia cleaner, one piece at a time.",
+                hero_button_try: "Try the Recycling Assistant",
+                hero_button_batch: "Start a Home Batch",
+                hero_button_ai_check: "Is It Recyclable? AI Check", // New Translation
+                how_title: "As Easy as 1-2-3 👇",
+                how_subtitle: "Three simple steps to perfect recycling.",
+                how_step1_title: "Scan Your Item",
+                how_step1_desc: "Use your camera to identify any piece of waste.",
+                how_step2_title: "Get Instant Instructions",
+                how_step2_desc: "Our AI tells you exactly where to toss it, right on your screen.",
+                how_step3_title: "Recycle with Confidence",
+                how_step3_desc: "Toss your item the right way and help build a more sustainable future.",
+                assistant_title: "Ready to Sort? 📸",
+                assistant_desc: "Press the button to use your camera and let our AI assistant guide you. Each correct item you log earns you 10 points!",
+                camera_placeholder_text: "Camera view will appear here.",
+                camera_placeholder_subtext: "Point at a bottle, paper, etc.",
+                camera_identifying: "Identifying...",
+                vision_title: "Our Vision for the Future ✨",
+                vision_desc: "We envision a Tunisia where technology and sustainability are perfectly intertwined. Where smart cities use AI and secure, distributed data to eliminate waste, creating a healthier environment for all. Your small act of recycling today is a step toward this greener, automated future.",
+                impact_title: "Join a Growing Movement 🌍",
+                impact_subtitle: "Your small actions create a big impact.",
+                impact_stat1: "Items Scanned",
+                impact_stat2: "Improved Sorting Accuracy",
+                impact_stat3: "Waste Diverted from Landfill",
+                footer_subtitle: "Making sustainability simple and secure. A project for a cleaner Tunisia.",
+                footer_contact: "Contact Us",
+                footer_business: "For Businesses",
+                footer_privacy: "Privacy Policy",
+            },
+            ar: {
+                page_title: "SmartSort Secure - إعادة تدوير ذكية من أجل تونس أنظف",
+                nav_how_it_works: "كيف يعمل",
+                nav_our_vision: "رؤيتنا",
+                nav_rewards: "المكافآت",
+                nav_find_bin: "ابحث عن حاوية ذكية",
+                hero_title: "إعادة التدوير أصبحت بسيطة.",
+                hero_subtitle: "مدعوم بالذكاء الاصطناعي. 🤖",
+                hero_description: "لا تخمن أبدًا أين ترمي قمامتك مرة أخرى. استخدم كاميرتك لتحديد النفايات، والعثور على الحاوية المناسبة، والمساعدة في جعل تونس أنظف، قطعة قطعة.",
+                hero_button_try: "جرّب مساعد إعادة التدوير",
+                hero_button_batch: "ابدأ دفعة منزلية",
+                hero_button_ai_check: "هل هو قابل لإعادة التدوير؟ فحص بالذكاء الاصطناعي", // New Translation
+                how_title: "سهل مثل 1-2-3 👇",
+                how_subtitle: "ثلاث خطوات بسيطة لإعادة تدوير مثالية.",
+                how_step1_title: "امسح العنصر الخاص بك",
+                how_step1_desc: "استخدم الكاميرا لتحديد أي قطعة من النفايات.",
+                how_step2_title: "احصل على تعليمات فورية",
+                how_step2_desc: "يخبرك الذكاء الاصطناعي لدينا بالضبط أين ترميها، مباشرة على شاشتك.",
+                how_step3_title: "أعد التدوير بثقة",
+                how_step3_desc: "تخلص من العنصر الخاص بك بالطريقة الصحيحة وساهم في بناء مستقبل أكثر استدامة.",
+                assistant_title: "هل أنت مستعد للفرز؟ 📸",
+                assistant_desc: "اضغط على الزر لاستخدام الكاميرا ودع مساعدنا الذكي يرشدك. كل عنصر صحيح تقوم بتسجيله يمنحك 10 نقاط!",
+                camera_placeholder_text: "ستظهر معاينة الكاميرا هنا.",
+                camera_placeholder_subtext: "وجّه الكاميرا إلى زجاجة، ورقة، إلخ.",
+                camera_identifying: "جاري التحديد...",
+                vision_title: "رؤيتنا للمستقبل ✨",
+                vision_desc: "نتصور تونس حيث يتشابك التكنولوجيا والاستدامة بشكل مثالي. حيث تستخدم المدن الذكية الذكاء الاصطناعي والبيانات الموزعة والآمنة للقضاء على النفايات، مما يخلق بيئة صحية للجميع. عملك الصغير في إعادة التدوير اليوم هو خطوة نحو هذا المستقبل الأخضر والآلي.",
+                impact_title: "انضم إلى حركة متنامية 🌍",
+                impact_subtitle: "أفعالك الصغيرة تحدث تأثيرًا كبيرًا.",
+                impact_stat1: "عنصر تم مسحه",
+                impact_stat2: "دقة فرز محسّنة",
+                impact_stat3: "طن من النفايات تم تحويلها من مكب النفايات",
+                footer_subtitle: "نجعل الاستدامة بسيطة وآمنة. مشروع من أجل تونس أنظف.",
+                footer_contact: "اتصل بنا",
+                footer_business: "للشركات",
+                footer_privacy: "سياسة الخصوصية",
+            }
+        };
+
+        const langSwitcherBtn = document.getElementById('lang-switcher');
+        let currentLanguage = localStorage.getItem('language') || 'en';
+
+        const setLanguage = (lang) => {
+            currentLanguage = lang;
+            localStorage.setItem('language', lang);
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+            document.querySelectorAll('[data-translate-key]').forEach(element => {
+                const key = element.getAttribute('data-translate-key');
+                const translation = translations[lang][key];
+                if (translation) {
+                     // Special handling for elements that have both text and child elements
+                    if (key === 'hero_title') {
+                        const mainTextNode = Array.from(element.childNodes).find(node => node.nodeType === Node.TEXT_NODE);
+                        const spanElement = element.querySelector('span');
+                        if (mainTextNode) mainTextNode.textContent = translations[lang].hero_title;
+                        if(spanElement) spanElement.textContent = translations[lang].hero_subtitle;
+                    } else {
+                        element.textContent = translation;
+                    }
+                }
+            });
+        };
+
+        langSwitcherBtn.addEventListener('click', () => {
+            const newLang = currentLanguage === 'en' ? 'ar' : 'en';
+            setLanguage(newLang);
+        });
+
+        // --- END: LANGUAGE SWITCHER LOGIC ---
+
+
+        // --- Original Site Logic (Untouched) ---
+        // --- 1. CACHE ELEMENTS ---
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+        const animatedSections = document.querySelectorAll('.animated-section');
+        const startButton = document.getElementById('start-scan-btn');
+        const cameraContainer = document.getElementById('camera-container');
+        const cameraPlaceholder = document.getElementById('camera-placeholder');
+        const loadingOverlay = document.getElementById('loading-overlay');
+        const labelContainer = document.getElementById('label-container');
+        const toast = document.getElementById('toast-notification');
+        const toastMessage = document.getElementById('toast-message');
+    
+        // --- 2. CONFIGURATION & STATE ---
+        const SERVER_URL = 'http://localhost:3000/identify-item-with-gemini';
+        const RECYCLABLE_CLASSES = ['plastic', 'glass', 'paper', 'metal'];
+        let isCameraActive = false;
+        let videoElement;
+    
+        // --- 3. FUNCTIONS ---
+        const applyTheme = (theme) => {
+            document.documentElement.classList.toggle('dark', theme === 'dark');
+            if (themeToggleLightIcon && themeToggleDarkIcon) {
+                themeToggleLightIcon.classList.toggle('hidden', theme !== 'dark');
+                themeToggleDarkIcon.classList.toggle('hidden', theme === 'dark');
+            }
+        };
+    
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        if(animatedSections.length > 0) {
+            animatedSections.forEach(section => observer.observe(section));
+        }
+    
+        const updateDynamicButtonText = () => {
+            if (startButton) {
+                 const key = isCameraActive ? 'Identify Item' : 'Start Camera';
+                 // A simple way to translate the dynamic button text
+                 if (currentLanguage === 'ar') {
+                     startButton.textContent = isCameraActive ? 'تحديد العنصر' : 'بدء الكاميرا';
+                 } else {
+                     startButton.textContent = key;
+                 }
+            }
+        };
+    
+        const showToast = (message, isError = false) => {
+            if (!toastMessage || !toast) return;
+            toastMessage.textContent = message;
+            toast.className = 'text-white font-bold py-3 px-6 rounded-full shadow-lg';
+            toast.classList.add(isError ? 'bg-red-500' : 'bg-green-500', 'show');
+            setTimeout(() => { toast.classList.remove('show'); }, 4000);
+        };
+    
+        const startCamera = async () => {
+            if (isCameraActive || !cameraContainer || !loadingOverlay || !startButton) return;
+            loadingOverlay.style.display = 'flex';
+            if (cameraPlaceholder) cameraPlaceholder.classList.add('hidden');
+            startButton.disabled = true;
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                videoElement = document.createElement('video');
+                videoElement.srcObject = stream;
+                videoElement.playsInline = true;
+                videoElement.autoplay = true;
+                videoElement.muted = true;
+                videoElement.style.cssText = 'width:100%; height:100%; object-fit:cover;';
+                cameraContainer.insertBefore(videoElement, loadingOverlay);
+                isCameraActive = true;
+            } catch (e) {
+                showToast('Could not access the camera.', true);
+                stopCamera();
+            } finally {
+                loadingOverlay.style.display = 'none';
+                startButton.disabled = false;
+                updateDynamicButtonText();
+            }
+        };
+    
+        const stopCamera = () => {
+            if (videoElement?.srcObject) {
+                videoElement.srcObject.getTracks().forEach(track => track.stop());
+            }
+            if (videoElement) videoElement.remove();
+            videoElement = null;
+            isCameraActive = false;
+            if (cameraPlaceholder) cameraPlaceholder.classList.remove('hidden');
+            if (startButton) startButton.disabled = false;
+            if (labelContainer) labelContainer.innerHTML = '';
+            updateDynamicButtonText();
+        };
+    
+        const captureAndIdentify = async () => {
+            if (!isCameraActive || !videoElement || videoElement.readyState < 2) return;
+            if (loadingOverlay) loadingOverlay.style.display = 'flex';
+            if (startButton) startButton.disabled = true;
+
+            const canvas = document.createElement('canvas');
+            canvas.width = videoElement.videoWidth;
+            canvas.height = videoElement.videoHeight;
+            canvas.getContext('2d').drawImage(videoElement, 0, 0);
+            const imageDataUrl = canvas.toDataURL('image/jpeg');
+
+            try {
+                const response = await fetch(SERVER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ image: imageDataUrl })
+                });
+                if (!response.ok) throw new Error((await response.json()).error || 'Server error');
+                const result = await response.json();
+                const item = result.item?.toLowerCase().trim() || 'unknown';
+                if (RECYCLABLE_CLASSES.includes(item)) {
+                    if (labelContainer) labelContainer.innerHTML = `<div class="text-2xl font-bold text-green-500 capitalize">Found: ${item}!</div>`;
+                    updatePointsAndLeaderboard(item);
+                    setTimeout(stopCamera, 3000);
+                } else {
+                    if (labelContainer) labelContainer.innerHTML = `<div class="text-xl capitalize">${item}</div>`;
+                    showToast(`'${item}' is not a recognized recyclable item.`, true);
+                }
+            } catch (error) {
+                console.error('Identification Error:', error);
+                showToast(error.message, true);
+            } finally {
+                if (isCameraActive && startButton) startButton.disabled = false;
+                if (loadingOverlay) loadingOverlay.style.display = 'none';
+            }
+        };
+        
+        const updatePointsAndLeaderboard = (itemName) => {
+            let currentPoints = (parseInt(localStorage.getItem('userPoints') || '0') || 0) + 10;
+            localStorage.setItem('userPoints', currentPoints);
+            showToast(`✅ +10 points for recycling ${itemName}!`);
+            const currentUser = { id: 'currentUser', name: 'You' };
+            let leaderboard = JSON.parse(localStorage.getItem('leaderboard'));
+            if (!leaderboard) {
+                leaderboard = [
+                    { id: 'user1', name: 'Ahmed C.', points: 1540 }, { id: 'user2', name: 'Fatma B.', points: 1210 },
+                    { id: 'user3', name: 'Karim M.', points: 980 }, { id: 'user4', name: 'Salma K.', points: 750 },
+                    { id: 'user5', name: 'Youssef S.', points: 430 }, { id: 'currentUser', name: 'You', points: 0 }
+                ];
+            }
+            const userInLeaderboard = leaderboard.find(u => u.id === currentUser.id);
+            if (userInLeaderboard) {
+                userInLeaderboard.points = currentPoints;
+            } else {
+                leaderboard.push({ ...currentUser, points: currentPoints });
+            }
+            localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+        };
+    
+        // --- 4. EVENT LISTENERS & INITIALIZATION ---
+        
+        // Initial page setup
+        setLanguage(currentLanguage); // Apply language first
+        applyTheme(localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+        updateDynamicButtonText(); // Then update button text
+
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', () => {
+                const newTheme = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+                localStorage.setItem('theme', newTheme);
+                applyTheme(newTheme);
+            });
+        }
+    
+        if (startButton) {
+            startButton.addEventListener('click', () => {
+                isCameraActive ? captureAndIdentify() : startCamera();
+            });
+        }
+
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deposit Your Bag - SmartSort Secure</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♻️</text></svg>">
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        #qr-reader-container {
+            width: 100%;
+            max-width: 500px;
+            margin: auto;
+        }
+        #qr-reader {
+            border: 4px dashed #94a3b8; /* slate-400 */
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+        .dark #qr-reader {
+            border-color: #475569; /* slate-600 */
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300">
+
+    <header class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg sticky top-0 left-0 right-0 z-50 shadow-sm border-b border-slate-200 dark:border-slate-800">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+             <a href="index.html" class="text-2xl font-bold text-teal-600 dark:text-teal-400">
+                ♻️ SmartSort<span class="text-green-600 dark:text-green-400">Secure</span>
+            </a>
+            <a href="batch.html" class="font-medium text-slate-600 hover:text-teal-600 dark:text-slate-300 dark:hover:text-teal-400 transition-colors">&larr; Back to Bag</a>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12 text-center">
+        <div id="scan-view">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-800 dark:text-white" data-lang-en="Deposit Your Batch" data-lang-ar="إيداع دفعتك">Deposit Your Batch</h1>
+            <p class="text-slate-500 dark:text-slate-400 mt-4 text-lg max-w-2xl mx-auto" data-lang-en="Scan the QR code on any public SmartSort bin to deposit the contents of your virtual bag and claim your points." data-lang-ar="امسح رمز QR الموجود على أي حاوية SmartSort عامة لإيداع محتويات حقيبتك الافتراضية والحصول على نقاطك.">Scan the QR code on any public SmartSort bin to deposit the contents of your virtual bag and claim your points.</p>
+            
+            <div id="qr-reader-container" class="mt-8">
+                <div id="qr-reader"></div>
+            </div>
+            <p id="qr-result" class="mt-4 font-medium"></p>
+        </div>
+
+        <div id="success-view" class="hidden text-center py-20">
+            <h1 class="text-8xl">🎉</h1>
+            <h2 class="text-4xl font-extrabold text-green-500 mt-6" data-lang-en="Deposit Complete!" data-lang-ar="اكتمل الإيداع!">Deposit Complete!</h2>
+            <p id="success-message" class="text-2xl mt-4"></p>
+            <a href="reward.html" class="mt-8 text-white bg-blue-600 hover:bg-blue-700 font-bold py-4 px-8 rounded-full inline-block text-lg" data-lang-en="See Your New Rank!" data-lang-ar="شاهد ترتيبك الجديد!">See Your New Rank!</a>
+        </div>
+    </main>
+
+    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const scanView = document.getElementById('scan-view');
+            const successView = document.getElementById('success-view');
+            const successMessageEl = document.getElementById('success-message');
+            const qrResultEl = document.getElementById('qr-result');
+
+            function onScanSuccess(decodedText, decodedResult) {
+                // Stop scanning
+                html5QrcodeScanner.clear();
+                
+                const virtualBag = JSON.parse(localStorage.getItem('virtualBag') || '{}');
+                if (Object.keys(virtualBag).length === 0) {
+                    qrResultEl.textContent = "Your bag is empty!";
+                    return;
+                }
+                
+                qrResultEl.textContent = `Scanned Bin ID: ${decodedText}. Depositing...`;
+                
+                // This is where you would send the data to your server
+                logBatchToHedera(decodedText, virtualBag);
+
+                // Calculate points
+                let totalPoints = 0;
+                Object.values(virtualBag).forEach(count => {
+                    totalPoints += count * 10;
+                });
+
+                // Update user's main points and leaderboard
+                let userPoints = parseInt(localStorage.getItem('userPoints') || '0');
+                userPoints += totalPoints;
+                localStorage.setItem('userPoints', userPoints);
+                
+                // Clear the virtual bag
+                localStorage.removeItem('virtualBag');
+                
+                // Show success screen
+                scanView.classList.add('hidden');
+                successView.classList.remove('hidden');
+                successMessageEl.textContent = `You earned ${totalPoints} points! Your new total is ${userPoints}.`;
+            }
+
+            function onScanFailure(error) {
+                // console.warn(`QR error = ${error}`);
+            }
+
+            // IMPORTANT: This function is a SIMULATION.
+            // You need to create a new endpoint on your server.js like "/log-batch"
+            // that accepts a binId and an object of items.
+            async function logBatchToHedera(binId, batchData) {
+                console.log(`Sending batch to Hedera for Bin ID: ${binId}`);
+                console.log('Batch Data:', batchData);
+                try {
+                    const response = await fetch('http://localhost:3000/log-batch', { // <-- CREATE THIS ENDPOINT
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            binId: binId,
+                            items: batchData,
+                            userId: "user-website-demo"
+                        }),
+                    });
+                    const result = await response.json();
+                    console.log("Hedera batch response:", result);
+                } catch (error) {
+                    console.error('Failed to log batch to Hedera:', error);
+                    // In a real app, you would handle this error properly
+                }
+            }
+
+            let html5QrcodeScanner = new Html5QrcodeScanner(
+                "qr-reader", 
+                { fps: 10, qrbox: {width: 250, height: 250} },
+                /* verbose= */ false);
+            html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+        });
+    </script>
+</body>
+</html>

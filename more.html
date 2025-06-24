@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earn More Points - SmartSort Secure</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♻️</text></svg>">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-gradient {
+            background: linear-gradient(90deg, #26a69a 0%, #4caf50 100%);
+        }
+        .btn-gradient:hover {
+            background: linear-gradient(90deg, #00897b 0%, #43a047 100%);
+        }
+        .action-card {
+             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .dark .action-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 150, 136, 0.2), 0 4px 6px -2px rgba(0, 150, 136, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-200">
+
+    <header class="bg-white/80 backdrop-blur-lg fixed top-0 left-0 right-0 z-50 shadow-sm dark:bg-gray-900/80 dark:border-b dark:border-gray-700">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-teal-600 dark:text-teal-400">
+                ♻️ SmartSort<span class="text-green-600 dark:text-green-400">Secure</span>
+            </a>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="index.html#how-it-works" class="text-gray-600 hover:text-teal-600 dark:text-gray-300 dark:hover:text-teal-400" data-lang-en="How It Works" data-lang-ar="كيفاش تخدم">How It Works</a>
+                <a href="reward.html" class="text-gray-600 hover:text-teal-600 dark:text-gray-300 dark:hover:text-teal-400" data-lang-en="Rewards" data-lang-ar="المكافآت">Rewards</a>
+                <a href="index.html#impact" class="text-gray-600 hover:text-teal-600 dark:text-gray-300 dark:hover:text-teal-400" data-lang-en="Our Impact" data-lang-ar="تأثيرنا">Our Impact</a>
+                <a href="find.html" class="text-white btn-gradient font-semibold py-2 px-4 rounded-full shadow-lg transform hover:scale-105 transition-transform" data-lang-en="Find a Smart Bin" data-lang-ar="ابحث عن حاوية ذكية">
+                    Find a Smart Bin
+                </a>
+                <button id="lang-toggle" class="font-semibold text-gray-700 hover:text-blue-600 py-2 px-4 rounded-full border dark:text-gray-300 dark:hover:text-blue-400 dark:border-gray-600">EN / AR</button>
+
+                <button id="theme-toggle" class="p-2 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-300 dark:border-gray-600">
+                   <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                   <svg id="theme-toggle-light-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zM5 3a1 1 0 000 2h1a1 1 0 100-2H5zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.464 14.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1z"></path></svg>
+                </button>
+            </div>
+            <button class="md:hidden text-gray-700 dark:text-gray-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+            </button>
+        </nav>
+    </header>
+
+    <main class="pt-24 md:pt-32">
+        <section class="py-10">
+            <div class="container mx-auto px-6">
+                <div class="text-center">
+                    <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800 dark:text-white" data-lang-en="How to Earn More Points" data-lang-ar="كيفية كسب المزيد من النقاط">How to Earn More Points</h1>
+                    <p class="text-gray-500 dark:text-gray-400 mt-4 text-lg max-w-2xl mx-auto" data-lang-en="Boost your score and climb the leaderboard! Here are all the ways you can earn points and contribute to our mission." data-lang-ar="عزز نتيجتك وتسلق لوحة الصدارة! إليك كل الطرق التي يمكنك من خلالها كسب النقاط والمساهمة في مهمتنا.">Boost your score and climb the leaderboard! Here are all the ways you can earn points and contribute to our mission.</p>
+                </div>
+                
+                <div class="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <div class="action-card bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+                        <div class="text-5xl mb-4">♻️</div>
+                        <h3 class="text-2xl font-bold text-teal-700 dark:text-teal-400" data-lang-en="Recycle Correctly" data-lang-ar="الرسكلة بشكل صحيح">Recycle Correctly</h3>
+                        <p class="text-green-600 font-bold mt-2" data-lang-en="+10 points per item" data-lang-ar="+10 نقاط لكل عنصر">+10 points per item</p>
+                        <p class="mt-4 text-gray-600 dark:text-gray-300" data-lang-en="The most important action! Every time you use a SmartSort bin and our system confirms a correct deposit, you earn points. Simple as that." data-lang-ar="أهم إجراء! في كل مرة تستخدم فيها حاوية SmartSort ويؤكد نظامنا إيداعًا صحيحًا، تكسب نقاطًا. بهذه البساطة.">The most important action! Every time you use a SmartSort bin and our system confirms a correct deposit, you earn points. Simple as that.</p>
+                        <a href="index.html#assistant" class="mt-6 text-white btn-gradient font-bold py-3 px-6 rounded-full inline-block" data-lang-en="Start Sorting" data-lang-ar="ابدأ الفرز">Start Sorting</a>
+                    </div>
+                    
+                    <div class="action-card bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+                        <div class="text-5xl mb-4">🤝</div>
+                        <h3 class="text-2xl font-bold text-teal-700 dark:text-teal-400" data-lang-en="Refer a Friend" data-lang-ar="ادع صديقًا">Refer a Friend</h3>
+                        <p class="text-green-600 font-bold mt-2" data-lang-en="+100 points per referral" data-lang-ar="+100 نقطة لكل إحالة">+100 points per referral</p>
+                        <p class="mt-4 text-gray-600 dark:text-gray-300" data-lang-en="Share your unique referral link with friends. When they sign up and recycle their first item correctly, you both get bonus points." data-lang-ar="شارك رابط الإحالة الفريد الخاص بك مع الأصدقاء. عندما يقومون بالتسجيل ورسكلة أول عنصر لهم بشكل صحيح، تحصلان معًا على نقاط إضافية.">Share your unique referral link with friends. When they sign up and recycle their first item correctly, you both get bonus points.</p>
+                        <button class="mt-6 text-white btn-gradient font-bold py-3 px-6 rounded-full inline-block" data-lang-en="Get Your Link" data-lang-ar="احصل على رابطك">Get Your Link</button>
+                    </div>
+
+                    <div class="action-card bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700">
+                        <div class="text-5xl mb-4">🌍</div>
+                        <h3 class="text-2xl font-bold text-teal-700 dark:text-teal-400" data-lang-en="Join a Cleanup Event" data-lang-ar="انضم إلى حدث تنظيف">Join a Cleanup Event</h3>
+                        <p class="text-green-600 font-bold mt-2" data-lang-en="+500 points per event" data-lang-ar="+500 نقطة لكل حدث">+500 points per event</p>
+                        <p class="mt-4 text-gray-600 dark:text-gray-300" data-lang-en="We partner with local organizations for community cleanup days. Participate in an event, check in, and earn a massive point bonus for your effort." data-lang-ar="نتعاون مع المنظمات المحلية في أيام تنظيف المجتمع. شارك في حدث، قم بتسجيل الحضور، واكسب مكافأة نقاط ضخمة على مجهودك.">We partner with local organizations for community cleanup days. Participate in an event, check in, and earn a massive point bonus for your effort.</p>
+                        <a href="event.html" class="mt-6 text-white btn-gradient font-bold py-3 px-6 rounded-full inline-block" data-lang-en="Find Event" data-lang-ar="البحث عن الحدث">Find Event</a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="bg-gray-800 text-white py-10 mt-20">
+        <div class="container mx-auto px-6 text-center">
+            <a href="index.html" class="text-2xl font-bold">♻️ SmartSort<span class="text-green-400">Secure</span></a>
+            <p class="mt-4 text-gray-400" data-lang-en="Making sustainability simple and secure. A project for a cleaner Tunisia." data-lang-ar="نجعلو في الإستدامة حاجة ساهلة ومؤمنة. مشروع لتونس أنظف.">Making sustainability simple and secure. A project for a cleaner Tunisia.</p>
+            <div class="mt-6">
+                <a href="#" class="text-gray-400 hover:text-white mx-3" data-lang-en="Contact" data-lang-ar="اتصل بنا">Contact</a>
+                <a href="#" class="text-gray-400 hover:text-white mx-3" data-lang-en="Privacy Policy" data-lang-ar="سياسة الخصوصية">Privacy Policy</a>
+            </div>
+            <p class="mt-6 text-sm text-gray-500">&copy; 2025 SmartSort Secure. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Caching Elements ---
+            const langToggle = document.getElementById('lang-toggle');
+            const translatableElements = document.querySelectorAll('[data-lang-en]');
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const darkIcon = document.getElementById('theme-toggle-dark-icon');
+            const lightIcon = document.getElementById('theme-toggle-light-icon');
+
+            // --- Language Logic ---
+            const setLanguage = (lang) => {
+                translatableElements.forEach(el => {
+                    const text = el.getAttribute(`data-lang-${lang}`);
+                    if (text) {
+                        el.textContent = text;
+                    }
+                });
+                document.documentElement.lang = lang;
+                document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+                localStorage.setItem('language', lang);
+            };
+
+            if (langToggle) {
+                langToggle.addEventListener('click', () => {
+                    const currentLang = localStorage.getItem('language') || 'en';
+                    const newLang = currentLang === 'en' ? 'ar' : 'en';
+                    setLanguage(newLang);
+                });
+            }
+
+            // --- Dark Mode Logic ---
+            const applyTheme = (theme) => {
+                if (theme === 'dark') {
+                    document.documentElement.classList.add('dark');
+                    darkIcon.classList.remove('hidden');
+                    lightIcon.classList.add('hidden');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    darkIcon.classList.add('hidden');
+                    lightIcon.classList.remove('hidden');
+                }
+            };
+
+            if (themeToggleBtn) {
+                themeToggleBtn.addEventListener('click', () => {
+                    const newTheme = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+                    localStorage.setItem('theme', newTheme);
+                    applyTheme(newTheme);
+                });
+            }
+
+            // --- Initial Load ---
+            const savedLang = localStorage.getItem('language') || 'en';
+            setLanguage(savedLang);
+
+            const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            applyTheme(savedTheme);
+        });
+    </script>
+</body>
+</html>

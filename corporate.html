@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corporate ESG Portal - SmartSort Secure</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♻️</text></svg>">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .hero-corporate { background: linear-gradient(120deg, #1e3a8a 0%, #3b82f6 100%); }
+        .btn-primary { background-color: #2563eb; color: white; }
+        .btn-primary:hover { background-color: #1d4ed8; }
+        .btn-secondary { background-color: #4ade80; color: #15803d; }
+        .btn-secondary:hover { background-color: #22c55e; }
+        .nft-card { transition: transform 0.3s ease, box-shadow 0.3s ease; border: 1px solid #e2e8f0; }
+        .nft-card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <header class="bg-white/90 backdrop-blur-lg sticky top-0 z-50 shadow-md">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-teal-600">
+                ♻️ SmartSort<span class="text-green-600">Secure</span>
+            </a>
+            <div class="space-x-4 flex items-center">
+                <a href="#marketplace" class="text-gray-600 hover:text-blue-600 font-medium" data-lang-en="Carbon Credits" data-lang-ar="Carbon Credits">Carbon Credits</a>
+                <a href="trace.html" class="text-gray-600 hover:text-blue-600 font-medium" data-lang-en="Trace Your Impact" data-lang-ar="تتبع تأثيرك">Trace Your Impact</a>
+                <a href="admin-login.html" class="font-semibold text-blue-600 py-2 px-4 rounded-full border border-blue-600 hover:bg-blue-50" data-lang-en="Admin Login" data-lang-ar="دخول المسؤول">
+                    Admin Login
+                </a>
+                <button id="lang-toggle" class="font-semibold text-gray-700 hover:text-blue-600 py-2 px-4 rounded-full border">EN / AR</button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero-corporate text-white text-center py-20 md:py-28">
+            <div class="container mx-auto px-6">
+                <h1 class="text-4xl md:text-5xl font-extrabold leading-tight" data-lang-en="Achieve Your ESG Goals." data-lang-ar="حقق أهدافك في الـ ESG..">Achieve Your ESG Goals.</h1>
+                <h2 class="text-2xl md:text-3xl font-light mt-2" data-lang-en="Support a Cleaner Tunisia." data-lang-ar="دعم تونس أنظف.">Support a Cleaner Tunisia.</h2>
+                <p class="mt-6 text-lg text-blue-100 max-w-3xl mx-auto" data-lang-en="Invest in verifiable environmental impact. Purchase carbon credit NFTs, backed by real-world recycling data secured on Hedera, or join our local rewards ecosystem." data-lang-ar="استثمر في تأثير بيئي قابل للتحقق. اشري NFTs أرصدة الكربون، المدعومة ببيانات رسكلة حقيقية ومؤمنة على شبكة Hedera، أو انضم لمنظومة المكافآت المحلية متاعنا.">
+                    Invest in verifiable environmental impact. Purchase carbon credit NFTs, backed by real-world recycling data secured on Hedera, or join our local rewards ecosystem.
+                </p>
+            </div>
+        </section>
+
+        <section id="marketplace" class="py-20">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                     <h2 class="text-3xl font-bold" data-lang-en="Verifiable Carbon Marketplace" data-lang-ar="سوق الكربون القابل للتحقق">Verifiable Carbon Marketplace</h2>
+                     <p class="text-gray-500 mt-2" data-lang-en="Each NFT represents one certified ton of recycled material, with its history immutably logged on Hedera." data-lang-ar="كل NFT يمثل طنًا معتمدًا من المواد المعاد تدويرها، مع تاريخها المسجل بشكل غير قابل للتغيير على شبكة هيديرا.">Each NFT represents one certified ton of recycled material, with its history immutably logged on Hedera.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="nft-card bg-white rounded-xl shadow-lg overflow-hidden">
+                        <div class="bg-blue-100 p-4 text-center">
+                            <p class="text-5xl">♻️</p>
+                            <p class="font-bold text-blue-800 mt-2" data-lang-en="1 Ton Plastic" data-lang-ar="1 طن بلاستيك">1 Ton Plastic</p>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold" data-lang-en="Plastic Recycling Credit #481" data-lang-ar="رصيد تدوير بلاستيك #481">Plastic Recycling Credit #481</h3>
+                            <p class="text-gray-500 text-sm mt-2" data-lang-en="Location: Tunis Governorate" data-lang-ar="الموقع: ولاية تونس">Location: Tunis Governorate</p>
+                            <p class="text-gray-500 text-sm" data-lang-en="Period: May 2025" data-lang-ar="الفترة: ماي 2025">Period: May 2025</p>
+                            <a href="#" class="text-xs text-blue-500 hover:underline mt-1 block" data-lang-en="View Hedera Transaction Log" data-lang-ar="عرض سجل معاملات Hedera">View Hedera Transaction Log</a>
+                            <div class="mt-6 flex justify-between items-center">
+                                <p class="text-2xl font-bold text-gray-800">$1,500 USD</p>
+                                <a href="trace.html" class="btn-primary font-bold py-2 px-6 rounded-lg" data-lang-en="Trace Batch" data-lang-ar="تتبع الدفعة">Trace Batch</a>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="nft-card bg-white rounded-xl shadow-lg overflow-hidden">
+                        <div class="bg-green-100 p-4 text-center">
+                            <p class="text-5xl">📄</p>
+                            <p class="font-bold text-green-800 mt-2" data-lang-en="1 Ton Paper" data-lang-ar="1 طن ورق">1 Ton Paper</p>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold" data-lang-en="Paper Recycling Credit #112" data-lang-ar="رصيد تدوير ورق #112">Paper Recycling Credit #112</h3>
+                            <p class="text-gray-500 text-sm mt-2" data-lang-en="Location: Nabeul Governorate" data-lang-ar="الموقع: ولاية نابل">Location: Nabeul Governorate</p>
+                            <p class="text-gray-500 text-sm" data-lang-en="Period: April 2025" data-lang-ar="الفترة: أبريل 2025">Period: April 2025</p>
+                            <a href="#" class="text-xs text-blue-500 hover:underline mt-1 block" data-lang-en="View Hedera Transaction Log" data-lang-ar="عرض سجل معاملات Hedera">View Hedera Transaction Log</a>
+                            <div class="mt-6 flex justify-between items-center">
+                                <p class="text-2xl font-bold text-gray-800">$950 USD</p>
+                                <button class="btn-primary font-bold py-2 px-6 rounded-lg" data-lang-en="Buy Now" data-lang-ar="شراء الآن">Buy Now</button>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="nft-card bg-white rounded-xl shadow-lg overflow-hidden opacity-60">
+                         <div class="bg-gray-200 p-4 text-center">
+                            <p class="text-5xl">🍾</p>
+                            <p class="font-bold text-gray-600 mt-2" data-lang-en="1 Ton Glass" data-lang-ar="1 طن زجاج">1 Ton Glass</p>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold" data-lang-en="Glass Recycling Credit #305" data-lang-ar="رصيد تدوير زجاج #305">Glass Recycling Credit #305</h3>
+                            <p class="text-gray-500 text-sm mt-2" data-lang-en="Location: Sousse Governorate" data-lang-ar="الموقع: ولاية سوسة">Location: Sousse Governorate</p>
+                             <p class="text-gray-500 text-sm" data-lang-en="Period: May 2025" data-lang-ar="الفترة: ماي 2025">Period: May 2025</p>
+                             <a href="#" class="text-xs text-blue-500 hover:underline mt-1 block" data-lang-en="View Hedera Transaction Log" data-lang-ar="عرض سجل معاملات Hedera">View Hedera Transaction Log</a>
+                            <div class="mt-6 flex justify-between items-center">
+                                <p class="text-xl font-bold text-gray-500" data-lang-en="SOLD" data-lang-ar="مباع">SOLD</p>
+                                <button class="bg-gray-300 text-gray-500 cursor-not-allowed font-bold py-2 px-6 rounded-lg" data-lang-en="Sold Out" data-lang-ar="نفذت الكمية">Sold Out</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="partner" class="bg-teal-50 py-20">
+            <div class="container mx-auto px-6 text-center">
+                 <h2 class="text-3xl font-bold text-teal-800" data-lang-en="Join the Citizen Rewards Program" data-lang-ar="انضم لبرنامج مكافآت المواطنين">Join the Citizen Rewards Program</h2>
+                 <p class="text-gray-600 mt-2 max-w-2xl mx-auto" data-lang-en="Increase your foot traffic and support the community by accepting ECO Tokens as a form of payment or discount at your business." data-lang-ar="زد في عدد زوارك وادعم المجتمع بقبول رموز ECO كطريقة للدفع أو الخصم في عملك.">Increase your foot traffic and support the community by accepting ECO Tokens as a form of payment or discount at your business.</p>
+                 <button class="mt-8 btn-secondary font-bold py-4 px-10 rounded-full text-lg transform hover:scale-105 transition-transform" data-lang-en="Contact Us to Become a Partner" data-lang-ar="اتصل بنا لتصبح شريكًا">
+                     Contact Us to Become a Partner
+                 </button>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="bg-gray-800 text-white py-10">
+        <div class="container mx-auto px-6 text-center">
+            <a href="index.html" class="text-2xl font-bold">♻️ SmartSort<span class="text-green-400">Secure</span></a>
+            <p class="mt-4 text-gray-400" data-lang-en="Making sustainability simple and secure. A project for a cleaner Tunisia." data-lang-ar="جعل الاستدامة بسيطة وآمنة. مشروع لتونس أنظف.">Making sustainability simple and secure. A project for a cleaner Tunisia.</p>
+            <p class="mt-6 text-sm text-gray-500">&copy; 2025 SmartSort Secure. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const langToggle = document.getElementById('lang-toggle');
+            const translatableElements = document.querySelectorAll('[data-lang-en]');
+
+            const setLanguage = (lang) => {
+                translatableElements.forEach(el => {
+                    const text = el.getAttribute(`data-lang-${lang}`);
+                    if (text) {
+                        el.textContent = text;
+                    }
+                });
+                document.documentElement.lang = lang;
+                document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+                localStorage.setItem('language', lang);
+            };
+
+            langToggle.addEventListener('click', () => {
+                const currentLang = localStorage.getItem('language') || 'ar';
+                const newLang = currentLang === 'ar' ? 'en' : 'ar';
+                setLanguage(newLang);
+            });
+
+            // Set initial language
+            const savedLang = localStorage.getItem('language') || 'ar';
+            setLanguage(savedLang);
+        });
+    </script>
+
+</body>
+</html>

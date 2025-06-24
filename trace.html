@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trace Your Impact - SmartSort Secure</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♻️</text></svg>">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f0f4f8; }
+        /* Style for the vertical line of the timeline */
+        .timeline-line {
+            background-image: linear-gradient(to bottom, #3b82f6, #16a34a);
+        }
+    </style>
+</head>
+<body class="flex h-screen">
+
+    <aside class="w-64 bg-gray-800 text-white flex flex-col p-4 flex-shrink-0">
+        <div class="text-2xl font-bold mb-10">
+            ♻️ SmartSort<span class="text-green-400">Secure</span>
+            <span class="block text-xs font-normal text-gray-400" data-lang-en="Corporate Portal" data-lang-ar="بوابة الشركات">Corporate Portal</span>
+        </div>
+        <nav class="flex-grow">
+            <ul>
+                 <li class="mb-4"><a href="corporate.html" class="flex items-center p-3 rounded-lg hover:bg-gray-700" data-lang-en="Marketplace" data-lang-ar="السوق">Marketplace</a></li>
+                 <li class="mb-4"><a href="trace.html" class="flex items-center p-3 rounded-lg bg-gray-700 font-bold" data-lang-en="Trace Your Impact" data-lang-ar="تتبع تأثيرك">Trace Your Impact</a></li>
+            </ul>
+        </nav>
+        <div class="mt-auto">
+            <a href="index.html" class="flex items-center p-3 rounded-lg hover:bg-gray-700" data-lang-en="Exit Portal" data-lang-ar="الخروج من البوابة">Exit Portal</a>
+        </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col overflow-hidden">
+        <header class="bg-white shadow-md p-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-gray-800" data-lang-en="Circular Economy Tracker" data-lang-ar="متتبع الاقتصاد الدائري">Circular Economy Tracker</h1>
+            <button id="lang-toggle" class="font-semibold text-gray-700 hover:text-blue-600 py-2 px-4 rounded-full border">EN / AR</button>
+        </header>
+        
+        <main class="flex-1 p-8 overflow-y-auto">
+            <p class="text-gray-500 mb-8" data-lang-en="Verifiable journey of recycled material from bin to new product, secured by Hedera." data-lang-ar="رحلة قابلة للتحقق للمواد المعاد تدويرها من الحاوية إلى المنتج الجديد، مؤمنة بواسطة Hedera.">Verifiable journey of recycled material from bin to new product, secured by Hedera.</p>
+
+            <div class="bg-white p-8 rounded-2xl shadow-lg">
+                <div class="flex items-start mb-8">
+                    <img src="https://logowik.com/content/uploads/images/safia-water1697.jpg" alt="Safia Logo" class="h-16 mr-6">
+                    <div>
+                        <h2 class="text-2xl font-bold" data-lang-en="Trace Report: Plastic Batch #PB-4815" data-lang-ar="تقرير التتبع: دفعة البلاستيك #PB-4815">Trace Report: Plastic Batch #PB-4815</h2>
+                        <p class="text-gray-600" data-lang-en="From recycled Safia water bottles across Tunis." data-lang-ar="من زجاجات مياه علامة Safia المعاد تدويرها في جميع أنحاء تونس.">From recycled Safia water bottles across Tunis.</p>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <div class="timeline-line absolute left-6 top-1 w-1 h-full"></div>
+
+                    <div class="space-y-12">
+                        
+                        <div class="flex items-start">
+                            <div class="z-10 flex items-center justify-center w-12 h-12 bg-blue-600 text-white rounded-full text-2xl shadow-lg">♻️</div>
+                            <div class="ml-6 w-full">
+                                <p class="text-sm font-semibold text-blue-600" data-lang-en="Stage 1: Collection" data-lang-ar="المرحلة 1: الجمع">Stage 1: Collection</p>
+                                <h3 class="text-xl font-bold mt-1" data-lang-en="1,000kg of Plastic Bottles Collected" data-lang-ar="1,000kg من زجاجات البلاستيك المجمعة">1,000kg of Plastic Bottles Collected</h3>
+                                <p class="text-gray-500 mt-1" data-lang-en="Collected via 250 SmartSort bins in the Greater Tunis area." data-lang-ar="تم جمعها عبر 250 حاوية SmartSort في منطقة تونس الكبرى.">Collected via 250 SmartSort bins in the Greater Tunis area.</p>
+                                <div class="mt-3 bg-gray-50 p-3 rounded-lg flex justify-between items-center">
+                                    <span class="text-xs text-gray-500">Date: May 15, 2025</span>
+                                    <a href="https://hashscan.io/testnet/topic/0.0.6143759" target="_blank" class="text-xs font-semibold text-blue-500 hover:underline">View on HashScan →</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="z-10 flex items-center justify-center w-12 h-12 bg-blue-600 text-white rounded-full text-2xl shadow-lg">⚙️</div>
+                            <div class="ml-6 w-full">
+                                <p class="text-sm font-semibold text-blue-600" data-lang-en="Stage 2: Processing" data-lang-ar="المرحلة 2: المعالجة">Stage 2: Processing</p>
+                                <h3 class="text-xl font-bold mt-1" data-lang-en="Processed into raw PET pellets" data-lang-ar="تمت معالجتها إلى حبيبات PET خام">Processed into raw PET pellets</h3>
+                                <p class="text-gray-500 mt-1" data-lang-en="By our partner, 'Tunis Recyclage SARL', resulting in 950kg of reusable material." data-lang-ar="بواسطة شريكنا، 'تونس رسكلة SARL'، مما أسفر عن 950kg من المواد القابلة لإعادة الاستخدام.">By our partner, 'Tunis Recyclage SARL', resulting in 950kg of reusable material.</p>
+                                <div class="mt-3 bg-gray-50 p-3 rounded-lg flex justify-between items-center">
+                                    <span class="text-xs text-gray-500">Date: May 20, 2025</span>
+                                    <a href="https://hashscan.io/testnet/topic/0.0.6143759" target="_blank" class="text-xs font-semibold text-blue-500 hover:underline">View on HashScan →</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="z-10 flex items-center justify-center w-12 h-12 bg-blue-600 text-white rounded-full text-2xl shadow-lg">🏭</div>
+                            <div class="ml-6 w-full">
+                                <p class="text-sm font-semibold text-blue-600" data-lang-en="Stage 3: Remanufacturing" data-lang-ar="المرحلة 3: إعادة التصنيع">Stage 3: Remanufacturing</p>
+                                <h3 class="text-xl font-bold mt-1" data-lang-en="Used to create new products" data-lang-ar="استخدمت لإنشاء منتجات جديدة">Used to create new products</h3>
+                                <p class="text-gray-500 mt-1" data-lang-en="950kg of PET pellets were sold to 'Plastique Moderne S.A.' for new bottle manufacturing." data-lang-ar="تم بيع 950kg من حبيبات PET إلى 'Plastique Moderne S.A.' لتصنيع زجاجات جديدة.">950kg of PET pellets were sold to 'Plastique Moderne S.A.' for new bottle manufacturing.</p>
+                                <div class="mt-3 bg-gray-50 p-3 rounded-lg flex justify-between items-center">
+                                    <span class="text-xs text-gray-500">Date: June 1, 2025</span>
+                                    <a href="https://hashscan.io/testnet/topic/0.0.6143759" target="_blank" class="text-xs font-semibold text-blue-500 hover:underline">View on HashScan →</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="z-10 flex items-center justify-center w-12 h-12 bg-green-500 text-white rounded-full text-2xl shadow-lg">✅</div>
+                            <div class="ml-6 w-full">
+                                <p class="text-sm font-semibold text-green-600" data-lang-en="Cycle Complete" data-lang-ar="اكتمل الدورة">Cycle Complete</p>
+                                <h3 class="text-xl font-bold mt-1" data-lang-en="Material Successfully Re-entered the Economy" data-lang-ar="تم إعادة إدخال المادة بنجاح في الاقتصاد">Material Successfully Re-entered the Economy</h3>
+                                <p class="text-gray-500 mt-1" data-lang-en="This batch has completed a full circular journey, verifiably reducing the need for new virgin plastic." data-lang-ar="هذه الدفعة أكملت رحلة دائرية كاملة، مما يقلل بشكل موثوق الحاجة إلى بلاستيك جديد.">This batch has completed a full circular journey, verifiably reducing the need for new virgin plastic.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const langToggle = document.getElementById('lang-toggle');
+            const translatableElements = document.querySelectorAll('[data-lang-en]');
+
+            const setLanguage = (lang) => {
+                translatableElements.forEach(el => {
+                    const text = el.getAttribute(`data-lang-${lang}`);
+                    if (text) {
+                        el.textContent = text;
+                    }
+                });
+                document.documentElement.lang = lang;
+                document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+                localStorage.setItem('language', lang);
+            };
+
+            langToggle.addEventListener('click', () => {
+                const currentLang = localStorage.getItem('language') || 'ar';
+                const newLang = currentLang === 'ar' ? 'en' : 'ar';
+                setLanguage(newLang);
+            });
+
+            // Set initial language
+            const savedLang = localStorage.getItem('language') || 'ar';
+            setLanguage(savedLang);
+        });
+    </script>
+</body>
+</html>

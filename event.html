@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cleanup Events 🌍 - SmartSort Secure</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♻️</text></svg>">
+
+    <style>
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; }
+        html[dir="rtl"] body { font-family: 'Tajawal', sans-serif; }
+        .btn-gradient { background: linear-gradient(90deg, #10b981 0%, #22c55e 100%); transition: all 0.3s ease; }
+        .btn-gradient:hover { box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4); transform: translateY(-3px); }
+        .event-card {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .event-card.is-visible { opacity: 1; transform: translateY(0); }
+        .event-card:hover { transform: translateY(-8px) !important; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); }
+        .dark .event-card:hover { box-shadow: 0 10px 25px -5px rgba(0, 150, 136, 0.2); }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-gray-900 dark:text-gray-200">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 left-0 right-0 z-50 shadow-sm border-b border-slate-200 dark:bg-gray-900/80 dark:border-gray-700">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-teal-600 dark:text-teal-400">
+                ♻️ SmartSort<span class="text-green-600 dark:text-green-400">Secure</span>
+            </a>
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="index.html#how-it-works" class="font-medium text-slate-600 hover:text-teal-600 dark:text-gray-300 dark:hover:text-teal-400 transition-colors" data-lang-en="How It Works" data-lang-ar="كيفاش تخدم">How It Works</a>
+                <a href="reward.html" class="font-medium text-slate-600 hover:text-teal-600 dark:text-gray-300 dark:hover:text-teal-400 transition-colors" data-lang-en="Rewards" data-lang-ar="المكافآت">Rewards</a>
+                 <a href="more.html" class="text-teal-600 dark:text-teal-400 font-bold" data-lang-en="Earn Points" data-lang-ar="اربح نقاط">Earn Points</a>
+                <a href="find.html" class="text-white bg-blue-600 hover:bg-blue-700 font-semibold py-2 px-5 rounded-full shadow-lg transform active:scale-95 transition-transform" data-lang-en="Find a Smart Bin" data-lang-ar="ابحث عن حاوية ذكية">
+                    Find a Smart Bin
+                </a>
+                <button id="lang-toggle" class="font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 py-2 px-4 rounded-full border border-slate-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:border-gray-600 flex items-center gap-2 transform active:scale-95">
+                    <span>EN / AR</span>
+                </button>
+                <button id="theme-toggle" class="p-2 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 border border-gray-300 dark:border-gray-600">
+                   <svg id="theme-toggle-dark-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                   <svg id="theme-toggle-light-icon" class="hidden h-5 w-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zM5 3a1 1 0 000 2h1a1 1 0 100-2H5zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.464 14.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1z"></path></svg>
+                </button>
+            </div>
+            <button class="md:hidden text-slate-700 dark:text-gray-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
+            </button>
+        </nav>
+    </header>
+
+    <main class="pt-24 md:pt-32">
+        <section id="events" class="py-10">
+            <div class="container mx-auto px-6">
+                <div class="text-center">
+                    <h1 class="text-4xl md:text-5xl font-extrabold text-slate-800 dark:text-white" data-lang-en="Community Cleanup Events" data-lang-ar="فعاليات التنظيف المجتمعية">Community Cleanup Events</h1>
+                    <p class="text-slate-500 dark:text-gray-400 mt-4 text-lg max-w-2xl mx-auto" data-lang-en="Join hands with your community to make a real difference. Participate, earn massive points, and help keep Tunisia beautiful." data-lang-ar="تكاتف مع مجتمعك لإحداث فرق حقيقي. شارك، واكسب نقاطًا ضخمة، وساعد في الحفاظ على جمال تونس.">Join hands with your community to make a real difference. Participate, earn massive points, and help keep Tunisia beautiful.</p>
+                </div>
+
+                <div class="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    
+                    <div class="event-card bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 flex flex-col">
+                        <div class="flex-grow">
+                            <div class="text-5xl mb-4">🏖️</div>
+                            <h3 class="text-2xl font-bold text-blue-700 dark:text-blue-400" data-lang-en="La Marsa Beach Cleanup" data-lang-ar="حملة تنظيف شاطئ المرسى">La Marsa Beach Cleanup</h3>
+                            <p class="text-green-600 font-bold mt-2" data-lang-en="+500 points" data-lang-ar="+500 نقطة">+500 points</p>
+                            <p class="mt-4 text-slate-600 dark:text-gray-300" data-lang-en="Help us clean the beautiful coastline of La Marsa. Bags and gloves will be provided. Let's protect our sea together!" data-lang-ar="ساعدنا في تنظيف ساحل المرسى الجميل. سيتم توفير الأكياس والقفازات. لنحمي بحرنا معًا!">Help us clean the beautiful coastline of La Marsa. Bags and gloves will be provided. Let's protect our sea together!</p>
+                            <div class="mt-4 text-sm text-slate-500 dark:text-gray-400">
+                                <p><strong data-lang-en="Date:" data-lang-ar="التاريخ:">Date:</strong> Sat, July 12, 2025</p>
+                                <p><strong data-lang-en="Time:" data-lang-ar="الوقت:">Time:</strong> 9:00 AM - 12:00 PM</p>
+                                <p><strong data-lang-en="Location:" data-lang-ar="الموقع:">Location:</strong> La Marsa Corniche</p>
+                            </div>
+                        </div>
+                        <button class="mt-6 text-white btn-gradient font-bold py-3 px-6 rounded-full w-full" data-lang-en="Register Now" data-lang-ar="سجل الآن">Register Now</button>
+                    </div>
+
+                    <div class="event-card bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 flex flex-col" style="transition-delay: 100ms;">
+                         <div class="flex-grow">
+                            <div class="text-5xl mb-4">🏛️</div>
+                            <h3 class="text-2xl font-bold text-orange-700 dark:text-orange-400" data-lang-en="Carthage Archeological Site Care" data-lang-ar="العناية بموقع قرطاج الأثري">Carthage Archeological Site Care</h3>
+                            <p class="text-green-600 font-bold mt-2" data-lang-en="+750 points" data-lang-ar="+750 نقطة">+750 points</p>
+                            <p class="mt-4 text-slate-600 dark:text-gray-300" data-lang-en="A special event to preserve our heritage. We will focus on litter removal around the historical sites of Carthage. A unique opportunity!" data-lang-ar="حدث خاص للحفاظ على تراثنا. سنركز على إزالة القمامة حول المواقع التاريخية في قرطاج. فرصة فريدة!">A special event to preserve our heritage. We will focus on litter removal around the historical sites of Carthage. A unique opportunity!</p>
+                            <div class="mt-4 text-sm text-slate-500 dark:text-gray-400">
+                                <p><strong data-lang-en="Date:" data-lang-ar="التاريخ:">Date:</strong> Sun, July 27, 2025</p>
+                                <p><strong data-lang-en="Time:" data-lang-ar="الوقت:">Time:</strong> 8:30 AM - 11:30 AM</p>
+                                <p><strong data-lang-en="Location:" data-lang-ar="الموقع:">Location:</strong> Byrsa Hill, Carthage</p>
+                            </div>
+                        </div>
+                        <button class="mt-6 text-white bg-gray-400 dark:bg-gray-600 dark:text-gray-400 cursor-not-allowed font-bold py-3 px-6 rounded-full w-full" disabled data-lang-en="Event Full" data-lang-ar="الحدث ممتلئ">Event Full</button>
+                    </div>
+
+                    <div class="event-card bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 flex flex-col" style="transition-delay: 200ms;">
+                         <div class="flex-grow">
+                            <div class="text-5xl mb-4">🌳</div>
+                            <h3 class="text-2xl font-bold text-green-700 dark:text-green-400" data-lang-en="Sidi Bou Said Park Greening" data-lang-ar="تخضير حديقة سيدي بوسعيد">Sidi Bou Said Park Greening</h3>
+                            <p class="text-green-600 font-bold mt-2" data-lang-en="+600 points" data-lang-ar="+600 نقطة">+600 points</p>
+                            <p class="mt-4 text-slate-600 dark:text-gray-300" data-lang-en="Join us for a day of planting new trees and cleaning up the public parks in the beautiful village of Sidi Bou Said." data-lang-ar="انضم إلينا في يوم لزراعة أشجار جديدة وتنظيف الحدائق العامة في قرية سيدي بوسعيد الجميلة.">Join us for a day of planting new trees and cleaning up the public parks in the beautiful village of Sidi Bou Said.</p>
+                            <div class="mt-4 text-sm text-slate-500 dark:text-gray-400">
+                                <p><strong data-lang-en="Date:" data-lang-ar="التاريخ:">Date:</strong> Sat, August 9, 2025</p>
+                                <p><strong data-lang-en="Time:" data-lang-ar="الوقت:">Time:</strong> 9:30 AM - 1:00 PM</p>
+                                <p><strong data-lang-en="Location:" data-lang-ar="الموقع:">Location:</strong> Main Park, Sidi Bou Said</p>
+                            </div>
+                        </div>
+                        <button class="mt-6 text-white btn-gradient font-bold py-3 px-6 rounded-full w-full" data-lang-en="Register Now" data-lang-ar="سجل الآن">Register Now</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="bg-slate-800 text-white py-10 mt-20">
+        <div class="container mx-auto px-6 text-center">
+            <a href="index.html" class="text-2xl font-bold">♻️ SmartSort<span class="text-green-400">Secure</span></a>
+            <p class="mt-4 text-slate-400" data-lang-en="Making sustainability simple and secure. A project for a cleaner Tunisia." data-lang-ar="نجعلو في الإستدامة حاجة ساهلة ومؤمنة. مشروع لتونس أنظف.">Making sustainability simple and secure. A project for a cleaner Tunisia.</p>
+            <div class="mt-6">
+                <a href="#" class="text-slate-400 hover:text-white mx-3" data-lang-en="Contact" data-lang-ar="اتصل بنا">Contact</a>
+                <a href="#" class="text-slate-400 hover:text-white mx-3" data-lang-en="Privacy Policy" data-lang-ar="سياسة الخصوصية">Privacy Policy</a>
+            </div>
+            <p class="mt-6 text-sm text-slate-500">&copy; 2025 SmartSort Secure. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Caching Elements ---
+            const langToggle = document.getElementById('lang-toggle');
+            const translatableElements = document.querySelectorAll('[data-lang-en]');
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const darkIcon = document.getElementById('theme-toggle-dark-icon');
+            const lightIcon = document.getElementById('theme-toggle-light-icon');
+            const animatedCards = document.querySelectorAll('.event-card');
+
+            // --- Language Logic ---
+            const setLanguage = (lang) => {
+                translatableElements.forEach(el => {
+                    // Use innerHTML because some elements might have <strong> tags etc.
+                    const text = el.getAttribute(`data-lang-${lang}`);
+                    if (text) { el.innerHTML = text; }
+                });
+                document.documentElement.lang = lang;
+                document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+                localStorage.setItem('language', lang);
+            };
+
+            if (langToggle) {
+                langToggle.addEventListener('click', () => {
+                    const currentLang = localStorage.getItem('language') || 'en';
+                    const newLang = currentLang === 'en' ? 'ar' : 'en';
+                    setLanguage(newLang);
+                });
+            }
+
+            // --- Dark Mode Logic ---
+            const applyTheme = (theme) => {
+                document.documentElement.classList.toggle('dark', theme === 'dark');
+                if (darkIcon && lightIcon) {
+                    darkIcon.classList.toggle('hidden', theme !== 'dark');
+                    lightIcon.classList.toggle('hidden', theme === 'dark');
+                }
+            };
+
+            if (themeToggleBtn) {
+                themeToggleBtn.addEventListener('click', () => {
+                    const newTheme = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+                    localStorage.setItem('theme', newTheme);
+                    applyTheme(newTheme);
+                });
+            }
+
+            // --- Scroll Animation Logic ---
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            animatedCards.forEach(card => observer.observe(card));
+
+            // --- Initial Load ---
+            const initialLang = localStorage.getItem('language') || 'en';
+            setLanguage(initialLang);
+            const initialTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            applyTheme(initialTheme);
+        });
+    </script>
+</body>
+</html>

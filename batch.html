@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-translate-key="page_title">SmartSort @Home - Batch Scanning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♻️</text></svg>">
+    <style>
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; }
+        html[dir="rtl"] body { font-family: 'Tajawal', sans-serif; }
+        .hero-batch {
+            background-color: #1e293b;
+             background-image: radial-gradient(circle at 10% 20%, rgba(34, 211, 238, 0.2), transparent 40%),
+                              radial-gradient(circle at 90% 80%, rgba(59, 130, 246, 0.2), transparent 40%);
+        }
+        .btn-primary { background: linear-gradient(90deg, #14b8a6 0%, #34d399 100%); transition: all 0.3s ease; }
+        .btn-primary:hover { box-shadow: 0 10px 20px -5px rgba(16, 185, 129, 0.4); transform: translateY(-3px) scale(1.05); }
+        .btn-primary:disabled { background: #9ca3af; cursor: not-allowed; transform: none; box-shadow: none; }
+        .step-card { background: rgba(255,255,255, 0.05); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); transition: transform 0.3s, background-color 0.3s; }
+        .step-card:hover { transform: translateY(-10px); }
+        #toast-notification { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); transition: bottom 0.5s ease-in-out; z-index: 100; }
+        #toast-notification.show { bottom: 20px; }
+        .item-enter { animation: item-enter-anim 0.5s ease-out; }
+        @keyframes item-enter-anim { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-300">
+
+    <header class="bg-white/10 dark:bg-slate-900/10 backdrop-blur-lg sticky top-0 left-0 right-0 z-50 border-b border-slate-200/20 dark:border-slate-800/20">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold text-white">
+                ♻️ SmartSort<span class="text-green-400">Secure</span>
+            </a>
+            <div class="flex items-center space-x-4">
+                <a href="index.html" class="font-medium text-slate-300 hover:text-white transition-colors" data-translate-key="nav_back_to_home">← Back to Home</a>
+                
+                <button id="lang-switcher" title="Switch Language" class="flex items-center justify-center space-x-2 py-2 px-3 rounded-full bg-slate-100/10 hover:bg-slate-100/20 text-white border border-slate-300/20 transform active:scale-95 transition-transform">
+                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg>
+                    <span class="font-semibold text-sm">EN / AR</span>
+                </button>
+                
+                <button id="theme-toggle" type="button" class="text-slate-400 hover:text-white bg-white/10 hover:bg-white/20 rounded-lg text-sm p-2.5">
+                    <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                    <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm-.707 7.072l.707-.707a1 1 0 10-1.414-1.414l-.707.707a1 1 0 001.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path></svg>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero-batch text-white text-center py-20">
+            <div class="container mx-auto px-6">
+                 <h1 class="text-4xl md:text-5xl font-extrabold" data-translate-key="hero_title">SmartSort @Home 🏠</h1>
+                 <p class="text-slate-300 mt-4 text-lg max-w-2xl mx-auto" data-translate-key="hero_subtitle">Recycling on your schedule. Scan items at home, then deposit the whole batch at once for a big reward.</p>
+            </div>
+        </section>
+
+        <section class="py-20 bg-slate-900/50">
+            <div class="container mx-auto px-6">
+                <div class="text-center text-white mb-12">
+                    <h2 class="text-3xl font-bold" data-translate-key="how_title">How it Works</h2>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 text-white">
+                    <div class="step-card rounded-2xl p-8 text-center">
+                        <div class="text-6xl mb-4">📱</div>
+                        <h3 class="text-xl font-bold mb-2" data-translate-key="how_step1_title">1. Scan at Home</h3>
+                        <p class="text-slate-300" data-translate-key="how_step1_desc">Use the scanner below to identify items as you finish with them. We'll add them to your Virtual Bag.</p>
+                    </div>
+                     <div class="step-card rounded-2xl p-8 text-center">
+                        <div class="text-6xl mb-4">🛍️</div>
+                        <h3 class="text-xl font-bold mb-2" data-translate-key="how_step2_title">2. Fill Your Bag</h3>
+                        <p class="text-slate-300" data-translate-key="how_step2_desc">Collect your recyclables in a real bag. Your virtual bag in the app will match what you've collected.</p>
+                    </div>
+                     <div class="step-card rounded-2xl p-8 text-center">
+                        <div class="text-6xl mb-4">📤</div>
+                        <h3 class="text-xl font-bold mb-2" data-translate-key="how_step3_title">3. Deposit & Earn</h3>
+                        <p class="text-slate-300" data-translate-key="how_step3_desc">Visit a public bin, scan its QR code, and earn points for your entire batch at once!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="py-20">
+            <div class="container mx-auto px-6 mt-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8">
+                     <h2 class="text-3xl font-bold text-slate-800 dark:text-white" data-translate-key="scanner_title">Start Your Batch Scan</h2>
+                     <div class="mt-6 flex flex-col md:flex-row items-center gap-8">
+                        <div class="w-full h-80 bg-slate-900 dark:bg-black rounded-lg flex items-center justify-center text-white border-4 border-slate-300 dark:border-slate-700 overflow-hidden relative" id="camera-container">
+                            <div id="camera-placeholder" class="text-center p-4"><p class="text-4xl mb-2">📷</p><p class="font-medium" data-translate-key="camera_placeholder">Press 'Start' to begin</p></div>
+                             <div id="loading-overlay" class="absolute inset-0 bg-black/50 hidden flex-col items-center justify-center"><svg class="animate-spin h-8 w-8 text-white" fill="none" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z..."></path></svg><p data-translate-key="camera_loading">Loading AI...</p></div>
+                        </div>
+                        <div id="label-container" class="w-full md:w-1/3 text-center text-lg font-semibold dark:text-slate-200 text-slate-800"></div>
+                     </div>
+                     <div class="mt-6 flex justify-center gap-4">
+                        <button id="start-scan-btn" class="text-white btn-primary font-bold py-3 px-8 rounded-full shadow-lg" data-translate-key="button_start_scan">Start Scanning</button>
+                        <button id="stop-scan-btn" class="bg-slate-200 dark:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold py-3 px-8 rounded-full shadow-lg" data-translate-key="button_stop_scan">Stop Scanning</button>
+                     </div>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8">
+                    <h2 class="text-3xl font-bold text-slate-800 dark:text-white mb-6" data-translate-key="bag_title">Virtual Bag 🛍️</h2>
+                    <div id="virtual-bag-items" class="space-y-4"></div>
+                    <div id="empty-bag-message" class="text-center py-12 text-slate-500 dark:text-slate-400">
+                        <p class="text-4xl">🤷</p><p class="mt-2" data-translate-key="bag_empty">Your bag is empty.</p>
+                    </div>
+                    <div class="border-t border-slate-200 dark:border-slate-700 mt-6 pt-6">
+                        <div class="flex justify-between items-center text-xl font-bold">
+                            <span data-translate-key="bag_total_points">Total Points:</span>
+                            <span id="total-points" class="text-green-600 dark:text-green-400">0</span>
+                        </div>
+                    </div>
+                    <a href="deposit.html" id="deposit-btn" class="mt-6 text-white bg-blue-600 hover:bg-blue-700 font-bold py-4 px-6 rounded-full w-full text-center text-lg block transition-opacity">
+                        <span data-translate-key="button_deposit">Deposit Bag & Claim Points</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <div id="toast-notification" class="bg-green-500 text-white font-bold py-3 px-6 rounded-full shadow-lg">
+        <span id="toast-message"></span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // --- START: LANGUAGE SWITCHER LOGIC ---
+            const translations = {
+                en: {
+                    page_title: "SmartSort @Home - Batch Scanning",
+                    nav_back_to_home: "← Back to Home",
+                    hero_title: "SmartSort @Home 🏠",
+                    hero_subtitle: "Recycling on your schedule. Scan items at home, then deposit the whole batch at once for a big reward.",
+                    how_title: "How it Works",
+                    how_step1_title: "1. Scan at Home",
+                    how_step1_desc: "Use the scanner below to identify items as you finish with them. We'll add them to your Virtual Bag.",
+                    how_step2_title: "2. Fill Your Bag",
+                    how_step2_desc: "Collect your recyclables in a real bag. Your virtual bag in the app will match what you've collected.",
+                    how_step3_title: "3. Deposit & Earn",
+                    how_step3_desc: "Visit a public bin, scan its QR code, and earn points for your entire batch at once!",
+                    scanner_title: "Start Your Batch Scan",
+                    camera_placeholder: "Press 'Start' to begin",
+                    camera_loading: "Loading AI...",
+                    button_start_scan: "Start Scanning",
+                    button_stop_scan: "Stop Scanning",
+                    bag_title: "Virtual Bag 🛍️",
+                    bag_empty: "Your bag is empty.",
+                    bag_total_points: "Total Points:",
+                    button_deposit: "Deposit Bag & Claim Points",
+                    label_analyzing: "Analyzing...",
+                    label_seeing: "Seeing",
+                    label_found: "✅ Found",
+                    toast_added: "Added 1",
+                    toast_to_bag: "to your bag!",
+                    toast_camera_failed: "Failed to start camera."
+                },
+                ar: {
+                    page_title: "SmartSort @Home - مسح الدفعات",
+                    nav_back_to_home: "← العودة إلى الرئيسية",
+                    hero_title: "SmartSort في المنزل 🏠",
+                    hero_subtitle: "إعادة التدوير حسب جدولك. امسح العناصر في المنزل، ثم أودع الدفعة بأكملها مرة واحدة للحصول على مكافأة كبيرة.",
+                    how_title: "كيف يعمل",
+                    how_step1_title: "١. المسح في المنزل",
+                    how_step1_desc: "استخدم الماسح الضوئي أدناه لتحديد العناصر عند الانتهاء منها. سنضيفها إلى حقيبتك الافتراضية.",
+                    how_step2_title: "٢. املأ حقيبتك",
+                    how_step2_desc: "اجمع المواد القابلة لإعادة التدوير في حقيبة حقيقية. ستتطابق حقيبتك الافتراضية في التطبيق مع ما جمعته.",
+                    how_step3_title: "٣. الإيداع والكسب",
+                    how_step3_desc: "قم بزيارة حاوية عامة، وامسح رمز الاستجابة السريعة الخاص بها، واكسب نقاطًا مقابل دفعتك بأكملها مرة واحدة!",
+                    scanner_title: "ابدأ مسح دفعتك",
+                    camera_placeholder: "اضغط على 'ابدأ' للبدء",
+                    camera_loading: "جاري تحميل الذكاء الاصطناعي...",
+                    button_start_scan: "بدء المسح",
+                    button_stop_scan: "إيقاف المسح",
+                    bag_title: "الحقيبة الافتراضية 🛍️",
+                    bag_empty: "حقيبتك فارغة.",
+                    bag_total_points: "مجموع النقاط:",
+                    button_deposit: "إيداع الحقيبة والحصول على النقاط",
+                    label_analyzing: "جاري التحليل...",
+                    label_seeing: "أرى",
+                    label_found: "✅ تم العثور على",
+                    toast_added: "تمت إضافة 1",
+                    toast_to_bag: "إلى حقيبتك!",
+                    toast_camera_failed: "فشل في بدء تشغيل الكاميرا."
+                }
+            };
+
+            const langSwitcherBtn = document.getElementById('lang-switcher');
+            let currentLanguage = localStorage.getItem('language') || 'en';
+
+            const setLanguage = (lang) => {
+                currentLanguage = lang;
+                localStorage.setItem('language', lang);
+                document.documentElement.lang = lang;
+                document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+
+                document.querySelectorAll('[data-translate-key]').forEach(element => {
+                    const key = element.getAttribute('data-translate-key');
+                    if (translations[lang][key]) {
+                        element.textContent = translations[lang][key];
+                    }
+                });
+                updateVirtualBagUI(); // Re-render the bag UI with translated text
+            };
+
+            langSwitcherBtn.addEventListener('click', () => {
+                const newLang = currentLanguage === 'en' ? 'ar' : 'en';
+                setLanguage(newLang);
+            });
+            // --- END: LANGUAGE SWITCHER LOGIC ---
+
+
+            // --- Original Page Logic (Untouched and Integrated) ---
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const startButton = document.getElementById('start-scan-btn');
+            const stopButton = document.getElementById('stop-scan-btn');
+            const cameraContainer = document.getElementById('camera-container');
+            const cameraPlaceholder = document.getElementById('camera-placeholder');
+            const loadingOverlay = document.getElementById('loading-overlay');
+            const labelContainer = document.getElementById('label-container');
+            const virtualBagItemsEl = document.getElementById('virtual-bag-items');
+            const emptyBagMessageEl = document.getElementById('empty-bag-message');
+            const totalPointsEl = document.getElementById('total-points');
+            const depositBtn = document.getElementById('deposit-btn');
+            const toast = document.getElementById('toast-notification');
+            const toastMessage = document.getElementById('toast-message');
+
+            const SERVER_URL = 'http://localhost:3000/identify-item-with-gemini';
+            const RECYCLABLE_CLASSES = ['plastic', 'glass', 'paper', 'metal'];
+            let isCameraActive = false;
+            let videoElement;
+            let analysisLoop;
+            let isLogging = false;
+
+            const applyTheme = (theme) => {
+                const isDark = theme === 'dark';
+                document.documentElement.classList.toggle('dark', isDark);
+                const darkIcon = document.getElementById('theme-toggle-dark-icon');
+                const lightIcon = document.getElementById('theme-toggle-light-icon');
+                if(darkIcon) darkIcon.classList.toggle('hidden', isDark);
+                if(lightIcon) lightIcon.classList.toggle('hidden', !isDark);
+            };
+
+            if(themeToggleBtn) {
+                themeToggleBtn.addEventListener('click', () => {
+                    const newTheme = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+                    localStorage.setItem('theme', newTheme);
+                    applyTheme(newTheme);
+                });
+            }
+            
+            function updateVirtualBagUI() {
+                const virtualBag = JSON.parse(localStorage.getItem('virtualBag') || '{}');
+                virtualBagItemsEl.innerHTML = '';
+                let totalPoints = 0;
+                const hasItems = Object.keys(virtualBag).length > 0;
+
+                if (hasItems) {
+                    emptyBagMessageEl.classList.add('hidden');
+                    depositBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                    depositBtn.href = 'deposit.html';
+                    Object.entries(virtualBag).forEach(([item, count]) => {
+                        const points = count * 10;
+                        totalPoints += points;
+                        const itemEl = document.createElement('div');
+                        itemEl.className = 'flex justify-between items-center text-lg item-enter';
+                        itemEl.innerHTML = `<span class="capitalize">${item}</span><span class="font-bold">${count} &times; 10 = ${points} pts</span>`;
+                        virtualBagItemsEl.appendChild(itemEl);
+                    });
+                } else {
+                    emptyBagMessageEl.classList.remove('hidden');
+                    depositBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                    depositBtn.href = '#';
+                }
+                totalPointsEl.textContent = totalPoints;
+            }
+
+            function showToast(message) {
+                toastMessage.textContent = message;
+                toast.classList.add('show');
+                setTimeout(() => { toast.classList.remove('show'); }, 3000);
+            }
+
+            async function startCamera() {
+                if (isCameraActive) return;
+                loadingOverlay.style.display = 'flex';
+                cameraPlaceholder.classList.add('hidden');
+                startButton.disabled = true;
+                stopButton.disabled = false;
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                    videoElement = document.createElement('video');
+                    videoElement.srcObject = stream;
+                    videoElement.playsInline = true; videoElement.autoplay = true; videoElement.muted = true;
+                    videoElement.style.cssText = 'width:100%; height:100%; object-fit:cover;';
+                    cameraContainer.appendChild(videoElement);
+                    isCameraActive = true;
+                    analysisLoop = requestAnimationFrame(analyzeFrame);
+                } catch (e) {
+                    showToast(translations[currentLanguage].toast_camera_failed);
+                    stopCamera();
+                } finally {
+                    loadingOverlay.style.display = 'none';
+                }
+            }
+
+            function stopCamera() {
+                if (videoElement?.srcObject) videoElement.srcObject.getTracks().forEach(track => track.stop());
+                if (videoElement) videoElement.remove();
+                if (analysisLoop) cancelAnimationFrame(analysisLoop);
+                isCameraActive = false; videoElement = null;
+                cameraPlaceholder.classList.remove('hidden');
+                labelContainer.innerHTML = '';
+                startButton.disabled = false;
+                stopButton.disabled = true;
+            }
+
+            let lastAnalysisTime = 0;
+            async function analyzeFrame(timestamp) {
+                if (!isCameraActive) return;
+
+                analysisLoop = requestAnimationFrame(analyzeFrame);
+                
+                if (timestamp - lastAnalysisTime < 2000) return;
+                lastAnalysisTime = timestamp;
+
+                if (isLogging) return;
+
+                const canvas = document.createElement('canvas');
+                canvas.width = videoElement.videoWidth; canvas.height = videoElement.videoHeight;
+                canvas.getContext('2d').drawImage(videoElement, 0, 0);
+                const imageDataUrl = canvas.toDataURL('image/jpeg');
+                
+                try {
+                    labelContainer.textContent = translations[currentLanguage].label_analyzing;
+                    const response = await fetch(SERVER_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ image: imageDataUrl }) });
+                    if (!response.ok) throw new Error('Analysis failed');
+                    const result = await response.json();
+                    const item = result.item?.toLowerCase().trim() || 'other';
+                    
+                    if (RECYCLABLE_CLASSES.includes(item)) {
+                        isLogging = true;
+                        labelContainer.innerHTML = `${translations[currentLanguage].label_found}: <span class="font-bold capitalize text-green-500">${item}</span>`;
+                        addItemToBag(item);
+                        setTimeout(() => { isLogging = false; labelContainer.innerHTML = ''; }, 2000);
+                    } else {
+                         labelContainer.innerHTML = `${translations[currentLanguage].label_seeing}: <span class="font-bold capitalize">${item}</span>`;
+                    }
+                } catch (error) {
+                    console.error("Analysis failed:", error);
+                    labelContainer.textContent = '...';
+                }
+            }
+
+            function addItemToBag(item) {
+                const virtualBag = JSON.parse(localStorage.getItem('virtualBag') || '{}');
+                virtualBag[item] = (virtualBag[item] || 0) + 1;
+                localStorage.setItem('virtualBag', JSON.stringify(virtualBag));
+                showToast(`✅ ${translations[currentLanguage].toast_added} 1 ${item} ${translations[currentLanguage].toast_to_bag}`);
+                updateVirtualBagUI();
+            }
+            
+            // --- Initial Page Load ---
+            applyTheme(localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+            setLanguage(currentLanguage); // Sets language and calls updateVirtualBagUI()
+            
+            startButton.addEventListener('click', startCamera);
+            stopButton.addEventListener('click', stopCamera);
+            stopButton.disabled = true;
+        });
+    </script>
+</body>
+</html>
