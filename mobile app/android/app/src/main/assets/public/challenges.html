@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSort - Community Challenges</title>
+    
+    <script src="vendor/js/tailwindcss.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-image: linear-gradient(to bottom right, #0f0e17, #1f1b3c, #0f0e17); color: #ffffff; }
+        .glass-card { background-color: rgba(23, 22, 34, 0.75); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .animate-fade-in-up { opacity: 0; transform: translateY(20px); animation: fadeInUp 0.6s ease-out forwards; }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        
+        .progress-bar { background-color: rgba(0, 0, 0, 0.3); border-radius: 9999px; overflow: hidden; }
+        .progress-bar-inner { background: linear-gradient(to right, #22d3ee, #a855f7); height: 100%; border-radius: 9999px; transition: width 1.5s ease-out; }
+
+        .leaderboard-item.is-user { background-color: rgba(168, 85, 247, 0.2); border-left: 4px solid #a855f7; }
+        
+        /* New styles for the champion and challenge cards */
+        .champion-card { background: linear-gradient(to right, #facc15, #e11d48); }
+        .challenge-banner {
+            background-image: url('https://images.pexels.com/photos/159397/solar-panel-array-power-sun-electricity-159397.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        .challenge-banner::before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0; bottom: 0; left: 0;
+            background-color: rgba(15, 14, 23, 0.8); /* Dark overlay */
+            border-radius: 1rem;
+        }
+        .challenge-banner > * {
+            position: relative; /* Ensure content is above the overlay */
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-28">
+
+    <div class="container mx-auto px-4 py-6">
+        <header class="flex justify-between items-center mb-8 animate-fade-in-up" style="animation-delay: 0.1s;">
+            <a href="app.html" class="text-gray-400 hover:text-white p-2"><i class="fas fa-chevron-left fa-lg"></i></a>
+            <h1 class="text-xl font-bold text-white">Community Challenges</h1>
+            <div class="w-8"></div> </header>
+
+        <div class="champion-card rounded-2xl p-6 mb-8 text-center animate-fade-in-up" style="animation-delay: 0.2s;">
+            <h3 class="text-lg font-bold flex items-center justify-center gap-2">
+                <i class="fas fa-crown"></i> Last Month's Champion <i class="fas fa-crown"></i>
+            </h3>
+            <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="w-20 h-20 rounded-full mx-auto mt-4 mb-2 border-4 border-white/50 object-cover">
+            <p class="font-bold text-xl">Ahmed B.</p>
+            <p class="text-sm text-white/80 italic mt-2">"I'm so happy to contribute to a cleaner Tunisia!"</p>
+        </div>
+        
+        <div class="challenge-banner rounded-2xl mb-8 animate-fade-in-up" style="animation-delay: 0.3s;">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold">Tunis Plastics Drive</h2>
+                    <div class="text-right">
+                        <p class="font-bold text-cyan-400" id="time-remaining">-- days left</p>
+                    </div>
+                </div>
+                <p class="text-gray-300 mb-6">Let's work together to collect 5,000 kg of plastic bottles!</p>
+                
+                <div class="glass-card rounded-xl p-4 mb-6 flex items-center gap-4">
+                    <img src="https://images.pexels.com/photos/1029757/pexels-photo-1029757.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="w-20 h-20 rounded-lg object-cover">
+                    <div>
+                        <p class="text-sm font-bold text-yellow-400">GRAND PRIZE</p>
+                        <p class="text-lg font-bold">Brand New Tablet</p>
+                    </div>
+                </div>
+
+                <div class="progress-bar h-4 w-full mb-2">
+                    <div id="progress-bar-inner" class="progress-bar-inner" style="width: 0%;"></div>
+                </div>
+                <div class="flex justify-between text-sm font-medium">
+                    <span id="progress-text" class="text-gray-400">0 / 5,000 kg</span>
+                    <span id="progress-percent" class="text-white">0%</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-6 animate-fade-in-up" style="animation-delay: 0.4s;">
+            <h3 class="font-bold text-lg mb-4 text-white flex items-center gap-2"><i class="fas fa-trophy text-yellow-400"></i> Leaderboard</h3>
+            <div class="space-y-3">
+                <div class="leaderboard-item flex items-center bg-black/20 p-3 rounded-lg">
+                    <span class="font-bold text-lg w-8">1.</span>
+                    <i class="fas fa-user-circle text-2xl text-yellow-400 mr-3"></i>
+                    <span class="flex-1 font-semibold">GreenNinja</span>
+                    <span class="font-bold text-white">580 kg</span>
+                </div>
+                <div class="leaderboard-item flex items-center bg-black/20 p-3 rounded-lg">
+                    <span class="font-bold text-lg w-8">2.</span>
+                    <i class="fas fa-user-circle text-2xl text-gray-300 mr-3"></i>
+                    <span class="flex-1 font-semibold">RecycleMaster</span>
+                    <span class="font-bold text-white">512 kg</span>
+                </div>
+                <div class="leaderboard-item flex items-center bg-black/20 p-3 rounded-lg">
+                    <span class="font-bold text-lg w-8">3.</span>
+                    <i class="fas fa-user-circle text-2xl text-orange-400 mr-3"></i>
+                    <span class="flex-1 font-semibold">PlanetSaver</span>
+                    <span class="font-bold text-white">450 kg</span>
+                </div>
+                
+                <div class="text-center text-gray-500">...</div>
+
+                <div class="leaderboard-item is-user flex items-center p-3 rounded-lg">
+                    <span class="font-bold text-lg w-8">15.</span>
+                    <i class="fas fa-user-circle text-2xl text-purple-400 mr-3"></i>
+                    <span class="flex-1 font-semibold">You (EcoWarrior)</span>
+                    <span class="font-bold text-white">125 kg</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="fixed bottom-0 left-0 w-full animate-fade-in-up" style="animation-delay: 0.5s;">
+        <div class="mx-auto max-w-sm">
+            <div class="bg-gray-800/80 backdrop-blur-lg rounded-t-2xl sm:rounded-full px-4 py-3 flex items-center justify-around shadow-2xl relative">
+                <a href="app.html" class="w-12 h-12 rounded-full flex items-center justify-center bg-purple-600 text-white transition-colors"><i class="fas fa-home"></i></a>
+                <a href="analysis.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-chart-line"></i></a>
+                <a href="scan-options.html" class="w-16 h-16 -mt-10 rounded-full flex items-center justify-center bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-lg border-4 border-[#0f0e17]"><i class="fas fa-camera fa-lg"></i></a>
+                <a href="achievements.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-trophy"></i></a>
+                <a href="rewards.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-gift"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- Challenge Time Remaining ---
+        const timeRemainingEl = document.getElementById('time-remaining');
+        const today = new Date();
+        const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+        const daysLeft = Math.round((endOfMonth - today) / (1000 * 60 * 60 * 24));
+        timeRemainingEl.textContent = `${daysLeft} days left`;
+
+        // --- Challenge Progress Bar ---
+        const progressBarInner = document.getElementById('progress-bar-inner');
+        const progressText = document.getElementById('progress-text');
+        const progressPercent = document.getElementById('progress-percent');
+        
+        const currentAmount = 3450;
+        const goalAmount = 5000;
+        const percentComplete = (currentAmount / goalAmount) * 100;
+
+        // Animate the progress bar on load
+        setTimeout(() => {
+            progressBarInner.style.width = `${percentComplete}%`;
+        }, 300); // slight delay for animation
+
+        progressText.textContent = `${currentAmount.toLocaleString()} / ${goalAmount.toLocaleString()} kg`;
+        progressPercent.textContent = `${Math.round(percentComplete)}%`;
+    });
+    </script>
+</body>
+</html>

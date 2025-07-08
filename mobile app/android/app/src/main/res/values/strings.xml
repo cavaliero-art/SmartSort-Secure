@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">SmartSort Secure</string>
+    <string name="title_activity_main">SmartSort Secure</string>
+    <string name="package_name">com.smartsort.app</string>
+    <string name="custom_url_scheme">com.smartsort.app</string>
+</resources>

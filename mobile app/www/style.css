@@ -1,0 +1,45 @@
+/* Base Styling */
+body {
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #0c0a09; /* Dark base background for all pages */
+}
+
+/* Custom Glassmorphism Styles */
+.glass-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 1.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+.glass-header {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.glass-nav {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* Custom Animations from your project */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes ken-burns { 0% { transform: scale(1.1) } 100% { transform: scale(1) } }
+@keyframes bounce-gentle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes pulse-gentle { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+.animate-ken-burns { animation: ken-burns 20s ease-in-out infinite alternate; }
+.animate-bounce-gentle { animation: bounce-gentle 2s ease-in-out infinite; }
+.animate-pulse-gentle { animation: pulse-gentle 2.5s ease-in-out infinite; }
+
+/* General Transitions */
+button, a, div {
+    transition: color, background-color, border-color, opacity, transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}

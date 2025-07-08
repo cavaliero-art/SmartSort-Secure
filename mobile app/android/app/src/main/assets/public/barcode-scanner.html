@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSort - Barcode Scanner</title>
+    
+    <script src="vendor/js/tailwindcss.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #000; color: #ffffff; }
+        
+        #camera-feed {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1); /* Mirror effect */
+        }
+        
+        .scanner-window {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 30%;
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 1rem;
+        }
+
+        .scan-line {
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 100%;
+            height: 3px;
+            background: #ef4444; /* red */
+            box-shadow: 0 0 10px #ef4444;
+            animation: scanning 2s infinite linear;
+        }
+
+        @keyframes scanning {
+            0% { top: 10px; }
+            50% { top: calc(100% - 10px); }
+            100% { top: 10px; }
+        }
+        .animate-fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <div id="scanner-ui" class="relative w-screen h-screen">
+        <video id="camera-feed" autoplay playsinline></video>
+        <div class="scanner-window">
+            <div class="scan-line"></div>
+        </div>
+        <a href="scan-options.html" class="absolute top-6 left-6 text-white bg-black/50 p-3 rounded-full z-10">
+            <i class="fas fa-times fa-lg"></i>
+        </a>
+        <p class="absolute bottom-10 left-1/2 -translate-x-1/2 text-center w-full font-semibold bg-black/50 py-2">Point camera at a barcode</p>
+    </div>
+
+    <div id="results-ui" class="hidden animate-fade-in min-h-screen bg-gray-900 p-6 flex flex-col justify-center">
+        <div class="text-center mb-6">
+            <i class="fas fa-check-circle text-5xl text-green-500 mb-3"></i>
+            <h1 class="text-2xl font-bold">Scan Successful!</h1>
+        </div>
+
+        <div class="bg-gray-800 rounded-2xl p-6">
+            <div class="flex items-center gap-4 mb-6">
+                <img src="https://images.pexels.com/photos/5946968/pexels-photo-5946968.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="w-24 h-24 rounded-lg object-cover">
+                <div>
+                    <p class="text-sm text-gray-400">PRODUCT</p>
+                    <p class="text-xl font-bold">Mello's Corn Flakes</p>
+                </div>
+            </div>
+
+            <h3 class="font-bold text-lg mb-4">Packaging Breakdown:</h3>
+            <ul class="space-y-4">
+                <li class="flex items-center justify-between bg-gray-700/50 p-3 rounded-lg">
+                    <div>
+                        <p class="font-semibold">Cardboard Box</p>
+                        <p class="text-sm text-gray-400">Material: Paper</p>
+                    </div>
+                    <div class="flex items-center gap-2 text-green-400 font-bold">
+                        <i class="fas fa-check"></i>
+                        <span>Recyclable</span>
+                    </div>
+                </li>
+                <li class="flex items-center justify-between bg-gray-700/50 p-3 rounded-lg">
+                    <div>
+                        <p class="font-semibold">Inner Bag</p>
+                        <p class="text-sm text-gray-400">Material: #4 Plastic Film</p>
+                    </div>
+                    <div class="flex items-center gap-2 text-red-400 font-bold">
+                        <i class="fas fa-times"></i>
+                        <span>Not Recyclable</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        
+        <button id="scan-again-btn" class="mt-8 bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 px-6 rounded-full w-full">
+            Scan Another Item
+        </button>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const scannerUI = document.getElementById('scanner-ui');
+        const resultsUI = document.getElementById('results-ui');
+        const cameraFeed = document.getElementById('camera-feed');
+        const scanAgainBtn = document.getElementById('scan-again-btn');
+
+        let stream;
+
+        async function startCamera() {
+            try {
+                if (stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                }
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: 'environment' } 
+                });
+                cameraFeed.srcObject = stream;
+            } catch (error) {
+                console.error("Error accessing camera:", error);
+                alert("Could not access the camera. Please ensure you have given permission.");
+            }
+        }
+
+        function showResults() {
+            // Stop the camera
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+            // Switch UIs
+            scannerUI.classList.add('hidden');
+            resultsUI.classList.remove('hidden');
+        }
+
+        // --- Main Logic ---
+        startCamera();
+        
+        // Simulate a scan after 4 seconds
+        setTimeout(() => {
+            showResults();
+        }, 4000);
+
+        // Event listener for the "Scan Again" button
+        scanAgainBtn.addEventListener('click', () => {
+            window.location.reload();
+        });
+    });
+    </script>
+</body>
+</html>

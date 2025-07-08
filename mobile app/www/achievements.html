@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSort - Achievements</title>
+    <!-- Back to reliable CDNs to fix all issues -->
+    <script src="vendor/js/tailwindcss.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-image: linear-gradient(to bottom right, #0f0e17, #1f1b3c, #0f0e17); color: #ffffff; }
+        .glass-card { background-color: rgba(23, 22, 34, 0.6); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border: 1px solid rgba(255, 255, 255, 0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .animate-fade-in-up { opacity: 0; transform: translateY(20px); animation: fadeInUp 0.6s ease-out forwards; }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        .achievement-badge { transition: transform 0.3s ease; }
+        .achievement-badge.locked { filter: grayscale(80%); opacity: 0.6; }
+        .achievement-badge:not(.locked):hover { transform: scale(1.05); }
+        .progress-bar { background-color: rgba(255, 255, 255, 0.1); border-radius: 9999px; overflow: hidden; }
+        .progress-bar-inner { background: linear-gradient(to right, #a855f7, #ec4899); height: 100%; border-radius: 9999px; transition: width 0.5s ease-in-out; }
+        .tab-btn { padding: 8px 16px; border-radius: 9999px; font-weight: 600; color: #9ca3af; transition: all 0.3s ease; }
+        .tab-btn.active { color: #ffffff; background-color: rgba(255, 255, 255, 0.1); }
+    </style>
+</head>
+<body class="min-h-screen pb-28">
+    <div class="container mx-auto px-4 py-6">
+        <header class="flex justify-between items-center mb-6 animate-fade-in-up" style="animation-delay: 0.1s;">
+            <a href="app.html" class="text-gray-400 hover:text-white p-2"><i class="fas fa-chevron-left fa-lg"></i></a>
+            <h1 class="text-xl font-bold text-white">Achievements</h1>
+            <div class="w-8"></div>
+        </header>
+        <div class="glass-card rounded-2xl p-6 mb-8 shadow-lg animate-fade-in-up" style="animation-delay: 0.2s;">
+            <h3 class="font-bold text-lg mb-4 text-white">In Progress</h3>
+            <div class="flex items-center">
+                <div class="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-xl flex items-center justify-center mr-4 text-3xl shadow-lg"><i class="fas fa-leaf"></i></div>
+                <div class="flex-1">
+                    <p class="font-bold text-white">Plastic Pioneer</p>
+                    <p class="text-sm text-gray-300 mb-2">Recycle 50 plastic items</p>
+                    <div class="progress-bar h-2.5"><div class="progress-bar-inner" style="width: 60%;"></div></div>
+                </div>
+                <p class="ml-4 font-bold text-lg text-white">30/50</p>
+            </div>
+        </div>
+        <div class="flex justify-center gap-2 mb-6 animate-fade-in-up" style="animation-delay: 0.3s;">
+            <button class="tab-btn active">All</button>
+            <button class="tab-btn">Earned</button>
+            <button class="tab-btn">Locked</button>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 animate-fade-in-up" style="animation-delay: 0.4s;">
+            <div class="achievement-badge glass-card rounded-xl p-4 text-center">
+                <div class="w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full mx-auto flex items-center justify-center text-3xl mb-2 shadow-md"><i class="fas fa-seedling"></i></div>
+                <p class="font-bold text-sm">First Step</p>
+                <p class="text-xs text-gray-400">Recycled your first item</p>
+            </div>
+            <div class="achievement-badge glass-card rounded-xl p-4 text-center">
+                <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full mx-auto flex items-center justify-center text-3xl mb-2 shadow-md"><i class="fas fa-star"></i></div>
+                <p class="font-bold text-sm">Streak Starter</p>
+                <p class="text-xs text-gray-400">Recycled 3 days in a row</p>
+            </div>
+            <div class="achievement-badge locked glass-card rounded-xl p-4 text-center">
+                <div class="w-16 h-16 bg-gray-700 rounded-full mx-auto flex items-center justify-center text-3xl mb-2"><i class="fas fa-gem"></i></div>
+                <p class="font-bold text-sm">Glass Guru</p>
+                <p class="text-xs text-gray-400">Recycle 25 glass items</p>
+            </div>
+            <div class="achievement-badge locked glass-card rounded-xl p-4 text-center">
+                <div class="w-16 h-16 bg-gray-700 rounded-full mx-auto flex items-center justify-center text-3xl mb-2"><i class="fas fa-crown"></i></div>
+                <p class="font-bold text-sm">Recycling Royalty</p>
+                <p class="text-xs text-gray-400">Recycle 1000 items</p>
+            </div>
+            <div class="achievement-badge glass-card rounded-xl p-4 text-center">
+                <div class="w-16 h-16 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-full mx-auto flex items-center justify-center text-3xl mb-2 shadow-md"><i class="fas fa-users"></i></div>
+                <p class="font-bold text-sm">Community Player</p>
+                <p class="text-xs text-gray-400">Joined a challenge</p>
+            </div>
+            <div class="achievement-badge locked glass-card rounded-xl p-4 text-center">
+                <div class="w-16 h-16 bg-gray-700 rounded-full mx-auto flex items-center justify-center text-3xl mb-2"><i class="fas fa-bolt"></i></div>
+                <p class="font-bold text-sm">Metal Master</p>
+                <p class="text-xs text-gray-400">Recycle 50 metal items</p>
+            </div>
+        </div>
+    </div>
+    <div class="fixed bottom-0 left-0 w-full animate-fade-in-up" style="animation-delay: 0.6s;">
+        <div class="mx-auto max-w-sm">
+            <div class="bg-gray-800/80 backdrop-blur-lg rounded-t-2xl sm:rounded-full px-4 py-3 flex items-center justify-around shadow-2xl">
+                <a href="app.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-home"></i></a>
+                <a href="analysis.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-chart-line"></i></a>
+                <a href="scan-options.html" class="w-16 h-16 -mt-10 rounded-full flex items-center justify-center bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-lg border-4 border-[#0f0e17]"><i class="fas fa-camera fa-lg"></i></a>
+                <a href="achievements.html" class="w-12 h-12 rounded-full flex items-center justify-center bg-purple-600 text-white transition-colors"><i class="fas fa-trophy"></i></a>
+                <a href="rewards.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-gift"></i></a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

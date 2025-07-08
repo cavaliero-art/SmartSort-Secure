@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSort - Recyclability Check</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-image: linear-gradient(to bottom right, #0f0e17, #1f1b3c, #0f0e17); color: #ffffff; }
+        .glass-card { background-color: rgba(23, 22, 34, 0.6); backdrop-filter: blur(20px) saturate(180%); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .animate-fade-in-up { opacity: 0; transform: translateY(20px); animation: fadeInUp 0.6s ease-out forwards; }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        .upload-area { border: 2px dashed rgba(255, 255, 255, 0.2); transition: all 0.3s ease; }
+        .upload-area.dragover { border-color: #a855f7; background-color: rgba(168, 85, 247, 0.1); }
+        .btn-analyze { background: linear-gradient(to right, #8b5cf6, #d946ef); transition: all 0.3s ease; }
+        .btn-analyze:hover:not(:disabled) { box-shadow: 0 4px 20px rgba(217, 70, 239, 0.4); transform: translateY(-2px); }
+        .btn-analyze:disabled { background: rgba(255, 255, 255, 0.1); cursor: not-allowed; opacity: 0.5; }
+        .result-card { max-height: 0; opacity: 0; overflow: hidden; transition: all 0.5s ease-out; border-left-width: 4px; }
+        .result-card.show { max-height: 500px; opacity: 1; padding: 1.5rem; margin-top: 1.5rem; }
+    </style>
+</head>
+<body class="min-h-screen pb-28 flex flex-col">
+    <div class="container mx-auto px-4 py-6 flex-1 flex flex-col justify-center">
+        <header class="text-center mb-8 animate-fade-in-up" style="animation-delay: 0.1s;">
+            <a href="scan-options.html" class="inline-block text-gray-400 hover:text-white mb-4"><i class="fas fa-chevron-left"></i> Back to Options</a>
+            <h1 class="text-3xl font-bold text-white">Recyclability Check</h1>
+            <p class="text-lg text-gray-300 mt-2">Upload a photo to see if an item is recyclable.</p>
+        </header>
+        <div class="glass-card rounded-2xl p-6 shadow-lg animate-fade-in-up" style="animation-delay: 0.3s;">
+            <div id="upload-area" class="upload-area rounded-lg p-8 text-center cursor-pointer">
+                <input type="file" id="image-upload" class="hidden" accept="image/*">
+                <div id="upload-prompt">
+                    <i class="fas fa-upload text-4xl text-purple-400"></i>
+                    <p class="font-semibold mt-4">Click to upload or drag & drop</p>
+                </div>
+                <div id="image-preview-container" class="hidden relative">
+                    <img id="image-preview" src="#" alt="Image Preview" class="max-h-60 mx-auto rounded-lg shadow-md">
+                    <button id="remove-image-btn" class="absolute top-2 right-2 bg-black/50 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-black/80"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+            <div class="mt-6 text-center">
+                 <button id="analyze-btn" class="btn-analyze text-white font-bold py-3 px-12 rounded-full shadow-lg text-lg w-full md:w-auto" disabled>
+                    <span id="analyze-btn-text"><i class="fas fa-microchip mr-2"></i> Analyze</span>
+                    <span id="loading-spinner" class="hidden"><i class="fas fa-spinner fa-spin mr-2"></i>Analyzing...</span>
+                </button>
+            </div>
+            <div id="result-card" class="result-card rounded-lg">
+                <h3 class="font-bold text-xl" id="result-title"></h3>
+                <p class="mt-2" id="result-description"></p>
+            </div>
+        </div>
+    </div>
+    <!-- Bottom Navigation -->
+    <div class="fixed bottom-0 left-0 w-full animate-fade-in-up" style="animation-delay: 0.5s;">
+         <div class="mx-auto max-w-sm">
+             <div class="bg-gray-800/80 backdrop-blur-lg rounded-t-2xl sm:rounded-full px-4 py-3 flex items-center justify-around shadow-2xl">
+                <a href="app.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-home"></i></a>
+                <a href="analysis.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-chart-line"></i></a>
+                <a href="scan-options.html" class="w-16 h-16 -mt-10 rounded-full flex items-center justify-center bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-lg border-4 border-[#0f0e17]"><i class="fas fa-camera fa-lg"></i></a>
+                <a href="achievements.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-trophy"></i></a>
+                <a href="rewards.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-gift"></i></a>
+            </div>
+        </div>
+    </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- ELEMENT CACHING ---
+        const uploadArea = document.getElementById('upload-area');
+        const uploadInput = document.getElementById('image-upload');
+        const uploadPrompt = document.getElementById('upload-prompt');
+        const previewContainer = document.getElementById('image-preview-container');
+        const previewImage = document.getElementById('image-preview');
+        const removeImageBtn = document.getElementById('remove-image-btn');
+        const analyzeBtn = document.getElementById('analyze-btn');
+        const analyzeBtnText = document.getElementById('analyze-btn-text');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        const resultCard = document.getElementById('result-card');
+        const resultTitle = document.getElementById('result-title');
+        const resultDescription = document.getElementById('result-description');
+
+        let uploadedFile = null;
+        const SERVER_URL = 'http://localhost:3000/identify-and-log';
+
+        // --- FILE HANDLING & UTILITIES ---
+        const toBase64 = file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = error => reject(error);
+        });
+
+        function handleFile(file) {
+            if (file && file.type.startsWith('image/')) {
+                uploadedFile = file;
+                previewImage.src = URL.createObjectURL(file);
+                uploadPrompt.classList.add('hidden');
+                previewContainer.classList.remove('hidden');
+                analyzeBtn.disabled = false;
+                resultCard.classList.remove('show');
+            }
+        }
+        
+        function resetUpload() {
+            uploadedFile = null;
+            uploadInput.value = '';
+            previewImage.src = '#';
+            previewContainer.classList.add('hidden');
+            uploadPrompt.classList.remove('hidden');
+            analyzeBtn.disabled = true;
+            resultCard.classList.remove('show');
+        }
+
+        // --- EVENT LISTENERS ---
+        uploadArea.addEventListener('click', () => uploadInput.click());
+        uploadInput.addEventListener('change', (e) => handleFile(e.target.files[0]));
+        uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.classList.add('dragover'); });
+        uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+        uploadArea.addEventListener('drop', (e) => { e.preventDefault(); uploadArea.classList.remove('dragover'); handleFile(e.dataTransfer.files[0]); });
+        removeImageBtn.addEventListener('click', resetUpload);
+
+        analyzeBtn.addEventListener('click', async () => {
+            if (!uploadedFile) return;
+
+            setLoading(true);
+            try {
+                const base64ImageData = await toBase64(uploadedFile);
+                const response = await fetch(SERVER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ image: base64ImageData, userId: 'EcoWarrior' })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.message || 'Server request failed');
+                }
+
+                const result = await response.json();
+                
+                if (result.isRecyclable) {
+                    awardPoints(10);
+                    showResult(true, `Recyclable! (${result.item})`, 'You earned 10 points! This has been logged on Hedera and your admin dashboard is now updated.');
+                } else {
+                    showResult(false, 'Not Recyclable', `This item was identified as ${result.item || 'unknown'}. Please dispose of it correctly.`);
+                }
+
+            } catch (error) {
+                console.error("Analysis failed:", error);
+                showResult(false, "Error", `Could not analyze image. Server says: ${error.message}`);
+            } finally {
+                setLoading(false);
+            }
+        });
+
+        // --- UI & STATE FUNCTIONS ---
+        function setLoading(isLoading) {
+            analyzeBtn.disabled = isLoading;
+            analyzeBtnText.classList.toggle('hidden', isLoading);
+            loadingSpinner.classList.toggle('hidden', !isLoading);
+            if (isLoading) resultCard.classList.remove('show');
+        }
+
+        function showResult(isSuccess, title, description) {
+            resultCard.className = 'result-card rounded-lg';
+            resultTitle.className = 'font-bold text-xl';
+            resultCard.classList.add(isSuccess ? 'border-green-500' : 'border-red-500');
+            resultTitle.classList.add(isSuccess ? 'text-green-400' : 'text-red-400');
+            resultTitle.textContent = title;
+            resultDescription.textContent = description;
+            resultCard.classList.add('show');
+        }
+
+        function awardPoints(points) {
+            let currentPoints = parseInt(localStorage.getItem('userPoints') || '0');
+            localStorage.setItem('userPoints', currentPoints + points);
+        }
+    });
+    </script>
+</body>
+</html>

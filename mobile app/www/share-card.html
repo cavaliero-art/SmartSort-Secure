@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSort - Share Your Impact</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Import html2canvas library for image generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-image: linear-gradient(to bottom right, #0f0e17, #1f1b3c, #0f0e17); color: #ffffff; }
+        .animate-fade-in-up { opacity: 0; transform: translateY(20px); animation: fadeInUp 0.6s ease-out forwards; }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        /* Style for the share card itself */
+        #impact-card {
+            background: linear-gradient(135deg, #1e3a8a, #059669);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <div class="container mx-auto px-4 py-6">
+        <header class="flex justify-between items-center mb-6 animate-fade-in-up">
+            <a href="profile.html" class="text-gray-400 hover:text-white p-2"><i class="fas fa-chevron-left fa-lg"></i></a>
+            <h1 class="text-xl font-bold text-white">Share Your Impact</h1>
+            <div class="w-8"></div>
+        </header>
+
+        <!-- The card that will be converted to an image -->
+        <div id="impact-card-container" class="animate-fade-in-up" style="animation-delay: 0.2s;">
+            <div id="impact-card" class="rounded-2xl p-8 max-w-md mx-auto shadow-2xl">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-2xl font-bold">♻️ SmartSort</h2>
+                    <p class="font-semibold text-sm bg-black/20 px-3 py-1 rounded-full">Weekly Report</p>
+                </div>
+
+                <div class="text-center my-8">
+                     <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="w-24 h-24 rounded-full mx-auto border-4 border-white/50 object-cover">
+                     <p class="text-2xl font-bold mt-3">EcoWarrior's Impact</p>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 text-center">
+                    <div class="bg-black/20 p-4 rounded-lg">
+                        <p class="text-3xl font-bold" id="items-stat">0</p>
+                        <p class="text-sm text-gray-300">Items Recycled</p>
+                    </div>
+                     <div class="bg-black/20 p-4 rounded-lg">
+                        <p class="text-3xl font-bold" id="points-stat">0</p>
+                        <p class="text-sm text-gray-300">Points Earned</p>
+                    </div>
+                </div>
+                
+                <p class="text-center mt-6 text-sm">Join me in making Tunisia cleaner! #SmartSortTN</p>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-8 text-center space-y-4 animate-fade-in-up" style="animation-delay: 0.4s;">
+            <button id="download-btn" class="w-full max-w-md mx-auto bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-full flex items-center justify-center gap-2 text-lg">
+                <i class="fas fa-download"></i>
+                Download as Image
+            </button>
+            <p class="text-xs text-gray-400">Download the image and share it on Instagram, Facebook, or with your friends!</p>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Get user data from localStorage
+            const userPoints = localStorage.getItem('userPoints') || '150'; // Default for demo
+            const itemsRecycled = localStorage.getItem('itemsRecycled') || '15'; // Default for demo
+
+            // 2. Populate the card with the data
+            document.getElementById('points-stat').textContent = userPoints;
+            document.getElementById('items-stat').textContent = itemsRecycled;
+
+            // 3. Set up the download button
+            const downloadBtn = document.getElementById('download-btn');
+            const cardElement = document.getElementById('impact-card');
+
+            downloadBtn.addEventListener('click', () => {
+                downloadBtn.disabled = true;
+                downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+
+                html2canvas(cardElement, { 
+                    backgroundColor: null, // Use the element's background
+                    useCORS: true 
+                }).then(canvas => {
+                    // Create a temporary link to trigger the download
+                    const link = document.createElement('a');
+                    link.download = 'smartsort-impact.png';
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                }).catch(err => {
+                    console.error('oops, something went wrong!', err);
+                    alert('Could not generate image.');
+                }).finally(() => {
+                    downloadBtn.disabled = false;
+                    downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download as Image';
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

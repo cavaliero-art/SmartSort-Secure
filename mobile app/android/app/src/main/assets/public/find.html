@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSort - Find Bins</title>
+    
+    <script src="vendor/js/tailwindcss.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-image: linear-gradient(to bottom right, #0f0e17, #1f1b3c, #0f0e17);
+            color: #ffffff;
+        }
+
+        #map { 
+            height: calc(100vh - 270px); /* Adjust height based on your screen */
+            border-radius: 1rem;
+            border: 1px solid #374151;
+            z-index: 1; /* Ensure map is behind popups */
+        }
+        
+        /* Style for the map popups in dark mode */
+        .leaflet-popup-content-wrapper, .leaflet-popup-tip {
+            background: #1f2937 !important; /* dark gray */
+            color: #e5e7eb !important; /* light gray text */
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4) !important;
+        }
+
+        /* --- Filter Button Styles --- */
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            border: 2px solid transparent;
+            transition: all 0.2s ease-in-out;
+            background-color: #374151; /* Default dark background */
+            color: #f9fafb;
+        }
+        .filter-btn:hover {
+            transform: scale(1.05);
+        }
+        .filter-btn[data-filter="Available"] { background-color: #14532d; color: #dcfce7; }
+        .filter-btn[data-filter="Getting Full"] { background-color: #713f12; color: #fef9c3; }
+        .filter-btn[data-filter="Full"] { background-color: #7f1d1d; color: #fee2e2; }
+
+        /* Style for the active filter button */
+        .filter-btn.active-filter {
+            transform: scale(1.05);
+            border-color: #4caf50; /* Active border color */
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-28">
+
+    <div class="container mx-auto px-4 py-6">
+        <header class="flex justify-between items-center mb-6">
+            <a href="app.html" class="text-gray-400 hover:text-white p-2"><i class="fas fa-chevron-left fa-lg"></i></a>
+            <h1 class="text-xl font-bold text-white">Find a Smart Bin</h1>
+            <div class="w-8"></div> </header>
+
+        <div class="mb-6 bg-black/20 p-3 rounded-xl flex flex-wrap gap-2 justify-center items-center">
+            <button class="filter-btn active-filter" data-filter="All">All</button>
+            <button class="filter-btn" data-filter="Available">Available</button>
+            <button class="filter-btn" data-filter="Getting Full">Getting Full</button>
+            <button class="filter-btn" data-filter="Full">Full</button>
+        </div>
+
+        <main>
+            <div id="map"></div>
+        </main>
+    </div>
+
+    <div class="fixed bottom-0 left-0 w-full">
+        <div class="mx-auto max-w-sm">
+            <div class="bg-gray-800/80 backdrop-blur-lg rounded-t-2xl sm:rounded-full px-4 py-3 flex items-center justify-around shadow-2xl">
+                <a href="app.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-home"></i></a>
+                <a href="find.html" class="w-12 h-12 rounded-full flex items-center justify-center bg-purple-600 text-white transition-colors"><i class="fas fa-map-location-dot"></i></a>
+                <a href="scan-options.html" class="w-16 h-16 -mt-10 rounded-full flex items-center justify-center bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-lg border-4 border-[#0f0e17]"><i class="fas fa-camera fa-lg"></i></a>
+                <a href="achievements.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-trophy"></i></a>
+                <a href="rewards.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-gift"></i></a>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        // --- MAP INITIALIZATION ---
+        const map = L.map('map').setView([36.8065, 10.1815], 13);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        // --- CUSTOM SVG ICONS (from your example) ---
+        const createIcon = (color) => L.icon({
+            iconUrl: 'data:image/svg+xml;base64,' + btoa(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="${color}" stroke="#1f2937" stroke-width="0.5"><path d="M10 2L8 4H4C3.4 4 3 4.4 3 5V6H21V5C21 4.4 20.6 4 20 4H16L14 2H10ZM4 7V20C4 21.1 4.9 22 6 22H18C19.1 22 20 21.1 20 20V7H4Z"/></svg>`),
+            iconSize: [38, 38], iconAnchor: [19, 38], popupAnchor: [0, -40]
+        });
+        const icons = { 
+            Available: createIcon('#22c55e'), // green
+            'Getting Full': createIcon('#facc15'), // yellow
+            Full: createIcon('#ef4444') // red
+        };
+
+        // --- BIN DATA & MARKERS ---
+        // This is your master list of all bins. Later, you'll fetch this from a server.
+        const allBins = [
+            { lat: 36.8090, lng: 10.1810, name: 'Avenue Habib Bourguiba', status: 'Available' },
+            { lat: 36.8008, lng: 10.1716, name: 'Medina of Tunis', status: 'Full' },
+            { lat: 36.8188, lng: 10.1659, name: 'Bab El Khadra', status: 'Getting Full' },
+            { lat: 36.8520, lng: 10.2030, name: 'Lac 1 Business Center', status: 'Available' },
+            { lat: 36.8450, lng: 10.1993, name: 'La Marsa Corniche', status: 'Available' },
+            { lat: 36.7936, lng: 10.1983, name: 'Megrine Public Park', status: 'Getting Full' }
+        ];
+        let activeMarkers = [];
+        
+        // Function to draw markers on the map based on a provided list of bins
+        function drawMarkers(binsToDraw) {
+            // Clear previous markers
+            activeMarkers.forEach(marker => map.removeLayer(marker));
+            activeMarkers = [];
+            
+            // Draw new markers
+            binsToDraw.forEach(bin => {
+                const marker = L.marker([bin.lat, bin.lng], { icon: icons[bin.status] })
+                    .addTo(map)
+                    .bindPopup(`<b>${bin.name}</b><br>Status: ${bin.status}`);
+                activeMarkers.push(marker);
+            });
+        }
+        
+        // --- FILTERING LOGIC ---
+        const filterButtons = document.querySelectorAll('.filter-btn');
+
+        function filterAndDrawMarkers(status) {
+            let filteredBins;
+            if (status === 'All') {
+                filteredBins = allBins;
+            } else {
+                filteredBins = allBins.filter(bin => bin.status === status);
+            }
+            drawMarkers(filteredBins);
+        }
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const statusToFilter = button.dataset.filter;
+                // Update active button style
+                filterButtons.forEach(btn => btn.classList.remove('active-filter'));
+                button.classList.add('active-filter');
+                // Filter the map
+                filterAndDrawMarkers(statusToFilter);
+            });
+        });
+
+        // --- INITIAL LOAD ---
+        // Initially, show all bins
+        filterAndDrawMarkers('All');
+    });
+    </script>
+</body>
+</html>

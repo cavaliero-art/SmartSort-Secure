@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSort - Rewards</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-image: linear-gradient(to bottom right, #0f0e17, #1f1b3c, #0f0e17); color: #ffffff; }
+        .glass-card { background-color: rgba(23, 22, 34, 0.6); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .animate-fade-in-up { opacity: 0; transform: translateY(20px); animation: fadeInUp 0.6s ease-out forwards; }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        .grand-prize-card { background: linear-gradient(135deg, #a855f7, #ec4899); color: white; }
+        .btn-redeem { background: linear-gradient(to right, #8b5cf6, #d946ef); transition: all 0.3s ease; }
+        .btn-redeem:hover:not(:disabled) { box-shadow: 0 4px 20px rgba(217, 70, 239, 0.4); transform: translateY(-2px); }
+        .btn-redeem-locked { background-color: rgba(255, 255, 255, 0.1); cursor: not-allowed; }
+        .btn-redeemed { background: #16a34a; cursor: default; }
+    </style>
+</head>
+<body class="min-h-screen pb-28">
+    <div class="container mx-auto px-4 py-6">
+        <header class="flex justify-between items-center mb-6 animate-fade-in-up" style="animation-delay: 0.1s;">
+            <a href="app.html" class="text-gray-400 hover:text-white p-2"><i class="fas fa-chevron-left fa-lg"></i></a>
+            <h1 class="text-xl font-bold text-white">Rewards</h1>
+            <div class="w-8"></div>
+        </header>
+
+        <div class="glass-card rounded-2xl p-6 mb-8 shadow-lg animate-fade-in-up" style="animation-delay: 0.2s;">
+            <div class="flex justify-around items-center text-center">
+                <div>
+                    <p class="text-4xl font-bold text-purple-400" id="user-points">0</p>
+                    <p class="text-sm text-gray-300">Your Points</p>
+                </div>
+                <div class="border-l border-white/10 h-12"></div>
+                <div>
+                    <p class="text-4xl font-bold text-pink-400" id="user-rank">#--</p>
+                    <p class="text-sm text-gray-300">Your Rank</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="grand-prize-card rounded-2xl p-8 mb-8 shadow-2xl flex flex-col md:flex-row items-center gap-6 text-center md:text-left animate-fade-in-up" style="animation-delay: 0.3s;">
+             <div class="text-6xl text-yellow-300">🏆</div>
+             <div class="flex-grow">
+                 <h3 class="text-2xl font-bold">This Month's Grand Prize</h3>
+                 <p class="text-lg text-white/90 mt-1">Recycle the most to win a new Tablet!</p>
+             </div>
+             <a href="#" class="mt-4 md:mt-0 bg-white text-purple-600 font-bold py-3 px-6 rounded-full w-full md:w-auto flex-shrink-0 hover:scale-105 transition-transform">View Leaderboard</a>
+        </div>
+
+        <div id="rewards-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in-up" style="animation-delay: 0.4s;">
+            <!-- Rewards will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <div class="fixed bottom-0 left-0 w-full animate-fade-in-up" style="animation-delay: 0.6s;">
+        <div class="mx-auto max-w-sm">
+            <div class="bg-gray-800/80 backdrop-blur-lg rounded-t-2xl sm:rounded-full px-4 py-3 flex items-center justify-around shadow-2xl">
+                <a href="app.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-home"></i></a>
+                <a href="analysis.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-chart-line"></i></a>
+                <a href="scan-options.html" class="w-16 h-16 -mt-10 rounded-full flex items-center justify-center bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-lg border-4 border-[#0f0e17]"><i class="fas fa-camera fa-lg"></i></a>
+                <a href="achievements.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-trophy"></i></a>
+                <a href="rewards.html" class="w-12 h-12 rounded-full flex items-center justify-center bg-purple-600 text-white transition-colors"><i class="fas fa-gift"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const userPointsEl = document.getElementById('user-points');
+        const userRankEl = document.getElementById('user-rank');
+        const rewardsGridEl = document.getElementById('rewards-grid');
+
+        const REWARDS_DATA = [
+            { id: 'coffee', name: 'Free Coffee', partner: 'at Local Cafe', cost: 200, icon: '☕' },
+            { id: 'bus', name: 'Bus Ticket', partner: 'One ride in Tunis', cost: 500, icon: '🚌' },
+            { id: 'data', name: '1GB Mobile Data', partner: 'for your plan', cost: 1000, icon: '📱' },
+            { id: 'tree', name: 'Plant a Tree', partner: 'in your name', cost: 2500, icon: '🌳' },
+        ];
+
+        function updateUI() {
+            const userPoints = parseInt(localStorage.getItem('userPoints') || '0');
+            const redeemedRewards = JSON.parse(localStorage.getItem('redeemedRewards') || '[]');
+
+            // Animate points display
+            animateValue('user-points', 0, userPoints, 1000);
+            
+            // NOTE: Rank calculation is simplified. A real app would get this from a server.
+            userRankEl.textContent = userPoints > 2000 ? '#1' : (userPoints > 500 ? '#8' : '#15');
+
+            rewardsGridEl.innerHTML = ''; // Clear previous rewards
+            REWARDS_DATA.forEach(reward => {
+                const canAfford = userPoints >= reward.cost;
+                const isRedeemed = redeemedRewards.includes(reward.id);
+                
+                let btnHtml;
+                if (isRedeemed) {
+                    btnHtml = `<button class="btn-redeemed font-semibold text-sm py-2 px-4 rounded-full" disabled><i class="fas fa-check mr-1"></i> Redeemed</button>`;
+                } else if (canAfford) {
+                    btnHtml = `<button data-reward-id="${reward.id}" data-cost="${reward.cost}" class="btn-redeem font-semibold text-sm py-2 px-4 rounded-full">Redeem</button>`;
+                } else {
+                    btnHtml = `<button class="btn-redeem-locked font-semibold text-sm py-2 px-4 rounded-full" disabled>Redeem</button>`;
+                }
+
+                const cardHtml = `
+                    <div class="glass-card rounded-xl p-4 flex items-center gap-4">
+                        <div class="w-16 h-16 bg-white/10 rounded-lg flex items-center justify-center text-3xl">${reward.icon}</div>
+                        <div class="flex-1">
+                            <p class="font-bold">${reward.name}</p>
+                            <p class="text-sm text-gray-400">${reward.cost.toLocaleString()} Points</p>
+                        </div>
+                        ${btnHtml}
+                    </div>
+                `;
+                rewardsGridEl.insertAdjacentHTML('beforeend', cardHtml);
+            });
+
+            // Add event listeners to new buttons
+            document.querySelectorAll('.btn-redeem').forEach(btn => btn.addEventListener('click', handleRedeem));
+        }
+
+        function handleRedeem(e) {
+            const rewardId = e.target.dataset.rewardId;
+            const cost = parseInt(e.target.dataset.cost);
+            let userPoints = parseInt(localStorage.getItem('userPoints') || '0');
+            let redeemedRewards = JSON.parse(localStorage.getItem('redeemedRewards') || '[]');
+
+            if (userPoints >= cost) {
+                userPoints -= cost;
+                redeemedRewards.push(rewardId);
+                localStorage.setItem('userPoints', userPoints);
+                localStorage.setItem('redeemedRewards', JSON.stringify(redeemedRewards));
+                updateUI(); // Re-render the UI to reflect changes
+            }
+        }
+        
+        function animateValue(id, start, end, duration) {
+            const obj = document.getElementById(id);
+            if (!obj) return;
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const value = Math.floor(progress * (end - start) + start);
+                obj.innerHTML = value.toLocaleString();
+                if (progress < 1) window.requestAnimationFrame(step);
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Initial Load
+        updateUI();
+        // Listen for changes from other tabs/windows (like after a scan)
+        window.addEventListener('storage', updateUI);
+    });
+    </script>
+</body>
+</html>

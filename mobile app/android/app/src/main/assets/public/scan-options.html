@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSort - Choose Scan Mode</title>
+    <script src="vendor/js/tailwindcss.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-image: linear-gradient(to bottom right, #0f0e17, #1f1b3c, #0f0e17);
+            color: #ffffff;
+        }
+
+        .glass-card {
+            background-color: rgba(23, 22, 34, 0.6);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .option-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            border-color: rgba(168, 85, 247, 0.5); /* Purple border on hover */
+        }
+
+        .animate-fade-in-up {
+             opacity: 0;
+             transform: translateY(20px);
+             animation: fadeInUp 0.6s ease-out forwards;
+        }
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-28 flex flex-col">
+
+    <div class="container mx-auto px-4 py-6 flex-1 flex flex-col justify-center">
+        <header class="text-center mb-10 animate-fade-in-up" style="animation-delay: 0.1s;">
+            <h1 class="text-3xl font-bold text-white">Choose Your Action</h1>
+            <p class="text-lg text-gray-300 mt-2">What would you like to do?</p>
+        </header>
+
+        <div class="space-y-6">
+            <a href="recyclability-check.html" class="option-card glass-card rounded-2xl p-6 shadow-lg flex items-center gap-6 animate-fade-in-up" style="animation-delay: 0.3s;">
+                <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-xl flex items-center justify-center text-3xl shadow-lg">
+                    <i class="fas fa-question"></i>
+                </div>
+                <div class="flex-1">
+                    <h2 class="font-bold text-xl text-white">Recyclability Check</h2>
+                    <p class="text-gray-300">Upload a photo to see if an item is recyclable.</p>
+                </div>
+                <i class="fas fa-chevron-right text-gray-400 text-lg"></i>
+            </a>
+
+            <a href="batch.html" class="option-card glass-card rounded-2xl p-6 shadow-lg flex items-center gap-6 animate-fade-in-up" style="animation-delay: 0.5s;">
+                <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-3xl shadow-lg">
+                     <i class="fas fa-box-open"></i>
+                </div>
+                <div class="flex-1">
+                    <h2 class="font-bold text-xl text-white">Batch Scan @Home</h2>
+                    <p class="text-gray-300">Scan multiple items at home and deposit them later.</p>
+                </div>
+                <i class="fas fa-chevron-right text-gray-400 text-lg"></i>
+            </a>
+
+            <a href="barcode-scanner.html" class="option-card glass-card rounded-2xl p-6 shadow-lg flex items-center gap-6 animate-fade-in-up" style="animation-delay: 0.7s;">
+                <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center text-3xl shadow-lg">
+                     <i class="fas fa-barcode"></i>
+                </div>
+                <div class="flex-1">
+                    <h2 class="font-bold text-xl text-white">Scan Barcode</h2>
+                    <p class="text-gray-300">Get precise recycling info by scanning a product's barcode.</p>
+                </div>
+                <i class="fas fa-chevron-right text-gray-400 text-lg"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="fixed bottom-0 left-0 w-full animate-fade-in-up" style="animation-delay: 0.9s;">
+        <div class="mx-auto max-w-sm">
+            <div class="bg-gray-800/80 backdrop-blur-lg rounded-t-2xl sm:rounded-full px-4 py-3 flex items-center justify-around shadow-2xl">
+                <a href="app.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-home"></i></a>
+                <a href="analysis.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-chart-line"></i></a>
+                <a href="scan-options.html" class="w-16 h-16 -mt-10 rounded-full flex items-center justify-center bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-lg border-4 border-[#0f0e17]"><i class="fas fa-camera fa-lg"></i></a>
+                <a href="achievements.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-trophy"></i></a>
+                <a href="rewards.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-gift"></i></a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

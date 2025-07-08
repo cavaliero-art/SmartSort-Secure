@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSort - Eco-Library & Quizzes</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-image: linear-gradient(to bottom right, #0f0e17, #1f1b3c, #0f0e17);
+            color: #ffffff;
+        }
+        .glass-card {
+             background-color: rgba(23, 22, 34, 0.75);
+             border: 1px solid rgba(255, 255, 255, 0.1);
+             transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .animate-fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+        /* Quiz Specific Styles */
+        .quiz-modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .quiz-modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .quiz-content {
+            animation: zoomIn 0.3s ease-out;
+        }
+        @keyframes zoomIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; }}
+
+        .answer-option {
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: all 0.2s ease;
+        }
+        .answer-option:hover {
+            background-color: rgba(255,255,255,0.1);
+            border-color: #a855f7;
+        }
+        .answer-option.selected {
+            border-color: #a855f7;
+            background-color: rgba(168, 85, 247, 0.2);
+        }
+        .answer-option.correct {
+            border-color: #22c55e;
+            background-color: rgba(34, 197, 94, 0.2);
+        }
+        .answer-option.incorrect {
+            border-color: #ef4444;
+            background-color: rgba(239, 68, 68, 0.2);
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-28">
+
+    <div class="container mx-auto px-4 py-6">
+        <header class="flex justify-between items-center mb-8 animate-fade-in-up" style="animation-delay: 0.1s;">
+            <a href="app.html" class="text-gray-400 hover:text-white p-2"><i class="fas fa-chevron-left fa-lg"></i></a>
+            <h1 class="text-xl font-bold text-white">Eco-Library</h1>
+            <div class="w-8"></div> 
+        </header>
+
+        <div class="space-y-8">
+
+            <!-- QUIZ MODULE -->
+            <div id="quiz-plastic-numbers" class="glass-card block rounded-2xl overflow-hidden animate-fade-in-up cursor-pointer" style="animation-delay: 0.2s;">
+                <img src="https://images.pexels.com/photos/3850635/pexels-photo-3850635.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Plastic bottles being sorted" class="w-full h-40 object-cover">
+                <div class="p-6">
+                    <p class="text-sm font-bold text-blue-400 mb-2">INTERACTIVE QUIZ</p>
+                    <h2 class="text-xl font-bold mb-2">What Do The Recycling Numbers Mean?</h2>
+                    <p class="text-gray-400 text-sm">Test your knowledge on plastic types and earn bonus points!</p>
+                </div>
+            </div>
+
+            <!-- Other articles (unchanged) -->
+            <a href="#" class="glass-card block rounded-2xl overflow-hidden animate-fade-in-up" style="animation-delay: 0.3s;"><img src="https://images.pexels.com/photos/7947153/pexels-photo-7947153.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="w-full h-40 object-cover"><div class="p-6"><p class="text-sm font-bold text-green-400 mb-2">REDUCING WASTE</p><h2 class="text-xl font-bold mb-2">Beginner's Guide to Composting</h2><p class="text-gray-400 text-sm">Turn your kitchen scraps into nutrient-rich soil. Composting is an easy way to significantly reduce your household waste.</p></div></a>
+            <a href="#" class="glass-card block rounded-2xl overflow-hidden animate-fade-in-up" style="animation-delay: 0.4s;"><img src="https://images.pexels.com/photos/7045573/pexels-photo-7045573.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="w-full h-40 object-cover"><div class="p-6"><p class="text-sm font-bold text-yellow-400 mb-2">DID YOU KNOW?</p><h2 class="text-xl font-bold mb-2">Glass Can Be Recycled Infinitely</h2><p class="text-gray-400 text-sm">Unlike many materials, glass can be recycled over and over again without any loss in quality or purity. Discover the amazing journey of a glass bottle.</p></div></a>
+
+        </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <div class="fixed bottom-0 left-0 w-full animate-fade-in-up" style="animation-delay: 0.8s;"><div class="mx-auto max-w-sm"><div class="bg-gray-800/80 backdrop-blur-lg rounded-t-2xl sm:rounded-full px-4 py-3 flex items-center justify-around shadow-2xl relative"><a href="app.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-home"></i></a><a href="analysis.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-chart-line"></i></a><a href="scan-options.html" class="w-16 h-16 -mt-10 rounded-full flex items-center justify-center bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-lg border-4 border-[#0f0e17]"><i class="fas fa-camera fa-lg"></i></a><a href="achievements.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-trophy"></i></a><a href="rewards.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-gift"></i></a></div></div></div>
+
+    <!-- ***** NEW QUIZ MODAL ***** -->
+    <div id="quiz-modal" class="quiz-modal">
+        <div class="quiz-content glass-card rounded-2xl p-6 w-full max-w-lg mx-4">
+            <!-- Progress Bar -->
+            <div class="w-full bg-gray-700/50 rounded-full h-2.5 mb-4">
+                <div id="quiz-progress-bar" class="bg-gradient-to-r from-purple-500 to-pink-500 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+            
+            <!-- Question -->
+            <h2 id="quiz-question" class="text-2xl font-bold mb-6 text-center"></h2>
+            
+            <!-- Answers -->
+            <div id="quiz-answers" class="space-y-4"></div>
+
+            <!-- Feedback -->
+            <div id="quiz-feedback" class="hidden mt-4 p-4 rounded-lg text-center">
+                <h3 id="feedback-title" class="font-bold"></h3>
+                <p id="feedback-text" class="text-sm"></p>
+            </div>
+
+            <!-- Controls -->
+            <div class="mt-6 flex justify-between items-center">
+                <button id="close-quiz-btn" class="bg-red-500/80 text-white font-bold py-2 px-4 rounded-full">Exit</button>
+                <button id="next-question-btn" class="bg-purple-600 text-white font-bold py-2 px-6 rounded-full hidden">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- QUIZ DATA ---
+        const plasticQuiz = {
+            title: "Plastic Numbers Quiz",
+            questions: [
+                {
+                    question: "Which plastic number is most commonly used for water and soda bottles?",
+                    answers: ["#1 PET", "#2 HDPE", "#5 PP"],
+                    correct: 0
+                },
+                {
+                    question: "A plastic bag from a supermarket is often which type?",
+                    answers: ["#1 PET", "#4 LDPE", "#7 OTHER"],
+                    correct: 1
+                },
+                {
+                    question: "Which of these is generally NOT recyclable in most municipal programs in Tunisia?",
+                    answers: ["#1 PET Bottle", "#2 HDPE Milk Jug", "#6 PS Foam Cup"],
+                    correct: 2,
+                    explanation: "Polystyrene (PS) foam is very difficult to recycle and is often not accepted."
+                }
+            ]
+        };
+
+        // --- DOM ELEMENTS ---
+        const quizModal = document.getElementById('quiz-modal');
+        const startQuizBtn = document.getElementById('quiz-plastic-numbers');
+        const closeQuizBtn = document.getElementById('close-quiz-btn');
+        const nextQuestionBtn = document.getElementById('next-question-btn');
+        const progressBar = document.getElementById('quiz-progress-bar');
+        const questionEl = document.getElementById('quiz-question');
+        const answersEl = document.getElementById('quiz-answers');
+        const feedbackEl = document.getElementById('quiz-feedback');
+        const feedbackTitle = document.getElementById('feedback-title');
+        const feedbackText = document.getElementById('feedback-text');
+
+        // --- QUIZ STATE ---
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        // --- FUNCTIONS ---
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            quizModal.classList.add('active');
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            resetState();
+            const questionData = plasticQuiz.questions[currentQuestionIndex];
+            questionEl.textContent = questionData.question;
+            
+            questionData.answers.forEach((answer, index) => {
+                const button = document.createElement('button');
+                button.textContent = answer;
+                button.className = 'answer-option w-full p-4 rounded-lg text-left';
+                button.addEventListener('click', () => selectAnswer(button, index));
+                answersEl.appendChild(button);
+            });
+            
+            updateProgressBar();
+        }
+        
+        function selectAnswer(button, selectedIndex) {
+            const questionData = plasticQuiz.questions[currentQuestionIndex];
+            const correctIndex = questionData.correct;
+            
+            // Disable all options after one is chosen
+            Array.from(answersEl.children).forEach(btn => btn.disabled = true);
+
+            if (selectedIndex === correctIndex) {
+                button.classList.add('correct');
+                showFeedback(true, "Correct!", questionData.explanation);
+                score++;
+            } else {
+                button.classList.add('incorrect');
+                answersEl.children[correctIndex].classList.add('correct');
+                showFeedback(false, "Not quite.", questionData.explanation);
+            }
+            nextQuestionBtn.classList.remove('hidden');
+        }
+
+        function showFeedback(isCorrect, title, text) {
+            feedbackEl.classList.remove('hidden', 'bg-green-500/20', 'bg-red-500/20');
+            feedbackEl.classList.add(isCorrect ? 'bg-green-500/20' : 'bg-red-500/20');
+            feedbackTitle.textContent = title;
+            feedbackText.textContent = text || '';
+        }
+        
+        function resetState() {
+            answersEl.innerHTML = '';
+            feedbackEl.classList.add('hidden');
+            nextQuestionBtn.classList.add('hidden');
+        }
+
+        function handleNextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < plasticQuiz.questions.length) {
+                displayQuestion();
+            } else {
+                showFinalResults();
+            }
+        }
+
+        function showFinalResults() {
+            questionEl.textContent = "Quiz Complete!";
+            answersEl.innerHTML = '';
+            const pointsEarned = score * 20; // 20 points per correct answer
+            showFeedback(true, `You scored ${score}/${plasticQuiz.questions.length}`, `You've earned ${pointsEarned} bonus points!`);
+            nextQuestionBtn.textContent = "Finish";
+            nextQuestionBtn.onclick = closeQuiz; 
+
+            // Add points to user's total
+            let currentPoints = parseInt(localStorage.getItem('userPoints') || '0');
+            localStorage.setItem('userPoints', currentPoints + pointsEarned);
+        }
+
+        function updateProgressBar() {
+            const percent = ((currentQuestionIndex + 1) / plasticQuiz.questions.length) * 100;
+            progressBar.style.width = `${percent}%`;
+        }
+
+        function closeQuiz() {
+            quizModal.classList.remove('active');
+            // Reset button for next time
+            nextQuestionBtn.textContent = "Next";
+            nextQuestionBtn.onclick = handleNextQuestion;
+        }
+
+        // --- EVENT LISTENERS ---
+        startQuizBtn.addEventListener('click', startQuiz);
+        closeQuizBtn.addEventListener('click', closeQuiz);
+        nextQuestionBtn.addEventListener('click', handleNextQuestion);
+    });
+    </script>
+</body>
+</html>

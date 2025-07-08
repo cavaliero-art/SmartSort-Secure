@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSort - Batch Scan @Home</title>
+    <script src="vendor/js/tailwindcss.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f0e17;
+            color: #ffffff;
+        }
+        .hero-batch {
+            background-image: radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.15), transparent 50%),
+                              radial-gradient(circle at 80% 90%, rgba(168, 85, 247, 0.15), transparent 50%);
+        }
+        .glass-card {
+            background-color: rgba(23, 22, 34, 0.6);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .animate-fade-in-up {
+             opacity: 0;
+             transform: translateY(20px);
+             animation: fadeInUp 0.6s ease-out forwards;
+        }
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .step-card {
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+        .step-card:hover {
+            transform: translateY(-8px);
+            background-color: rgba(23, 22, 34, 0.8);
+        }
+
+        #camera-feed {
+            object-fit: cover;
+            transform: scaleX(-1); /* Mirror effect */
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, #8b5cf6, #d946ef);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover:not(:disabled) {
+            box-shadow: 0 4px 20px rgba(217, 70, 239, 0.4);
+        }
+        .btn-primary:disabled {
+            background: rgba(255, 255, 255, 0.1);
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- Header Section -->
+    <header class="hero-batch py-12">
+        <div class="container mx-auto px-4 text-center">
+            <a href="scan-options.html" class="inline-block text-gray-400 hover:text-white mb-4 animate-fade-in-up" style="animation-delay: 0.1s;"><i class="fas fa-chevron-left"></i> Back to Options</a>
+            <h1 class="text-4xl font-bold text-white animate-fade-in-up" style="animation-delay: 0.2s;">SmartSort @Home</h1>
+            <p class="text-lg text-gray-300 mt-2 max-w-2xl mx-auto animate-fade-in-up" style="animation-delay: 0.3s;">Scan items as you go. Deposit the whole batch later for a big reward.</p>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="container mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-5 gap-6">
+        
+        <!-- Left Column: Camera and Instructions -->
+        <div class="lg:col-span-3 space-y-6">
+            <!-- Camera View -->
+            <div class="glass-card rounded-2xl p-4 shadow-lg animate-fade-in-up" style="animation-delay: 0.4s;">
+                <div id="camera-container" class="aspect-video bg-black rounded-lg flex items-center justify-center overflow-hidden">
+                    <div id="camera-placeholder" class="text-center text-gray-400">
+                        <i class="fas fa-camera text-5xl"></i>
+                        <p class="mt-2 font-semibold">Camera is off</p>
+                    </div>
+                    <video id="camera-feed" class="w-full h-full hidden"></video>
+                </div>
+                 <div class="mt-4 flex justify-center gap-4">
+                    <button id="start-btn" class="btn-primary font-bold py-2 px-6 rounded-full text-white flex items-center gap-2"><i class="fas fa-play"></i> Start Scan</button>
+                    <button id="stop-btn" class="bg-red-500/80 font-bold py-2 px-6 rounded-full text-white flex items-center gap-2" disabled><i class="fas fa-stop"></i> Stop</button>
+                </div>
+            </div>
+
+            <!-- How it Works -->
+            <div class="glass-card rounded-2xl p-6 shadow-lg animate-fade-in-up" style="animation-delay: 0.5s;">
+                <h2 class="text-2xl font-bold mb-4">How It Works</h2>
+                <div class="space-y-4">
+                    <div class="step-card rounded-lg p-4 flex items-center gap-4">
+                        <div class="bg-purple-500/20 text-purple-300 w-10 h-10 flex-shrink-0 rounded-full flex items-center justify-center font-bold text-lg">1</div>
+                        <div>
+                            <h3 class="font-semibold">Scan at Home</h3>
+                            <p class="text-sm text-gray-400">Use the camera to add items to your virtual bag.</p>
+                        </div>
+                    </div>
+                     <div class="step-card rounded-lg p-4 flex items-center gap-4">
+                        <div class="bg-purple-500/20 text-purple-300 w-10 h-10 flex-shrink-0 rounded-full flex items-center justify-center font-bold text-lg">2</div>
+                        <div>
+                            <h3 class="font-semibold">Fill Your Bag</h3>
+                            <p class="text-sm text-gray-400">Collect your real items. Your virtual bag will match.</p>
+                        </div>
+                    </div>
+                     <div class="step-card rounded-lg p-4 flex items-center gap-4">
+                        <div class="bg-purple-500/20 text-purple-300 w-10 h-10 flex-shrink-0 rounded-full flex items-center justify-center font-bold text-lg">3</div>
+                        <div>
+                            <h3 class="font-semibold">Deposit & Earn</h3>
+                            <p class="text-sm text-gray-400">Visit a bin, scan its QR, and claim all your points.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Virtual Bag -->
+        <div class="lg:col-span-2 glass-card rounded-2xl p-6 shadow-lg flex flex-col animate-fade-in-up" style="animation-delay: 0.6s;">
+            <h2 class="text-2xl font-bold mb-4 flex items-center gap-3"><i class="fas fa-shopping-bag text-purple-400"></i> Virtual Bag</h2>
+            <div id="virtual-bag-items" class="flex-1 space-y-3 overflow-y-auto pr-2">
+                <!-- Items will be added here by JavaScript -->
+            </div>
+            <div id="empty-bag-message" class="flex-1 flex flex-col items-center justify-center text-gray-400">
+                <i class="fas fa-box-open text-5xl"></i>
+                <p class="mt-4 font-semibold">Your bag is empty</p>
+            </div>
+            <div class="border-t border-white/10 mt-4 pt-4">
+                <div class="flex justify-between items-center text-lg font-bold">
+                    <span>Total Points:</span>
+                    <span id="total-points" class="text-green-400">0</span>
+                </div>
+                 <button id="deposit-btn" class="w-full mt-4 btn-primary font-bold py-3 rounded-full text-white" disabled>
+                    Deposit Batch
+                </button>
+            </div>
+        </div>
+
+    </main>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const startBtn = document.getElementById('start-btn');
+        const stopBtn = document.getElementById('stop-btn');
+        const cameraFeed = document.getElementById('camera-feed');
+        const cameraPlaceholder = document.getElementById('camera-placeholder');
+        const virtualBagItemsEl = document.getElementById('virtual-bag-items');
+        const emptyBagMessageEl = document.getElementById('empty-bag-message');
+        const totalPointsEl = document.getElementById('total-points');
+        const depositBtn = document.getElementById('deposit-btn');
+
+        let stream;
+        let virtualBag = {};
+
+        startBtn.addEventListener('click', async () => {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                cameraFeed.srcObject = stream;
+                cameraFeed.classList.remove('hidden');
+                cameraPlaceholder.classList.add('hidden');
+                startBtn.disabled = true;
+                stopBtn.disabled = false;
+                // In a real app, you would start the AI model here to analyze the video stream.
+                // For this demo, we'll simulate finding items.
+                simulateScanning();
+            } catch (error) {
+                console.error("Error accessing camera:", error);
+                cameraPlaceholder.innerHTML = '<p class="text-red-400">Could not access camera.</p>';
+            }
+        });
+
+        stopBtn.addEventListener('click', () => {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+            cameraFeed.classList.add('hidden');
+            cameraPlaceholder.classList.remove('hidden');
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+            clearTimeout(scanSimulator); // Stop simulation
+        });
+
+        function updateVirtualBagUI() {
+            virtualBagItemsEl.innerHTML = '';
+            let totalPoints = 0;
+            const items = Object.keys(virtualBag);
+
+            if (items.length > 0) {
+                emptyBagMessageEl.classList.add('hidden');
+                depositBtn.disabled = false;
+            } else {
+                emptyBagMessageEl.classList.remove('hidden');
+                depositBtn.disabled = true;
+            }
+
+            items.forEach(item => {
+                const count = virtualBag[item];
+                const points = count * 10; // Example: 10 points per item
+                totalPoints += points;
+
+                const itemEl = document.createElement('div');
+                itemEl.className = 'bg-white/5 p-3 rounded-lg flex justify-between items-center';
+                itemEl.innerHTML = `
+                    <div>
+                        <p class="font-semibold capitalize">${item}</p>
+                        <p class="text-xs text-gray-400">${count} item(s)</p>
+                    </div>
+                    <p class="font-bold text-green-400">+${points} pts</p>
+                `;
+                virtualBagItemsEl.appendChild(itemEl);
+            });
+            totalPointsEl.textContent = totalPoints;
+        }
+
+        function addItemToBag(item) {
+            virtualBag[item] = (virtualBag[item] || 0) + 1;
+            updateVirtualBagUI();
+        }
+
+        // --- DEMO SIMULATION ---
+        let scanSimulator;
+        function simulateScanning() {
+            const possibleItems = ['plastic bottle', 'glass jar', 'aluminum can', 'paper'];
+            scanSimulator = setTimeout(() => {
+                const randomItem = possibleItems[Math.floor(Math.random() * possibleItems.length)];
+                addItemToBag(randomItem);
+                if (!stopBtn.disabled) {
+                    simulateScanning(); // Continue simulation
+                }
+            }, 3000); // Add a new item every 3 seconds
+        }
+    });
+    </script>
+</body>
+</html>

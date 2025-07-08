@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSort - Eco Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(219, 39, 119, 0.7); } 70% { box-shadow: 0 0 0 12px rgba(219, 39, 119, 0); } 100% { box-shadow: 0 0 0 0 rgba(219, 39, 119, 0); } }
+        body { font-family: 'Inter', sans-serif; background-color: #0f0e17; color: #ffffff; opacity: 0; animation: fadeIn 0.8s ease-out forwards; }
+        .glass-card { background-color: rgba(23, 22, 34, 0.75); }
+        .animate-fade-in { animation: fadeIn 0.6s ease-out forwards; }
+        .spotlight-card { background: linear-gradient(135deg, #a855f7, #ec4899); }
+        .live-feed-item { animation: slideInUp 0.5s ease-out; padding: 0.5rem 0; }
+        @keyframes slideInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="min-h-screen pb-28">
+    <div class="container mx-auto px-4 py-6">
+        <!-- Header -->
+        <header class="flex justify-between items-center mb-8 animate-fade-in" style="animation-delay: 0.2s;"><div><h1 class="text-xl text-gray-300">Welcome back,</h1><h2 class="text-3xl font-bold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">EcoWarrior</h2></div><a href="profile.html" class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center shadow-lg hover:scale-110 transition-transform"><i class="fas fa-leaf text-white text-xl"></i></a></header>
+        
+        <!-- Points Card -->
+        <div class="glass-card rounded-2xl p-6 mb-6 shadow-lg animate-fade-in" style="animation-delay: 0.4s;"><h3 class="text-gray-300 text-sm uppercase tracking-wider mb-1">Total Points</h3><div class="flex items-end justify-between"><div><div class="text-5xl font-bold mb-2" id="totalPoints">0</div><div class="flex items-center text-green-400 text-sm"><i class="fas fa-arrow-up mr-1"></i><span>12% this week</span></div></div><div class="text-right"><div class="text-sm text-purple-300">You're in the top</div><div class="text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">15%</div><div class="text-sm text-purple-300">of recyclers!</div></div></div></div>
+
+        <!-- Live Feed -->
+        <div class="glass-card rounded-2xl p-6 mb-6 animate-fade-in" style="animation-delay: 0.5s;"><h3 class="text-gray-300 text-sm uppercase tracking-wider mb-4 flex items-center"><span class="relative flex h-3 w-3 mr-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span></span>Live from Tunis</h3><div id="live-feed-container" class="space-y-2 h-48 overflow-y-hidden"></div></div>
+
+        <!-- ***** MODIFIED: SMALL & ATTRACTIVE STATS CARDS ***** -->
+        <div class="grid grid-cols-2 gap-4 mb-6">
+            <!-- Items Recycled Card -->
+            <div class="glass-card rounded-xl p-4 animate-fade-in" style="animation-delay: 0.6s;">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mr-3 shadow-lg">
+                        <i class="fas fa-recycle text-white"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-gray-300 text-xs uppercase tracking-wider">Items Recycled</h4>
+                        <p class="text-2xl font-bold text-white" id="itemsRecycled">0</p>
+                    </div>
+                </div>
+            </div>
+            <!-- CO2 Saved Card -->
+            <div class="glass-card rounded-xl p-4 animate-fade-in" style="animation-delay: 0.7s;">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-cyan-500 flex items-center justify-center mr-3 shadow-lg">
+                        <i class="fas fa-leaf text-white"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-gray-300 text-xs uppercase tracking-wider">CO₂ Saved</h4>
+                        <p class="text-2xl font-bold text-white" id="co2Saved">0 <span class="text-base font-normal">kg</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Explore section -->
+        <div class="mb-6"><h3 class="text-gray-300 text-sm uppercase tracking-wider mb-4 animate-fade-in" style="animation-delay: 0.8s;">Explore</h3><div class="grid grid-cols-2 gap-4"><a href="find.html" class="glass-card rounded-2xl p-4 text-center flex flex-col items-center justify-center animate-fade-in hover:scale-105 transition-transform" style="animation-delay: 0.9s;"><div class="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-3 shadow-lg"><i class="fas fa-map-location-dot text-2xl"></i></div><p class="font-bold">Find Bins</p><p class="text-xs text-gray-400">Locate nearby bins</p></a><a href="schedule.html" class="glass-card rounded-2xl p-4 text-center flex flex-col items-center justify-center animate-fade-in hover:scale-105 transition-transform" style="animation-delay: 1.0s;"><div class="w-16 h-16 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center mb-3 shadow-lg"><i class="fas fa-calendar-days text-2xl"></i></div><p class="font-bold">Schedule</p><p class="text-xs text-gray-400">View pickup days</p></a><a href="learn.html" class="glass-card rounded-2xl p-4 text-center flex flex-col items-center justify-center animate-fade-in hover:scale-105 transition-transform" style="animation-delay: 1.1s;"><div class="w-16 h-16 rounded-full bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center mb-3 shadow-lg"><i class="fas fa-book-open text-2xl"></i></div><p class="font-bold">Eco-Library</p><p class="text-xs text-gray-400">Learn about eco-life</p></a><a href="challenges.html" class="glass-card rounded-2xl p-4 text-center flex flex-col items-center justify-center animate-fade-in hover:scale-105 transition-transform" style="animation-delay: 1.2s;"><div class="w-16 h-16 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center mb-3 shadow-lg"><i class="fas fa-users text-2xl"></i></div><p class="font-bold">Challenges</p><p class="text-xs text-gray-400">Join the community</p></a></div></div>
+    </div>
+    
+    <!-- Bottom Nav -->
+    <div class="fixed bottom-0 left-0 w-full animate-fade-in" style="animation-delay: 1.4s;"><div class="mx-auto max-w-sm"><div class="bg-gray-800/80 backdrop-blur-lg rounded-t-2xl sm:rounded-full px-4 py-3 flex items-center justify-around shadow-2xl relative"><a href="app.html" class="w-12 h-12 rounded-full flex items-center justify-center bg-purple-600 text-white transition-colors"><i class="fas fa-home"></i></a><a href="analysis.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-chart-line"></i></a><a href="scan-options.html" class="w-16 h-16 -mt-10 rounded-full flex items-center justify-center bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-lg border-4 border-[#0f0e17] hover:scale-110 transition-transform" style="animation: pulse 2s infinite;"><i class="fas fa-camera fa-lg"></i></a><a href="achievements.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-trophy"></i></a><a href="rewards.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-gift"></i></a></div></div></div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Live Feed Connection
+            const feedContainer = document.getElementById('live-feed-container');
+            let hasReceivedEvent = false;
+            feedContainer.innerHTML = `<div class="text-sm text-center text-gray-400">Connecting to live feed...</div>`;
+            function addFeedItem(icon, text, colorName) {
+                if (!hasReceivedEvent) { feedContainer.innerHTML = ''; hasReceivedEvent = true; }
+                const item = document.createElement('div');
+                item.className = `live-feed-item flex items-center text-sm`;
+                const colorClasses = { green: { bg: 'bg-green-400/20', text: 'text-green-400' }, purple: { bg: 'bg-purple-400/20', text: 'text-purple-400' }, yellow: { bg: 'bg-yellow-400/20', text: 'text-yellow-400' }, cyan: { bg: 'bg-cyan-400/20', text: 'text-cyan-400' }};
+                const classes = colorClasses[colorName] || { bg: 'bg-gray-400/20', text: 'text-gray-400' };
+                item.innerHTML = `<div class="w-8 h-8 rounded-full ${classes.bg} flex items-center justify-center mr-3 flex-shrink-0"><i class="fas ${icon} ${classes.text}"></i></div><span class="text-gray-300">${text}</span>`;
+                feedContainer.prepend(item);
+                if (feedContainer.children.length > 5) { feedContainer.lastChild.remove(); }
+            }
+            function connectWebSocket() {
+                const ws = new WebSocket('ws://localhost:3000');
+                ws.onopen = () => console.log('Connected to SmartSort Live Feed!');
+                ws.onmessage = (event) => {
+                    const data = JSON.parse(event.data);
+                    switch(data.type) {
+                        case 'RECYCLE_EVENT': addFeedItem('fa-recycle', `Someone in <strong>${data.payload.location}</strong> just recycled a ${data.payload.item}!`, 'green'); break;
+                        case 'CHALLENGE_JOIN': addFeedItem('fa-flag-checkered', `<strong>${data.payload.user}</strong> joined the ${data.payload.challenge}!`, 'purple'); break;
+                        case 'REWARD_REDEEMED': addFeedItem('fa-gift', `<strong>${data.payload.user}</strong> just redeemed ${data.payload.reward}!`, 'yellow'); break;
+                        case 'WELCOME': addFeedItem('fa-wifi', `<strong>${data.message}</strong>`, 'cyan'); break;
+                    }
+                };
+                ws.onclose = () => { console.log('Disconnected from feed. Reconnecting...'); setTimeout(connectWebSocket, 5000); };
+                ws.onerror = (error) => { console.error('WebSocket Error:', error); ws.close(); };
+            }
+            connectWebSocket();
+
+            // SCRIPT FOR ALL STATS
+            const itemsRecycled = parseInt(localStorage.getItem('itemsRecycled') || '58');
+            const co2Saved = (itemsRecycled * 0.25).toFixed(1);
+
+            animateValue('totalPoints', 0, parseInt(localStorage.getItem('userPoints') || '1247'), 1500);
+            animateValue('itemsRecycled', 0, itemsRecycled, 1500);
+            document.getElementById('co2Saved').innerHTML = `${co2Saved} <span class="text-base font-normal">kg</span>`;
+
+            function animateValue(id, start, end, duration) {
+                const obj = document.getElementById(id);
+                if (!obj) return;
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString();
+                    if (progress < 1) window.requestAnimationFrame(step);
+                };
+                window.requestAnimationFrame(step);
+            }
+        });
+    </script>
+</body>
+</html>

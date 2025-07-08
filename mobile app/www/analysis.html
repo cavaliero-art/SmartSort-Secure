@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSort - Your 3D Impact</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Import 3D and Animation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-image: linear-gradient(to bottom right, #0f0e17, #1f1b3c, #0f0e17);
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background-color: rgba(23, 22, 34, 0.6);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .animate-fade-in-up {
+             opacity: 0;
+             transform: translateY(20px);
+             animation: fadeInUp 0.6s ease-out forwards;
+        }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+        #canvas-container {
+            width: 100%;
+            height: 400px;
+            cursor: grab;
+        }
+        #canvas-container:active {
+            cursor: grabbing;
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-28">
+
+    <div class="container mx-auto px-4 py-6">
+        <header class="flex justify-between items-center mb-6 animate-fade-in-up" style="animation-delay: 0.1s;">
+            <a href="app.html" class="text-gray-400 hover:text-white p-2"><i class="fas fa-chevron-left fa-lg"></i></a>
+            <h1 class="text-xl font-bold text-white">Your Eco-Island</h1>
+            <div class="w-8"></div>
+        </header>
+
+        <div class="glass-card rounded-2xl p-6 mb-6 shadow-lg animate-fade-in-up" style="animation-delay: 0.2s;">
+            <div class="text-center mb-4">
+                <h3 class="text-gray-300 text-sm uppercase tracking-wider">Your Environmental Score</h3>
+                <p class="text-5xl font-bold text-white" id="environmental-score">0</p>
+                <p class="font-semibold" id="impact-level-text">Starting Out</p>
+            </div>
+            
+            <div id="canvas-container" class="rounded-lg overflow-hidden"></div>
+            
+            <p class="text-center text-sm text-gray-400 mt-4">Drag to rotate your island. Items you recycle will clean it up!</p>
+        </div>
+        
+        <div class="glass-card rounded-2xl p-6 shadow-lg animate-fade-in-up" style="animation-delay: 0.3s;">
+            <h3 class="font-bold text-lg mb-4 text-white">Your Impact Details</h3>
+            <ul class="space-y-4">
+                <li class="flex items-center"><i class="fas fa-recycle text-blue-400 w-6 text-center mr-3"></i><span class="text-gray-300">Total Items Recycled: <strong id="total-items" class="text-white">0</strong></span></li>
+                <li class="flex items-center"><i class="fas fa-tree text-green-400 w-6 text-center mr-3"></i><span class="text-gray-300">Flora Planted: <strong id="flora-count" class="text-white">0</strong></span></li>
+                <li class="flex items-center"><i class="fas fa-trash-alt text-red-400 w-6 text-center mr-3"></i><span class="text-gray-300">Trash Remaining: <strong id="trash-count" class="text-white">0</strong></span></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <div class="fixed bottom-0 left-0 w-full animate-fade-in-up" style="animation-delay: 0.4s;"><div class="mx-auto max-w-sm"><div class="bg-gray-800/80 backdrop-blur-lg rounded-t-2xl sm:rounded-full px-4 py-3 flex items-center justify-around shadow-2xl"><a href="app.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-home"></i></a><a href="analysis.html" class="w-12 h-12 rounded-full flex items-center justify-center bg-purple-600 text-white transition-colors"><i class="fas fa-chart-line"></i></a><a href="scan-options.html" class="w-16 h-16 -mt-10 rounded-full flex items-center justify-center bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-lg border-4 border-[#0f0e17]"><i class="fas fa-camera fa-lg"></i></a><a href="achievements.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-trophy"></i></a><a href="rewards.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-gift"></i></a></div></div></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- 1. GET USER DATA & CONFIG ---
+            const MAX_TRASH_ITEMS = 50;
+            const DEMO_START_ITEMS = 15;
+            let itemsRecycled = parseInt(localStorage.getItem('itemsRecycled') || DEMO_START_ITEMS.toString());
+            let userPoints = parseInt(localStorage.getItem('userPoints') || (DEMO_START_ITEMS * 10).toString());
+            
+            // --- 2. THREE.JS SCENE SETUP ---
+            const container = document.getElementById('canvas-container');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(renderer.domElement);
+
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+            scene.add(ambientLight);
+            const sunLight = new THREE.DirectionalLight(0xffeeb1, 1.2);
+            sunLight.position.set(10, 20, 10);
+            scene.add(sunLight);
+
+            // --- 3. OBJECT CREATION & MANAGEMENT ---
+            const islandGroup = new THREE.Group();
+            let animatedObjects = []; 
+            let trashObjects = []; 
+            
+            // *** NEW: LOW-POLY ISLAND CREATION ***
+            const islandSize = 3;
+            const islandSegments = 20;
+            const islandGeometry = new THREE.PlaneGeometry(islandSize, islandSize, islandSegments, islandSegments);
+            const vertices = islandGeometry.attributes.position;
+            const colors = [];
+            const sandColor = new THREE.Color(0xc2b280);
+            const grassColor = new THREE.Color(0x228B22);
+            const darkGrassColor = new THREE.Color(0x006400);
+
+            for (let i = 0; i < vertices.count; i++) {
+                const x = vertices.getX(i);
+                const y = vertices.getY(i);
+                const distanceToCenter = Math.sqrt(x*x + y*y);
+                const islandShape = Math.exp(-2 * Math.pow(distanceToCenter, 2));
+                
+                let z = islandShape * 1.2; // Height
+                // Add some noise for terrain variation
+                z += (Math.sin(x * 5) + Math.cos(y * 5)) * 0.05;
+                vertices.setZ(i, z);
+
+                // Assign vertex colors based on height
+                if (z < 0.25) {
+                    colors.push(sandColor.r, sandColor.g, sandColor.b);
+                } else if (z < 0.8) {
+                    colors.push(grassColor.r, grassColor.g, grassColor.b);
+                } else {
+                    colors.push(darkGrassColor.r, darkGrassColor.g, darkGrassColor.b);
+                }
+            }
+            islandGeometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+            islandGeometry.computeVertexNormals();
+
+            const islandMaterial = new THREE.MeshStandardMaterial({ vertexColors: true, flatShading: true });
+            const island = new THREE.Mesh(islandGeometry, islandMaterial);
+            island.rotation.x = -Math.PI / 2;
+            islandGroup.add(island);
+
+            // Water
+            const waterGeometry = new THREE.CylinderGeometry(2.5, 2.5, 0.3, 32);
+            const waterMaterial = new THREE.MeshStandardMaterial({ color: 0x0077ff, transparent: true, opacity: 0.7, roughness: 0.2, metalness: 0.1 });
+            const water = new THREE.Mesh(waterGeometry, waterMaterial);
+            water.position.y = -0.15;
+            islandGroup.add(water);
+            animatedObjects.push({ mesh: water, type: 'wave' });
+            
+            scene.add(islandGroup);
+            camera.position.z = 4;
+            camera.position.y = 2;
+            camera.lookAt(scene.position);
+
+
+            function getRandomPointOnIsland() {
+                const x = (Math.random() - 0.5) * islandSize * 0.8;
+                const z = (Math.random() - 0.5) * islandSize * 0.8;
+                // Raycast to find the Y position on the island surface
+                const raycaster = new THREE.Raycaster();
+                raycaster.set(new THREE.Vector3(x, 5, z), new THREE.Vector3(0, -1, 0));
+                const intersects = raycaster.intersectObject(island);
+                if (intersects.length > 0 && intersects[0].point.y > 0) {
+                     return intersects[0].point;
+                }
+                return getRandomPointOnIsland(); // Retry if we missed or hit the water
+            }
+
+            function createTrash() {
+                const geometries = [ new THREE.BoxGeometry(0.08, 0.12, 0.08), new THREE.CylinderGeometry(0.04, 0.04, 0.15, 8), new THREE.SphereGeometry(0.06, 8, 6) ];
+                const geometry = geometries[Math.floor(Math.random() * geometries.length)];
+                const material = new THREE.MeshStandardMaterial({ color: 0x808080, roughness: 0.9 });
+                const trash = new THREE.Mesh(geometry, material);
+                trash.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+                return trash;
+            }
+
+            function createFlora() {
+                 const floraGroup = new THREE.Group();
+                 const type = Math.random() > 0.5 ? 'tree' : 'flower';
+                 if (type === 'tree') {
+                    const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.3, 5), new THREE.MeshStandardMaterial({ color: 0x8B4513 }));
+                    const leaves = new THREE.Mesh(new THREE.IcosahedronGeometry(0.2, 0), new THREE.MeshStandardMaterial({ color: 0x008000 }));
+                    leaves.position.y = 0.25;
+                    floraGroup.add(trunk, leaves);
+                    animatedObjects.push({ mesh: leaves, type: 'breathe'});
+                 } else {
+                    const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.01, 0.01, 0.08, 5), new THREE.MeshStandardMaterial({ color: 0x3CB371 }));
+                    const petal = new THREE.Mesh(new THREE.SphereGeometry(0.03, 8, 8), new THREE.MeshStandardMaterial({ color: 0xff69b4 }));
+                    petal.position.y = 0.04;
+                    floraGroup.add(stem, petal);
+                    animatedObjects.push({ mesh: petal, type: 'breathe'});
+                 }
+                 return floraGroup;
+            }
+
+            // --- 4. SCENE POPULATION & UI UPDATE LOGIC ---
+            function updateSceneAndUI() {
+                userPoints = parseInt(localStorage.getItem('userPoints') || (DEMO_START_ITEMS * 10).toString());
+                itemsRecycled = parseInt(localStorage.getItem('itemsRecycled') || DEMO_START_ITEMS.toString());
+                trashRemaining = Math.max(0, MAX_TRASH_ITEMS - itemsRecycled);
+                floraPlanted = itemsRecycled;
+
+                document.getElementById('environmental-score').textContent = userPoints.toLocaleString();
+                document.getElementById('total-items').textContent = itemsRecycled.toLocaleString();
+                document.getElementById('flora-count').textContent = floraPlanted.toLocaleString();
+                document.getElementById('trash-count').textContent = trashRemaining.toLocaleString();
+                
+                const objectsToRemove = islandGroup.children.filter(child => child !== island && child !== water);
+                objectsToRemove.forEach(child => islandGroup.remove(child));
+                trashObjects = [];
+                animatedObjects = animatedObjects.filter(obj => obj.type === 'wave'); 
+
+                for (let i = 0; i < trashRemaining; i++) {
+                    const trashItem = createTrash();
+                    const position = getRandomPointOnIsland();
+                    if(position) trashItem.position.copy(position);
+                    islandGroup.add(trashItem);
+                    trashObjects.push(trashItem);
+                }
+                for (let i = 0; i < floraPlanted; i++) {
+                    const floraItem = createFlora();
+                    const position = getRandomPointOnIsland();
+                     if(position) floraItem.position.copy(position);
+                    islandGroup.add(floraItem);
+                }
+            }
+            
+            // --- 5. INTERACTION & ANIMATION ---
+            let isMouseDown = false, lastMouseX = 0;
+            const clock = new THREE.Clock();
+            container.addEventListener('mousedown', () => isMouseDown = true);
+            document.addEventListener('mouseup', () => isMouseDown = false);
+            container.addEventListener('touchstart', e => { isMouseDown = true; lastMouseX = e.touches[0].pageX; });
+            document.addEventListener('touchend', () => isMouseDown = false);
+            container.addEventListener('mousemove', e => { if(isMouseDown) islandGroup.rotation.y += e.movementX * 0.01; });
+            container.addEventListener('touchmove', e => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                if (isMouseDown) islandGroup.rotation.y += (touch.pageX - lastMouseX) * 0.015;
+                lastMouseX = touch.pageX;
+            });
+
+            function animate(time) {
+                requestAnimationFrame(animate);
+                TWEEN.update(time);
+                const elapsedTime = clock.getElapsedTime();
+                if (!isMouseDown) islandGroup.rotation.y += 0.001;
+                animatedObjects.forEach(obj => {
+                    if (obj.type === 'wave') obj.mesh.position.y = -0.15 + Math.sin(elapsedTime * 2) * 0.02;
+                    if (obj.type === 'breathe') obj.mesh.scale.y = 1 + Math.sin(elapsedTime * 1.5 + obj.mesh.position.x) * 0.05;
+                });
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            // --- 6. EVENT LISTENER FOR LIVE UPDATES ---
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'itemsRecycled') {
+                    const newItemsValue = parseInt(e.newValue || '0');
+                    if (newItemsValue > itemsRecycled) {
+                        const itemsAdded = newItemsValue - itemsRecycled;
+                        for (let i = 0; i < itemsAdded; i++) {
+                            if (trashObjects.length > 0) {
+                                const trashToRemove = trashObjects.pop();
+                                const newFlora = createFlora();
+                                newFlora.position.copy(trashToRemove.position);
+                                islandGroup.remove(trashToRemove);
+                                islandGroup.add(newFlora);
+                            }
+                        }
+                        itemsRecycled = newItemsValue;
+                        userPoints = parseInt(localStorage.getItem('userPoints') || '0');
+                        document.getElementById('environmental-score').textContent = userPoints.toLocaleString();
+                        document.getElementById('total-items').textContent = itemsRecycled.toLocaleString();
+                        document.getElementById('flora-count').textContent = itemsRecycled.toLocaleString();
+                        document.getElementById('trash-count').textContent = Math.max(0, MAX_TRASH_ITEMS - itemsRecycled).toLocaleString();
+                    }
+                }
+            });
+
+            window.addEventListener('resize', () => {
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            }, false);
+
+            // --- INITIALIZATION ---
+            updateSceneAndUI();
+        });
+    </script>
+</body>
+</html>

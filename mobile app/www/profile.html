@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartSort - My Profile</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f0e17; color: #ffffff; }
+        .glass-card { background-color: rgba(23, 22, 34, 0.75); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .animate-fade-in-up { opacity: 0; transform: translateY(20px); animation: fadeInUp 0.6s ease-out forwards; }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        .profile-header {
+            background-image: url('https://images.pexels.com/photos/932638/pexels-photo-932638.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-28">
+
+    <div class="profile-header h-48 relative mb-[-64px]">
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0f0e17] to-transparent"></div>
+        <div class="absolute top-6 left-4">
+             <a href="app.html" class="text-white bg-black/40 p-3 rounded-full z-10"><i class="fas fa-chevron-left"></i></a>
+        </div>
+    </div>
+    
+    <div class="container mx-auto px-4 relative">
+
+        <div class="glass-card rounded-2xl p-6 mb-8 flex flex-col items-center text-center animate-fade-in-up" style="animation-delay: 0.1s;">
+            <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="w-24 h-24 rounded-full border-4 border-purple-500 object-cover -mt-20 mb-4">
+            <h2 class="text-2xl font-bold">EcoWarrior</h2>
+            <p class="text-sm text-gray-400">Joined May 2024</p>
+            
+            <!-- ***** NEW SHARE BUTTON ***** -->
+            <a href="share-card.html" class="mt-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-2 px-6 rounded-full flex items-center gap-2 hover:scale-105 transition-transform">
+                <i class="fas fa-share-alt"></i>
+                Share My Impact
+            </a>
+        </div>
+
+        <!-- The rest of the page remains the same -->
+        <div class="mb-8 animate-fade-in-up" style="animation-delay: 0.2s;"><h3 class="font-bold text-lg mb-4 text-white">🏆 Trophy Room</h3><div class="glass-card rounded-2xl p-4 flex items-center gap-4"><div class="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center text-3xl shadow-lg"><i class="fas fa-crown"></i></div><div><p class="font-bold text-lg text-yellow-300">Challenge Winner</p><p class="text-sm text-gray-300">1st Place in the "Tunis Plastics Drive"</p></div></div></div>
+        <div class="mb-8 animate-fade-in-up" style="animation-delay: 0.3s;"><h3 class="font-bold text-lg mb-4 text-white">⭐ Personal Bests</h3><div class="grid grid-cols-2 gap-4"><div class="glass-card rounded-xl p-4 text-center"><p class="text-3xl font-bold text-green-400">🔥 12</p><p class="text-sm text-gray-400">Longest Streak</p></div><div class="glass-card rounded-xl p-4 text-center"><p class="text-3xl font-bold text-cyan-400">215</p><p class="text-sm text-gray-400">Best Month (kg)</p></div></div></div>
+        <div class="glass-card rounded-2xl p-6 mb-8 animate-fade-in-up" style="animation-delay: 0.4s;"><h3 class="font-bold text-lg mb-4 text-white">Your Weekly Stats</h3><div class="relative h-52 w-full"><canvas id="recyclingChart"></canvas></div></div>
+        <div class="animate-fade-in-up" style="animation-delay: 0.5s;"><h3 class="font-bold text-lg mb-4 text-white">Friend Activity</h3><div class="space-y-4"><div class="glass-card rounded-xl p-4 flex items-center gap-4"><img src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="w-10 h-10 rounded-full object-cover"><p class="flex-1 text-sm"><span class="font-bold text-cyan-400">GreenNinja</span> just recycled 5 items.</p></div><div class="glass-card rounded-xl p-4 flex items-center gap-4"><img src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="w-10 h-10 rounded-full object-cover"><p class="flex-1 text-sm"><span class="font-bold text-cyan-400">RecycleMaster</span> unlocked a new achievement!</p></div></div></div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <div class="fixed bottom-0 left-0 w-full animate-fade-in-up" style="animation-delay: 0.6s;"><div class="mx-auto max-w-sm"><div class="bg-gray-800/80 backdrop-blur-lg rounded-t-2xl sm:rounded-full px-4 py-3 flex items-center justify-around shadow-2xl relative"><a href="app.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-home"></i></a><a href="analysis.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-chart-line"></i></a><a href="scan-options.html" class="w-16 h-16 -mt-10 rounded-full flex items-center justify-center bg-gradient-to-r from-purple-600 to-pink-500 text-white shadow-lg border-4 border-[#0f0e17]"><i class="fas fa-camera fa-lg"></i></a><a href="achievements.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-trophy"></i></a><a href="rewards.html" class="w-12 h-12 rounded-full flex items-center justify-center text-gray-400 hover:text-white transition-colors"><i class="fas fa-gift"></i></a></div></div></div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('recyclingChart')?.getContext('2d');
+        if (ctx) {
+            const gradient = ctx.createLinearGradient(0, 0, 0, 200);
+            gradient.addColorStop(0, 'rgba(236, 72, 153, 0.5)');
+            gradient.addColorStop(1, 'rgba(139, 92, 246, 0.0)');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
+                        label: 'Items Recycled', data: [2, 3, 1, 2, 4, 7, 2], backgroundColor: gradient, borderColor: '#EC4899', borderWidth: 3, pointBackgroundColor: '#fff', pointBorderColor: '#EC4899', pointHoverRadius: 8, tension: 0.4, fill: true,
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false }, ticks: { color: '#9CA3AF' } } } }
+            });
+        }
+    });
+    </script>
+</body>
+</html>
